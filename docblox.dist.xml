@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<docblox>
+    <files>
+        <directory>src/</directory>
+    </files>
+    <parser>
+        <target>build/api/</target>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>  
+            <item>@todo</item>
+        </markers>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+        <visibility>public</visibility>
+    </parser>
+    <transformer>
+        <target>build/api/</target>
+    </transformer>
+    <logging>
+        <level>warn</level>
+        <paths>
+            <default>{APP_ROOT}/build/api/docblox.{DATE}.log</default>
+            <errors>{APP_ROOT}/build/api/docblox.{DATE}.errors.log</errors>
+        </paths>
+    </logging>
+    <!-- transformations>
+        <template name="default" />
+    </transformations-->
+    <title>php.ug</title>
+</docblox>

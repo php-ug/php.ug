@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="phpug.cost">
+    <title>
+        Technical
+    </title>
+    <para>
+        This website will run with PHP (really?) Version 5.3. I intend to build 
+        the app using the recent version of ZendFramework 2 which is (as far as 
+        I recall from memory) zf2beta3. But other Ideas are welcome!
+    </para><para>
+        Registration, Login, Modification and Display of the data will be 
+        registered as Modules and the redirect for the "shortlink" will be 
+        exported to an .htaccess-file on every change on the short-name or the 
+        website of a Usergroup 
+    </para><para>
+        The actual redirect will then be provided via mod_rewrite
+    </para><para>
+        As Backend we will be using either a MySQL or a PostgreSQL Database, 
+        depending on the hosting-provider.
+    </para><para>
+        This Project is hosted on github at http://github.com/heiglandreas/php.ug
+    </para>
+</chapter>

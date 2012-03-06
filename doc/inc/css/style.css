@@ -1,0 +1,333 @@
+html, * {
+    margin:0;
+    padding: 0;
+}
+
+body{
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 12px;
+}
+
+DIV.ABSTRACT
+{
+        border: solid 2px;
+        padding-left: 10pt;
+        padding-right: 10pt;
+}
+PRE.SCREEN
+{
+        font-family:monospace;
+        white-space: pre;
+        width: 100%;
+        background-color: #ffffcc;
+        border:solid;
+        color: #000000;
+        border-color: #009999;
+        border-left: solid #009999 2px;
+        border-right: solid #009999 2px;
+        border-top: solid #009999 2px;
+        border-bottom: solid #009999 2px;
+
+        padding-left: 15pt;
+}
+
+PRE.PROGRAMLISTING
+{
+        font-family:monospace;
+        white-space: pre;
+        background-color: #dddddd;
+        border:solid;
+        color: #000000;
+        border: 1px solid #888888;
+        padding: 1em;
+}
+
+h1{
+        color: #cccccc;
+        background-color: #000000;
+        font-variant: small-caps;
+        line-height: 1.5em;
+            padding-left:0.5em;
+}
+.book h1 {background-color: transparent;}
+
+H1.TITLE
+{
+/*        color: #ffffff;
+        border: solid 3px #a0a0d0;
+        background-color: #606090;
+        font-variant: small-caps;
+        width: 100%;*/
+}
+
+.TITLE a {
+        color: #ffffff; 
+        text-decoration: none;
+}
+
+.TITLE a:active {
+        color: #ffffff; 
+        text-decoration: none;
+}
+
+.TITLE a:visited {
+        color: #ffffff; 
+        text-decoration: none;
+}
+
+h2
+{       
+        color: #cccccc ;
+        font-style: italic;
+        background-color: #ffffff;
+        padding: 0.5em 0;
+}
+
+TABLE.IMPORTANT
+{
+        font-style:italic;
+        border: solid 2px #ff0000;
+        width: 70%;
+        margin-left: 15%;       
+}
+TABLE.CAUTION
+{
+        font-style:italic;
+        border: ridge 2px #ffff00;
+        width: 70%;
+        margin-left: 15%;       
+}
+
+TABLE.NOTE
+{
+        font-style:italic;
+        border: solid 1px #000000;
+        width: 70%;
+        margin-left: 15%;       
+}
+TABLE.TIP
+{
+        font-style:italic;
+        border: solid 1px #000000;
+        width: 70%;
+        margin-left: 15%;       
+}
+
+TABLE.WARNING
+{
+        font-style:italic;
+        font-weight: bold;
+        border: ridge 4px #ff0000;
+        
+        width: 70%;
+        margin-left: 15%;       
+}
+
+DIV.VARIABLELIST {
+        font-family: sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        padding-left: 20px;
+}
+
+.VARLISTENTRY {
+        font-weight: bold;
+        margin-top: 10px;
+        COLOR: #ffffff ;
+        BACKGROUND-color: #a0a0d0;
+        BORDER: solid 1px #606090;
+        PADDING: 1px
+}
+a{
+    text-decoration:none;
+    color: inherit;
+}
+a:link{
+text-shadow: lightgray 2px 2px 2px;
+}
+a:visited {
+    text-shadow: orange 2px 2px 2px;
+}
+a:hover {
+    text-shadow: green 2px 2px 2px;
+}
+a:active {
+    text-shadow: red 2px 2px 2px;
+}
+
+a[href^="http:"] {
+        background: url(../images/extern.png) right center no-repeat;
+        padding-right: 12px;
+}
+
+
+/* ...or to the translation links on each page */
+DIV.translatelink > a[href^="http:"] {
+        background: transparent;
+        padding-right: 0px;
+}
+
+DIV.translatelink > a[href^="http:"]:hover {
+        background: transparent;
+}
+
+/* ...or to any images  */
+DIV.imagelink  a[href^="http:"] {
+        background: transparent;
+        padding-right: 0px;
+}
+
+DIV.imagelink  a[href^="http:"]:hover {
+        background: transparent;
+}
+
+
+P.C2 {
+        COLOR: #ffffff ;
+        BACKGROUND-color: #a0a0d0;
+        BORDER: solid 1px #606090;
+        PADDING: 1px
+}
+
+table{color:inherit;font-size:1em;}
+
+img[alt="[Caution]"]:before{
+    content:"-!-";
+}
+img[alt="[Caution]"] {
+    display:none;
+}
+div.caution{
+    border:1px solid yellow;
+    background-color: lightgoldenrodyellow;
+}
+
+div.navfooter {
+        color: #eeeeee;
+        background-color: #000000;
+        padding: 5px;
+        margin-top: 10px;
+        border: 0 solid gray;
+        border-width: 1px 0;
+        height: 40px;
+}
+
+hr {
+    display:none;
+}
+
+div.navfooter td[align=right] a,div.navheader td[align=right] a {
+    background: transparent url(../images/right.png) right center no-repeat;
+    text-indent:-10000px;
+    display:inline-block;
+    height:20px;
+    width:20px;
+    color:transparent;
+    text-shadow: transparent 0 0 0;
+}
+div.navfooter td[align=left] a,div.navheader td[align=left] a {
+    background: transparent url(../images/left.png) right center no-repeat;
+    text-indent:-10000px;
+    display:inline-block;
+    height:20px;
+    width:20px;
+    color:transparent;
+    text-shadow: transparent 0 0 0;
+}
+
+DIV.NUKEFOOTER {
+        color: #000000;
+        background-color: #B0E0E6;
+        padding: 5px;
+        margin-top: 10px;
+        width: 100%;
+        border: thin solid #a0a0d0;
+}
+
+div.navheader {
+        color: #dddddd;
+        background-color: #000000;
+        padding: 5px;
+        margin-bottom: 10pxx;   
+        border: 0 solid gray;
+        border-width: 1px 0;
+        height: 40px;
+}
+div.navheader hr{
+    display:none;
+}
+
+DIV.SECT1,DIV.SECT2,DIV.SECT3 {
+        padding: 0 20px;
+}
+
+DIV.EXAMPLE{
+        border: thin dotted #70AAE5;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: #000000;
+        background-color: #EFF8F8;
+}
+
+div.toc{
+    background-color:transparent;
+    padding: 10px;
+}
+
+div.toc dl {
+    padding-left: 10px;
+}
+
+div.chapter .toc {
+    display:none;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    width: 150px;
+    position:absolute;
+    top: 0;
+    right:0;
+    background-color: lightgoldenrodyellow;
+    border: 1px solid gray;
+}
+
+div.titlepage .copyright, div.titlepage div.author{
+    padding: 0 2em;
+}
+
+UL, OL, DL  {
+        list-style-position: inside;
+}
+ul,ol {
+        padding-left: 2em;
+        text-indent:-2em;
+    }
+ul {
+        list-style-type: circle;
+}
+dt {
+    font-weight: 700;
+}
+dd {
+    padding-left: 20px;
+    margin-bottom: 0.5em;
+}
+dd p {
+    padding: 0.2em 0!important;
+}
+
+
+div.chapter,  div.toc {
+    position:relative;
+    top:0;
+    left: 0;
+    padding: 1em 2em;
+}
+    
+div.chapter p {
+    padding: 0.5em 0;
+    line-height: 1.3em;
+}
+
+tt, code, kbd, samp {
+    font-size:1em;
+}

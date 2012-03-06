@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * $Id$
+ *
+ * Copyright (c) 2008-2011 Andreas Heigl<andreas@heigl.org>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * This is the ant-buildfile
+ *
+ * @category  php.ug
+ * @package   php.ug
+ * @author    Andreas Heigl <andreas@heigl.org>
+ * @copyright 2012 Andreas Heigl<andreas@heigl.org>
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
+ * @version   0.0
+ * @since     06.03.2012
+ */
+-->
+<project name="php.ug" default="build" basedir=".">
+
+    <!-- This target deletes all temporary files from the directory -->
+    <target name="clean">
+        <delete includeemptydirs="true">
+            <fileset dir="${basedir}/build">
+                <include name="**/*" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="build"
+              depends="sniff, clean, test, api, manual, distribute" />
+
+    <target name="test">
+        <mkdir dir="${basedir}/build/logs"/>
+        <mkdir dir="${basedir}/build/phpunit"/>
+        <mkdir dir="${basedir}/build/phpunit/coverage"/>
+        <delete includeemptydirs="true" verbose="false">
+            <fileset dir="${basedir}/build/phpunit/coverage">
+                <include name="**/*" />
+            </fileset>
+        </delete>
+        <exec executable="phpunit" dir="${basedir}/tests" failonerror="on"/>
+        <exec executable="${basedir}/tools/removeBasePath.sh" dir="${basedir}/build/phpunit/coverage" failonerror="true">
+            <arg line="${basedir}/src/"/>
+        </exec>
+    </target>
+
+    <target name="api">
+        <mkdir dir="${basedir}/build/api"/>
+        <exec executable="docblox" dir="${basedir}" failonerror="on"/>
+    </target>
+    
+    <target name="distribute">
+    </target>
+
+    <target name="manual">
+        <mkdir dir="${basedir}/build/doc"/>
+        <delete includeemptydirs="true" verbose="true">
+            <fileset dir="${basedir}/build/doc">
+                <include name="**/*" />
+            </fileset>
+        </delete>
+        <exec executable="xsltproc" dir="${basedir}">
+            <arg line="--output build/doc/index.html doc/php.ug.xsl doc/main.xml "/>
+        </exec>
+        <copy todir="${basedir}/build/doc/">
+            <fileset dir="${basedir}/doc/inc/"/>
+        </copy>
+    </target>
+    
+    <!--
+    Check the code using phpcs using the heigl.org-Standard
+    -->
+    <target name="sniff">
+        <exec executable="phpcs" dir="${basedir}/src" failonerror="true">
+            <arg value="--standard=HeiglOrg"/>
+            <arg value="-n"/>
+            <arg value="-p"/>
+        	<arg value="."/>
+        </exec>
+    </target>
+</project>
