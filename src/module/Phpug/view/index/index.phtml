@@ -1,0 +1,182 @@
+<?php
+$this->headTitle('One home for one community');
+$this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css');
+$this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css','text/css',
+    array('conditional' => 'lte IE8',)
+);
+$this->headScript()->appendFile('lib/phpug/leaflet/leaflet.js');
+$this->headScript()->appendFile('m/map/poi');
+$this->headScript()->appendScript('// <![CDATA[
+
+// var map = null;
+
+// function onPopupClose(evt) {
+//    "this" is the popup.
+//     selectControl.unselect(this.feature);
+// }
+// function onFeatureSelect(evt) {
+//     console.log(evt);
+//     feature = evt.feature;
+//     popup = new OpenLayers.Popup.FramedCloud("featurePopup",
+//                              feature.geometry.getBounds().getCenterLonLat(),
+//                              new OpenLayers.Size(100,100),
+//                              "<h2>"+feature.attributes.title + "</h2>" +
+//                              feature.attributes.description,
+//                              null, true, onPopupClose);
+//     feature.popup = popup;
+//     popup.feature = feature;
+//     map.addPopup(popup);
+// }
+// function onFeatureUnselect(evt) {
+//     feature = evt.feature;
+//     if (feature.popup) {
+//         popup.feature = null;
+//         map.removePopup(feature.popup);
+//         feature.popup.destroy();
+//         feature.popup = null;
+//     }
+// }
+
+// function init(){
+//     var proj4326 = new OpenLayers.Projection("EPSG:4326");
+//     var projmerc = new OpenLayers.Projection("EPSG:900913");
+
+//     var lonlat = new OpenLayers.LonLat(0, 20);
+//     var zoom = 2;
+//     var mlonlat = new OpenLayers.LonLat(13.3776, 52.5162);
+
+//     map = new OpenLayers.Map("map", {
+//         controls: [
+////            new OpenLayers.Control.KeyboardDefaults(),
+//             new OpenLayers.Control.Navigation(),
+//             new OpenLayers.Control.LayerSwitcher(),
+//             new OpenLayers.Control.PanZoomBar()
+//         ],
+//         maxExtent: new OpenLayers.Bounds(
+//             -20037508.34,-20037508.34,
+//             20037508.34, 20037508.34
+//         ),
+//         numZoomLevels: 18,
+//         maxResolution: 156543,
+//         units: "m",
+//         projection: projmerc,
+//         displayProjection: proj4326
+//     });
+
+//     var defaultStyle = new OpenLayers.Style({
+//         externalGraphic: OpenLayers.Util.getImagesLocation() + "marker.png",
+//         graphicHeight: 25,
+//         graphicWidth: 21,
+//         graphicXOffset: -10.5,
+//         graphicYOffset: -12.5
+//     });
+//     var selectStyle = new OpenLayers.Style({
+//         externalGraphic: OpenLayers.Util.getImagesLocation() + "marker.png",
+//         graphicHeight: 25,
+//         graphicWidth: 21,
+//         graphicXOffset: -10.5,
+//         graphicYOffset: -12.5,
+//         graphicOpacity: 0.5
+
+//     });
+
+//     var styleMap = new OpenLayers.StyleMap({default:defaultStyle,select:selectStyle});
+
+
+//     var mapnik_layer = new OpenLayers.Layer.OSM.Mapnik("OpenStreetMap");
+//     var wms          = new OpenLayers.Layer.WMS(
+//         "OpenLayers WMS",
+//         "http://vmap0.tiles.osgeo.org/wms/vmap0",
+//         {layers: "basic"}
+//     );
+// /*
+//     var ug_layer     = new OpenLayers.Layer.GML(
+//         "PHP-Usergroups",
+//         "m/map/poi",
+//         {
+//             format: OpenLayers.Format.Text,
+//             projection: map.displayProjection,
+//             styleMap: styleMap,
+//             eventListeners: {
+//                 featureselected: onFeatureSelect,
+//                 featureunselected: onFeatureUnselect
+//             }
+//         }
+//     );
+//*/
+//     var ug_layer = new OpenLayers.Layer.Vector("PHP-Usergroup", {
+//         projection: map.displayProjection,
+//         strategies: [
+//             new OpenLayers.Strategy.BBOX(),
+////    	        new OpenLayers.Strategy.Cluster()
+//         ],
+//         protocol: new OpenLayers.Protocol.HTTP({
+//                         url: "m/map/poi",  //Note that it is probably worth adding a Math.random() on the end of the URL to stop caching.
+//         format: new OpenLayers.Format.Text(),
+//         }),
+//         eventListeners: {
+//                 featureselected: onFeatureSelect,
+//                 featureunselected: onFeatureUnselect
+//             },
+//         styleMap: new OpenLayers.StyleMap({
+//                         "default": defaultStyle,
+//                         "select": selectStyle
+//                 })
+//         });
+
+//     selectControl = new OpenLayers.Control.SelectFeature(ug_layer);
+
+//     map.addLayers([mapnik_layer, wms, ug_layer]);
+//     map.addControl(selectControl);
+//     selectControl.activate();
+
+//     lonlat.transform(proj4326, projmerc);
+//     map.setCenter(lonlat, zoom);
+
+// }
+// init();
+
+var geojsonLayer = new L.GeoJSON(data);
+
+    var coord = new L.LatLng(20,0);
+    var zoom  = 2;
+    if($.cookie("mapLat")){
+        coord.lat = $.cookie("mapLat");
+    }
+    if($.cookie("mapLng")){
+        coord.lng = $.cookie("mapLng");
+    }
+    if($.cookie("mapZoom")){
+        zoom = $.cookie("mapZoom");
+    }
+
+    var map = new L.Map("map", {
+        center: coord,
+        zoom: zoom
+    });
+    var cloudmadeUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+    // add the CloudMade layer to the map
+    map.addLayer(cloudmade);
+
+    map.addLayer(geojsonLayer);
+
+    // Display the name property on click
+    geojsonLayer.on("featureparse", function (e) {
+        if (e.properties && e.properties.name){
+            e.layer.bindPopup("<a target=\"_blank\" href=\""+e.properties.url+"\">"+e.properties.name+"</a>");
+        }
+    });
+
+    // Populate our geojson layer with data
+    geojsonLayer.addGeoJSON(data);
+
+    window.onbeforeunload = function(e){
+        $.cookie("mapLat", map.getCenter().lat);
+        $.cookie("mapLng", map.getCenter().lng);
+        $.cookie("mapZoom", map.getZoom());
+	}
+// ]]>');
+?>
+<div id="map"></div>

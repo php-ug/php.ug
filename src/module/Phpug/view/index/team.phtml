@@ -1,0 +1,27 @@
+<?php
+$this->headTitle('Team');
+$this->headLink()->appendStylesheet($this->basePath() . '/css/phpug/team.css');
+?>
+<div id="team">
+    <h1>The team behind PHP.ug</h1>
+    <dl>
+    <?php foreach ( $this->team as $mail => $person ) : ?>
+        <dt><img src="<?php echo "http://www.gravatar.com/avatar/" .
+         md5( strtolower( trim( $mail ) ) ) . "?s=100"; ?> width="100" height="100"></dt>
+        <dd>
+            <h3><?php echo $person['name']; ?></h3>
+            <?php echo $this->mailto($mail, null, array('class' => 'email'));?>
+            <?php if ( isset($person['twitter']) ) :?>
+            <a class="twitter" href="http://twitter.com/!#<?php echo $person['twitter']; ?>">
+                <?php echo $person['twitter']; ?>
+            </a>
+            <?php endif; ?>
+            <?php if ( isset($person['google+']) ) :?>
+            <a class="googleplus" href="https://plus.google.com/<?php echo $person['google+']; ?>">
+                Google+
+            </a>
+            <?php endif; ?>
+        </dd>
+    <?php endforeach; ?>
+    </dl>
+</div>

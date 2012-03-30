@@ -1,0 +1,20 @@
+<?php
+$this->headTitle('Imprint');
+?>
+<div id="imprint">
+<dl>
+    <dt>Imprint</dt>
+    <dd>
+        This Website for the PHP-Community is run by
+        <address>
+            <?php echo $this->user; ?><br/>
+            <?php echo $this->address; ?><br/>
+            <span class="emailobfuscate"><?php echo strrev($this->mail);?></span>
+        </address>
+    </dd>
+    <dt>Contact</dt>
+    <dd>You can reach us via our <a href="<?php echo $this->url('contact');?>">Contact-Form</a></dd>
+    <dt>Legal</dt>
+    <dd>//</dd>
+</dl>
+</div>

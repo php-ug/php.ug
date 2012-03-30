@@ -1,0 +1,17 @@
+var data = {
+    "type": "PHP-Usergroups",
+    "features": [<?php $groupcount = count($this->usergroups); $i=0;?>
+<?php foreach($this->usergroups as $group): ?>
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [<?php echo $group->longitude;?>,<?php echo $group->latitude;?>]
+        },
+        "properties": {
+            "name" : "<?php echo $group->name;?>",
+            "url" : "<?php echo $group->shortname;?>"
+        }
+    }<?php if(++$i<$groupcount)echo ',';?>
+<?php endforeach; ?>
+]};

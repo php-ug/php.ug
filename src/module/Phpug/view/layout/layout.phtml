@@ -1,0 +1,68 @@
+<?php
+$this->headTitle()->setSeparator(' - ')
+                  ->setDefaultAttachOrder('PREPEND')
+                  ->setAutoEscape(false);
+$this->headTitle('PHP-UserGroup');
+
+$basePath = $this->basePath();
+$this->headLink()->appendStylesheet($basePath . '/css/bootstrap.min.css')
+                 ->appendStylesheet($basePath . '/css/phpug/style.css')
+                 ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css')
+;
+
+$this->headLink(array(
+            'rel'  => 'shortcut icon',
+            'type' => 'image/vnd.microsoft.icon',
+            'href' => $basePath . '/images/favicon.ico',
+        ));
+
+// HTML5 shim, for IE6-8 support of HTML elements
+$this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript',
+    array('conditional' => 'lt IE9',));
+
+$this->headScript()->prependFile($basePath . '/js/jquery.cookie.js');
+$this->headScript()->prependFile($basePath . '/js/jquery-1.7.1.min.js');
+echo $this->doctype();
+?>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle()->toString() ?>
+
+    <?php echo $this->headMeta() ?>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1">
+
+    <!-- Le styles -->
+    <?php echo $this->headLink() ?>
+  </head>
+
+  <body>
+    <div class="header">
+      <h1><a class="brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
+      <h2>One home for one community</h2>
+    </div>
+    <div class="content">
+      <?php echo $this->content; ?>
+    </div>
+    <div class="footer">
+      © 2011-<?php echo date('Y');?> - Andreas Heigl/<a href="<?php echo $this->url('team');?>">PHP.ug-Team</a>
+      |
+      <a href="<?php echo $this->url('imprint'); ?>">Imprint</a>
+      |
+      <a href="<?php echo $this->url('contact'); ?>">Contact</a>
+      |
+      <a href="<?php echo $this->url('about'); ?>">About</a>
+    </div>
+    <div class="navigation">
+      <ul class="nav">
+        <li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li>
+        <!-- li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li-->
+        <!--li><a href="http://blog.php.ug">Blog</a></li-->
+      </ul>
+    </div>
+    <div class="_1" style="height:100px;"></div>
+        <!-- Scripts -->
+    <?php echo $this->headScript() ?>
+  </body>
+</html>

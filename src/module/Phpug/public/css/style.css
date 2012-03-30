@@ -1,0 +1,223 @@
+@import url(../../fonts/phpug/Sketch_Block_Bold/stylesheet.css);
+@import url(../../fonts/phpug/sketchy/stylesheet.css);
+@import url(../../fonts/phpug/TeXGyrePagella-Regular/stylesheet.css);
+@import url(../../fonts/phpug/Vinegar/stylesheet.css);
+@import url(../../fonts/phpug/angelina/stylesheet.css);
+
+
+body {
+    position:absolute;
+    top:0px;
+    bottom:0px;
+    padding-top:100px;
+    padding-bottom: 50px;
+    left:0px;
+    right:0px;
+    background-color: transparent;
+}
+
+div._1{
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, rgb(0,0,0)),
+        color-stop(0.4, rgb(64,64,64)),
+        color-stop(0.41, rgb(128,128,128)),
+        color-stop(0.9, rgb(255,255,255))
+    );
+    background-image: linear-gradient(bottom, rgb(198,176,210) 24%, rgb(238,212,252) 62%, rgb(255,255,255) 81%);
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:100px;
+}
+
+.header h1, .header h2{
+    position:absolute;
+    top:0px;
+    left:0px;
+    margin-top:0;
+    margin-left:0;
+    -webkit-transform: rotate(-5deg);
+    -webkit-transform-origin: top right;
+    -moz-transform: rotate(-5deg);
+    -moz-transform-origin: top right;
+    -ms-transform: rotate(-5deg);
+    -ms-transform-origin: top right;
+    -o-transform: rotate(-5deg);
+    -o-transform-origin: top right;
+    transform: rotate(-5deg);
+    transform-origin: top right;
+    text-align:left;
+    padding-left:20px;
+    z-index:1000;
+    font-family:"SketchyRegular";
+    color:rgb(232,232,232);
+/*    background-image:linear-gradient(top,#707070,#202020);*/
+/*    background-image:-webkit-linear-gradient(top,#e0e0e0,#a0a0a0); */
+}
+.header h1 {
+    font-size:53px;
+    font-weight:500;
+    line-height:45px;
+    
+}
+.header a, .footer a, .navigation .nav>li>a{
+    text-decoration:none;
+    background:transparent;
+    color:rgb(232,232,232);
+}
+.header a:link, .footer a:link, .navigation a:link{
+    color:rgb(232,232,232);
+}
+.header a:active, .footer a:active{
+    color:rgb(128,0,0);
+    /*color:rgb(232,232,232);*/
+}
+.header a:visited, .footer a:visited{
+    color:rgb(232,232,232);
+}
+.header a:hover, .footer a:hover, .navigation .nav>li>a:hover{
+    color:rgb(180,200,180);
+    background-color:transparent;
+}
+
+.header h2 {
+    font-size:14px;
+    font-weight:700;
+    line-height:12px;
+}
+
+.header{
+    margin: 0;
+    height:120px;
+    position: absolute;
+    top:0px;
+    width:100%;
+/*    border-radius:0 0 50px 50px;*/
+    background-color:#454546;
+    color:rgb(232,232,232);
+    background-image: -moz-linear-gradient(top, #454546, #808080);
+    background-image: -ms-linear-gradient(top, #454546, #808080);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#454546), to(#808080));
+    background-image: -webkit-linear-gradient(top, #454546, #808080);
+    background-image: -o-linear-gradient(top, #454546, #808080);
+    background-image: linear-gradient(top, #454546, #808080);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#454546', endColorstr='#808080', GradientType=0);
+}
+
+.content {
+    width:80%;
+    height:100%;
+    position:relative;
+    padding: 0px;
+    margin:0 10%;
+    background-color:rgb(255,255,255);
+    border: 0px solid gray;
+    z-index:2;
+    box-shadow:3px 3px 6px 6px #454546;
+}
+
+.footer {
+    width:100%;
+    margin-bottom:0px;
+    text-align:center;
+    line-height:20px;
+    padding-top: 30px;
+    height:40px;
+    font-size:9px;
+    color:gray;
+    background-color:#454546;
+    background-image: -moz-linear-gradient(top, #808080, #454546);
+    background-image: -ms-linear-gradient(top, #808080, #454546);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#808080), from(#454546));
+    background-image: -webkit-linear-gradient(top, #808080, #454546);
+    background-image: -o-linear-gradient(top, #808080, #454546);
+    background-image: linear-gradient(top, #808080, #454546);
+    filter: progid:DXImageTransform.Microsoft.gradient(endColorstr='#454546', startColorstr='#808080', GradientType=0);
+    position:relative;
+    top:-20px;
+    color:rgb(232,232,232);
+}
+
+.navigation {
+    /*display:none;*/
+    position:absolute;
+    top:0px;
+    right:0px;
+    width: 10%;
+    color:rgb(232,232,232);
+
+}
+
+.navigation ul
+{
+    list-style-type:none;
+}
+
+.navigation li {
+    float:left;
+    padding:0 10px;
+    height:32px;
+    line-height:32px;
+    background-image: -moz-linear-gradient(top, #454546, #808080);
+    background-image: -ms-linear-gradient(top, #454546, #808080);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#454546), to(#808080));
+    background-image: -webkit-linear-gradient(top, #454546, #808080);
+    background-image: -o-linear-gradient(top, #454546, #808080);
+    background-image: linear-gradient(top, #454546, #808080);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#454546', endColorstr='#808080', GradientType=0);
+    border-radius: 0 0 16px 16px;
+}
+.navigation li.active{
+    background-image: -moz-linear-gradient(top, #808080, #454546);
+    background-image: -ms-linear-gradient(top, #808080, #454546);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#808080), from(#454546));
+    background-image: -webkit-linear-gradient(top, #808080, #454546);
+    background-image: -o-linear-gradient(top, #808080, #454546);
+    background-image: linear-gradient(top, #808080, #454546);
+    filter: progid:DXImageTransform.Microsoft.gradient(endColorstr='#454546', startColorstr='#808080', GradientType=0);
+}
+.btn-success {
+  background-color: #57a900;
+  background-image: -moz-linear-gradient(top, #70d900, #57a900);
+  background-image: -ms-linear-gradient(top, #70d900, #57a900);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
+  background-image: -webkit-linear-gradient(top, #70d900, #57a900);
+  background-image: -o-linear-gradient(top, #70d900, #57a900);
+  background-image: linear-gradient(top, #70d900, #57a900);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
+}
+
+.btn-success:hover,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+  background-color: #57a900;
+}
+
+.btn-success:active, .btn-success.active {
+  background-color: #57a900 \9;
+}
+
+div.container a.brand {
+    background: url("../images/zf2-logo.png") no-repeat scroll 0 10px transparent;
+    margin-left: 0;
+    padding: 8px 20px 12px 40px;
+}
+
+.emailobfuscate{
+    direction: rtl;
+    unicode-bidi: bidi-override;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+#about, #team, #imprint {
+    margin:10px;
+}
