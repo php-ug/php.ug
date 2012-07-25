@@ -32,8 +32,9 @@
 
 namespace Phpug\Controller;
 
-use Zend\Mvc\Controller\ActionController,
-    Doctrine\ORM\EntityManager
+use Zend\Mvc\Controller\AbstractActionController,
+    Doctrine\ORM\EntityManager,
+    Phpug\Entity\Usergroup
 ;
 
 /**
@@ -48,7 +49,7 @@ use Zend\Mvc\Controller\ActionController,
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class MapController extends ActionController
+class MapController extends AbstractActionController
 {
     /**
     * Store the EntityManager
@@ -58,23 +59,24 @@ class MapController extends ActionController
     protected $em = null;
 
     /**
-     * Set the EntityManager for this Controller
-     *
-     * @param EntityManager $em The entityManager to set
+     * Get the EntityManager for this Controller
      *
      * @return MapController
      */
-    public function setEntityManager(EntityManager $em)
+    public function getEntityManager()
     {
-        $this->em = $em;
-        return $this;
+        if (null === $this->em) {
+	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+	    }
+   		return $this->em;
     }
+    
     public function poiAction()
     {
         $layout = $this->layout('layout/plain');
 
         return array(
-            'usergroups' => $this->em->getRepository('Phpug\Entity\Usergroup')->findAll(),
+            'usergroups' => $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findAll(),
         );
     }
 }

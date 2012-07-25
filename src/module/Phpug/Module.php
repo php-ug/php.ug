@@ -34,7 +34,8 @@ namespace Phpug;
 
 use Zend\Module\Manager,
     Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+    Zend\Module\Consumer\AutoloaderProvider,
+	Zend\Mvc\ModuleRouteListener;
 
 /**
  * The Module-Provider
@@ -48,33 +49,14 @@ use Zend\Module\Manager,
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class Module implements AutoloaderProvider
+class Module
 {
-    public function init(Manager $moduleManager)
-    {
-        $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
-        $events->attach('\Zend\Mvc\Controller\ActionController', 'dispatch', array($this, 'initializeController'), 100);
-    }
-
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
-    }
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
+//     public function init(Manager $moduleManager)
+//     {
+//         $events = StaticEventManager::getInstance();
+//         $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
+//         $events->attach('\Zend\Mvc\Controller\ActionController', 'dispatch', array($this, 'initializeController'), 100);
+//     }
 
     public function initializeController($e)
     {
@@ -95,5 +77,30 @@ class Module implements AutoloaderProvider
         $renderer->doctype()->setDoctype('HTML5');
         $renderer->plugin('basePath')->setBasePath($basePath);
 
+    }
+    
+    
+    public function onBootstrap($e)
+    {
+    	$e->getApplication()->getServiceManager()->get('translator');
+    	$eventManager        = $e->getApplication()->getEventManager();
+    	$moduleRouteListener = new ModuleRouteListener();
+    	$moduleRouteListener->attach($eventManager);
+    }
+    
+    public function getConfig()
+    {
+    	return include __DIR__ . '/config/module.config.php';
+    }
+    
+    public function getAutoloaderConfig()
+    {
+    	return array(
+    			'Zend\Loader\StandardAutoloader' => array(
+    					'namespaces' => array(
+    							__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+    					),
+    			),
+    	);
     }
 }
