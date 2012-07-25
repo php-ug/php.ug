@@ -1,0 +1,9 @@
+[submodule "src/vendor/ZF2"]
+	path = src/vendor/ZF2
+	url = git://github.com/zendframework/zf2
+[submodule "src/vendor/OrgHeiglContact"]
+	path = src/vendor/OrgHeiglContact
+	url = git://github.com/heiglandreas/OrgHeiglContact
+[submodule "src/vendor/OrgHeiglMailproxy"]
+	path = src/vendor/OrgHeiglMailproxy
+	url = git://github.com/heiglandreas/OrgHeiglMailproxy

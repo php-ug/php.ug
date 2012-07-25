@@ -32,7 +32,7 @@
 
 namespace Phpug\Controller;
 
-use Zend\Mvc\Controller\ActionController,
+use Zend\Mvc\Controller\AbstractActionController,
     Doctrine\ORM\EntityManager
 ;
 
@@ -48,7 +48,7 @@ use Zend\Mvc\Controller\ActionController,
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class IndexController extends ActionController
+class IndexController extends AbstractActionController
 {
 
     protected $config = null;
@@ -61,16 +61,16 @@ class IndexController extends ActionController
     protected $em = null;
 
     /**
-     * Set the EntityManager for this Controller
-     *
-     * @param EntityManager $em The entityManager to set
-     *
-     * @return MapController
+     * Get the EntityManager for this Controller
+     * 
+     * @return EntityManager
      */
-    public function setEntityManager(EntityManager $em)
-    {
-        $this->em = $em;
-        return $this;
+    public function getEntityManager()
+	{
+	    if (null === $this->em) {
+	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+	    }
+   		return $this->em;
     }
 
     public function indexAction()
@@ -120,7 +120,7 @@ class IndexController extends ActionController
         $id   = $this->getEvent()->getRouteMatch()->getParam('ugid');
         $base = $this->getEvent()->getRouteMatch()->getParam('base');
 
-        $result = $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
+        $result = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
         if ( ! $result ) {
             if ( ! $base ) {
                 $this->redirect()->toRoute('home');

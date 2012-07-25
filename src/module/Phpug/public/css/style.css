@@ -145,7 +145,7 @@ div._1{
     position:absolute;
     top:70px;
 	text-align: right;
-    right:0px;
+    right:1px;
     width: 80%;
 	padding: 0 10%;	
     color:rgb(232,232,232);
@@ -216,19 +216,20 @@ div.container a.brand {
     unicode-bidi: bidi-override;
 }
 
-#map {
+.content > div {
+	padding: 10px;
+}
+.content > div#map {
+	padding:0;
     height: 100%;
     width: 100%;
 }
 
-#about, #team, #imprint {
-    margin:10px;
-}
 
 .fork-on-github img {
     border: 0;
     position: absolute;
  	right: 0;
  	top: 0;
-z-index: 0;
+	z-index: 0;
 }
