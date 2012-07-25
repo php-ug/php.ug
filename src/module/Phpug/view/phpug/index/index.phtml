@@ -27,7 +27,8 @@ var geojsonLayer = new L.GeoJSON(data);
         zoom: zoom
     });
     var cloudmadeUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+		attrib = \'Map data &copy; 2012 OpenStreetMap contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; 2012 CloudMade\',
+    cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18,attribution:attrib});
 
     // add the CloudMade layer to the map
     map.addLayer(cloudmade);
