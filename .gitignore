@@ -1,3 +1,5 @@
 .gitconfig
 .project
 .settings
+.buildpath
+composer.phar

@@ -30,21 +30,9 @@
  * @link      http://github.com/heiglandreas/php.ug
  */
 chdir(dirname(__DIR__));
-require_once (getenv('ZF2_PATH') ?: '../lib/') . '/Zend/Loader/AutoloaderFactory.php';
-Zend\Loader\AutoloaderFactory::factory();
 
-$appConfig = include 'config/application.config.php';
+// Setup autoloading
+include 'init_autoloader.php';
 
-$listenerOptions  = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
-$defaultListeners = new Zend\Module\Listener\DefaultListenerAggregate($listenerOptions);
-$defaultListeners->getConfigListener()->addConfigGlobPath('config/autoload/*.config.php');
-
-$moduleManager = new Zend\Module\Manager($appConfig['modules']);
-$moduleManager->events()->attachAggregate($defaultListeners);
-$moduleManager->loadModules();
-
-// Create application, bootstrap, and run
-$bootstrap   = new Zend\Mvc\Bootstrap($defaultListeners->getConfigListener()->getMergedConfig());
-$application = new Zend\Mvc\Application;
-$bootstrap->bootstrap($application);
-$application->run()->send();
+// Run the application!
+Zend\Mvc\Application::init(include 'config/application.config.php')->run()->send();
