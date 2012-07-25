@@ -3,14 +3,13 @@ $this->headTitle('Team');
 $this->headLink()->appendStylesheet($this->basePath() . '/css/phpug/team.css');
 ?>
 <div id="team">
-    <h1>The team behind PHP.ug</h1>
+    <h1><?php echo $this->translate('The team behind PHP.ug');?></h1>
     <dl>
     <?php foreach ( $this->team as $mail => $person ) : ?>
-        <dt><img src="<?php echo "http://www.gravatar.com/avatar/" .
-         md5( strtolower( trim( $mail ) ) ) . "?s=100"; ?> width="100" height="100"></dt>
+        <dt><?php echo $this->gravatar(trim($mail), array('img_size'=>'100'))?></dt>
         <dd>
             <h3><?php echo $person['name']; ?></h3>
-            <?php echo $this->mailto($mail, null, array('class' => 'email'));?>
+            <a href="mailto:<?php echo $mail ?>" class="email"><?php echo $mail ?></a>
             <?php if ( isset($person['twitter']) ) :?>
             <a class="twitter" href="http://twitter.com/!#<?php echo $person['twitter']; ?>">
                 <?php echo $person['twitter']; ?>
