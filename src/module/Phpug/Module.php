@@ -51,12 +51,6 @@ use Zend\Module\Manager,
  */
 class Module
 {
-//     public function init(Manager $moduleManager)
-//     {
-//         $events = StaticEventManager::getInstance();
-//         $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
-//         $events->attach('\Zend\Mvc\Controller\ActionController', 'dispatch', array($this, 'initializeController'), 100);
-//     }
 
     public function initializeController($e)
     {
