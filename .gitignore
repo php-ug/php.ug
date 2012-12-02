@@ -3,4 +3,4 @@
 .settings
 .buildpath
 composer.lock
-src/config/*.local.php
+src/config/autoload/*.local.php
