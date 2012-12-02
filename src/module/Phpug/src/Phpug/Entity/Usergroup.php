@@ -93,6 +93,13 @@ class Usergroup
      * @ORM\Column(type="float")
      */
     protected $longitude;
+    
+    /**
+     * This property defines whether this is a php-ug or a topic-specific usergroup
+     * 
+     * @ORM\Column(type="string")
+     */
+    protected $ugtype;
 
     /**
     * Magic getter to expose protected properties.

@@ -32,6 +32,105 @@
 namespace Phpug;
 
 return array(
+		'router' => array(
+			'routes' => array(
+				'default' => array(
+					'type'    => 'Segment',
+					'options' => array(
+						'route'    => '/:ugid',
+						'constraints' => array(
+							'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+							'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+						),
+						'defaults' => array(
+							'controller' => 'Phpug\Controller\IndexController',
+							'action'     => 'redirect',
+						),
+					),
+				),
+				'home' => array(
+					'type' => 'Literal',
+					'options' => array(
+						'route'    => '/',
+						'defaults' => array(
+							'__NAMESPACE__' => 'Phpug\Controller',
+							'controller' => 'IndexController',
+							'action'     => 'index',
+						),
+					),
+				),
+				'ug' => array(
+					'type' => 'Literal',
+					'options' => array(
+						'route' => '/ug',
+						'defaults' => array(
+							'__NAMESPACE__' => 'Phpug\Controller',
+							'controller'    => 'IndexController',
+							'action'        => 'index',
+						),
+					),
+					'may_terminate' => true,
+					'child_routes'  => array(
+						'default' => array(
+							'type' => 'Segment',
+							'options' => array(
+								'route' => '/[:action]',
+								'constraints'=> array(
+                              		'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+								),
+								'defaults' => array(),
+							),
+						),
+						'imprint' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route'    => '/imprint',
+								'defaults' => array(
+									'action'     => 'imprint',
+								),
+							),
+						),
+						'legal' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route' => '/legal',
+								'defaults' => array(
+									'action'	 => 'legal',
+								),
+							),
+						),
+						'about' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route'    => '/about',
+								'defaults' => array(
+									'action'     => 'about',
+								),
+							),
+						),
+						'team' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route'    => '/team',
+								'defaults' => array(
+									'action'     => 'team',
+								),
+							),
+						),
+					),					
+				),
+				'poi' => array(
+					'type'    => 'Zend\Mvc\Router\Http\Literal',
+					'options' => array(
+						'route'    => '/m/map/poi',
+						'defaults' => array(
+							'controller' => 'Phpug\Controller\MapController',
+							'action'     => 'poi',
+						),
+					),
+				),
+ 			),
+		),
 		'service_manager' => array(
 				'factories' => array(
 						'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
@@ -48,9 +147,10 @@ return array(
 				),
 		),
 		'controllers' => array(
-				'invokables' => array(
-						'Phpug\Controller\Index' => 'Phpug\Controller\IndexController'
-				),
+			'invokables' => array(
+				'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
+				'Phpug\Controller\MapController'   => 'Phpug\Controller\MapController',	
+			),
 		),
 		'view_manager' => array(
 				'display_not_found_reason' => true,
@@ -60,91 +160,13 @@ return array(
 				'exception_template'       => 'error/index',
 				'template_map' => array(
 						'layout/layout'  => __DIR__ . '/../view/layout/layout.phtml',
-						'index/index'    => __DIR__ . '/../view/index/index.phtml',
+						'index/index'    => __DIR__ . '/../view/phpug/index/index.phtml',
 						'error/404'      => __DIR__ . '/../view/error/404.phtml',
 						'error/index'    => __DIR__ . '/../view/error/index.phtml',
 				),
 				'template_path_stack' => array(
 						__DIR__ . '/../view',
 				),
-		),
-		'router' => array(
-			'routes' => array(
-					'default' => array(
-							'type'    => 'Zend\Mvc\Router\Http\Segment',
-							'options' => array(
-									'route'    => '/:ugid',
-									'constraints' => array(
-											'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-											'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-									),
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'redirect',
-									),
-							),
-					),
-					'home' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'index',
-									),
-							),
-					),
-					'poi' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/map/poi',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\MapController',
-											'action'     => 'poi',
-									),
-							),
-					),
-					'imprint' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/index/imprint',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'imprint',
-									),
-							),
-					),
-					'about' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/about',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'about',
-									),
-							),
-					),
-					'team' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/team',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'team',
-									),
-							),
-					),
-					'mailproxy' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/mailproxy',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'mailproxy',
-									),
-							),
-					),
-			),
 		),
 		'doctrine' => array(
 	        'driver' => array(

@@ -46,13 +46,15 @@ echo $this->doctype();
       <?php echo $this->content; ?>
     </div>
     <div class="footer">
-      © 2011-<?php echo date('Y');?> - Andreas Heigl/<a href="<?php echo $this->url('team');?>">PHP.ug-Team</a>
+      © 2011-<?php echo date('Y');?> - <a href="<?php echo $this->url('ug/team');?>">PHP.ug-Team</a>
       |
-      <a href="<?php echo $this->url('imprint'); ?>">Imprint</a>
+      <a href="<?php echo $this->url('ug/imprint'); ?>">Imprint</a>
       |
       <a href="<?php echo $this->url('contact'); ?>">Contact</a>
       |
-      <a href="<?php echo $this->url('about'); ?>">About</a>
+      <a href="<?php echo $this->url('ug/legal'); ?>">Legal</a>
+      |
+      <a href="<?php echo $this->url('ug/about'); ?>">About</a>
     </div>
     <div class="navigation">
       <ul class="nav">

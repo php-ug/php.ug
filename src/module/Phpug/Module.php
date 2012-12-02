@@ -51,28 +51,6 @@ use Zend\Module\Manager,
  */
 class Module
 {
-
-    public function initializeController($e)
-    {
-        var_Dump($e);
-        return;
-        $module = $e->getParam('module');
-        $config = $module->getmergedConfig();
-        var_Dump($config);
-    }
-
-    public function initializeView($e)
-    {
-        $app          = $e->getParam('application');
-        $basePath     = $app->getRequest()->getBasePath();
-        $locator      = $app->getLocator();
-        $renderer     = $locator->get('Zend\View\Renderer\PhpRenderer');
-        $renderer->plugin('url')->setRouter($app->getRouter());
-        $renderer->doctype()->setDoctype('HTML5');
-        $renderer->plugin('basePath')->setBasePath($basePath);
-
-    }
-    
     
     public function onBootstrap($e)
     {

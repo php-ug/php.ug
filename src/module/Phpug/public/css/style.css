@@ -54,6 +54,7 @@ div._1{
     z-index:1000;
     font-family:"SketchyRegular";
     color:rgb(232,232,232);
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 /*    background-image:linear-gradient(top,#707070,#202020);*/
 /*    background-image:-webkit-linear-gradient(top,#e0e0e0,#a0a0a0); */
 }
@@ -117,6 +118,7 @@ div._1{
     border: 0px solid gray;
     z-index:2;
     box-shadow:3px 3px 6px 6px #454546;
+    overflow: auto;
 }
 
 .footer {

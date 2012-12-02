@@ -109,6 +109,11 @@ class IndexController extends AbstractActionController
             ),
         );
     }
+    
+    public function legalAction()
+    {
+    	return array();
+    }
 
     /**
      * Redirect a user to the Usergroups homepage
