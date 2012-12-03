@@ -5,10 +5,10 @@ $this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css','text/css',
     array('conditional' => 'lte IE8',)
 );
 $this->headScript()->appendFile('lib/phpug/leaflet/leaflet.js');
-$this->headScript()->appendFile('m/map/poi');
+//$this->headScript()->appendFile('m/map/poi');
 $this->headScript()->appendScript('//<![CDATA[
 		
-var geojsonLayer = new L.GeoJSON(data);
+    var geojsonLayer = new L.GeoJSON();
 
     var coord = new L.LatLng(20,0);
     var zoom  = 2;
@@ -43,13 +43,46 @@ var geojsonLayer = new L.GeoJSON(data);
     });
 
     // Populate our geojson layer with data
-    geojsonLayer.addGeoJSON(data);
+    
+    $.ajax({
+        type: "POST",
+        url: "/m/map/poi",
+        dataType: "json",
+        success: function (response) {
+            geojsonLayer.addGeoJSON(response);
+        }
+    });
+
 
     window.onbeforeunload = function(e){
         $.cookie("mapLat", map.getCenter().lat);
         $.cookie("mapLng", map.getCenter().lng);
         $.cookie("mapZoom", map.getZoom());
 	}
+        
+    $(\'#grouptype\').change(function(){
+        var t=$(this).attr(\'value\');
+        param = "";
+        if(t){
+            param="/"+t;
+        }
+        $.ajax({
+        type: "POST",
+        url: "/m/map/poi"+param,
+        dataType: "json",
+        success: function (response) {
+            geojsonLayer.clearLayers();
+            geojsonLayer.addGeoJSON(response);
+        }
+    });
+    });
 //]]>');
 ?>
 <div id="map"></div>
+<div id="grouptype_selector">
+    <select name="grouptype" id="grouptype" size="1">
+        <option value="">PHP-Usergroups</option>
+        <option value="zf">ZendFramework</option>
+        <option value="sf">Symfony</option>
+    </select>
+</div>"

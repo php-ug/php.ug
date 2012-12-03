@@ -128,6 +128,21 @@ return array(
 							'action'     => 'poi',
 						),
 					),
+			        'may_terminate' => true,
+			        'child_routes'  => array(
+		                'default' => array(
+	                        'type' => 'Segment',
+	                        'options' => array(
+                                'route' => '/[:type]',
+                                'constraints'=> array(
+                              		'type' => '[a-zA-Z]+',
+                                ),
+                                'defaults' => array(
+                                    'type' => '',
+                                ),
+	                        ),
+		                ),
+			        ),
 				),
  			),
 		),

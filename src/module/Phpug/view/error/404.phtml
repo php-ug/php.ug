@@ -1,9 +1,9 @@
 <h3>A 404 error occurred</h3>
 <h4><?php echo $this->message ?></h4>
 
-<?php //if (isset($this->display_exceptions) && $this->display_exceptions): ?>
+<?php if (isset($this->display_exceptions) && $this->display_exceptions): ?>
 
-<?php //if(isset($this->exception) && $this->exception instanceof Exception): ?>
+<?php if(isset($this->exception) && $this->exception instanceof Exception): ?>
 
 <h5>Exception information:</h5>
 <p>
@@ -13,10 +13,10 @@
     <pre><?php echo $this->exception->getTraceAsString() ?></pre>
 </p>
 
-<?php //else: ?>
+<?php else: ?>
 
 <h5>No Exception available</h5>
 
-<?php //endif ?>
+<?php endif ?>
 
-<?php //endif ?>
+<?php endif ?>
