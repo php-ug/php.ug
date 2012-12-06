@@ -64,7 +64,7 @@ geojsonLayer.on("featureparse", function (e) {
 
 $.ajax({
     type: "POST",
-    url: "/m/map/poi",
+    url: "/m/map/poi/1",
     dataType: "json",
     success: function (response) {
         geojsonLayer.addGeoJSON(response);
@@ -93,4 +93,10 @@ $('#grouptype').change(function(){
             geojsonLayer.addGeoJSON(response);
         }
     });
+});
+
+$.ajax({
+    type: 'GET',
+    url: "/api/rest/listtype.json",
+    dataTpye: 'json'
 });

@@ -26,7 +26,7 @@
  * @copyright 2011-2012 php.ug
  * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version   0.0
- * @since     06.03.2012
+ * @since     05.12.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
 
@@ -45,64 +45,34 @@ use Doctrine\ORM\Mapping as ORM
  * @copyright 2011-2012 php.ug
  * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version   0.0
- * @since     06.03.2012
+ * @since     05.12.2012
  * @link      http://github.com/heiglandreas/php.ug
  * @ORM\Entity
- * @ORM\Table(name="usergroup")
+ * @ORM\Table(name="service")
  * @property string $name
- * @property string $shortname
- * @property string $url
- * @property string $icalendar_url
- * @property double $latitude
- * @property double $longitude
- * @property int    $ugtype
+ * @property string $baseurl
  */
-class Usergroup
+class Grouptype
 {
     /**
     * @ORM\Id
-    * @ORM\Column(type="integer")
+    * @ORM\Column(type="integer");
     * @ORM\GeneratedValue(strategy="AUTO")
     */
     protected $id;
 
     /**
-     * @ORM\Column(type="string")    
+     * @ORM\Column(type="string")
      */
     protected $name;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $shortname;
+    protected $baseurl;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $url;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $icalendar_url;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    protected $latitude;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    protected $longitude;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Grouptype", inversedBy="usergroups")
-     */
-    protected $ugtype;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Groupcontact", mappedBy="group")
+     * @ORM\@OneToMany(targetEntity="Service", mappedBy="service")
      * @var Groupcontact[]
      */
     protected $contacts;

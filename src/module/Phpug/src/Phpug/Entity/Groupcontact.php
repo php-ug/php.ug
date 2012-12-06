@@ -26,13 +26,12 @@
  * @copyright 2011-2012 php.ug
  * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version   0.0
- * @since     06.03.2012
+ * @since     05.12.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
 
 namespace Phpug\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM
 ;
 
@@ -45,67 +44,37 @@ use Doctrine\ORM\Mapping as ORM
  * @copyright 2011-2012 php.ug
  * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version   0.0
- * @since     06.03.2012
+ * @since     05.12.2012
  * @link      http://github.com/heiglandreas/php.ug
  * @ORM\Entity
- * @ORM\Table(name="usergroup")
+ * @ORM\Table(name="groupcontact")
  * @property string $name
- * @property string $shortname
- * @property string $url
- * @property string $icalendar_url
- * @property double $latitude
- * @property double $longitude
- * @property int    $ugtype
+ * @property integer $service
+ * @property integer $group 
  */
-class Usergroup
+class Groupcontact
 {
     /**
     * @ORM\Id
-    * @ORM\Column(type="integer")
+    * @ORM\Column(type="integer");
     * @ORM\GeneratedValue(strategy="AUTO")
     */
     protected $id;
 
     /**
-     * @ORM\Column(type="string")    
+     * @ORM\Column(type="string")
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="Service" inversedBy="contacts")
      */
-    protected $shortname;
+    protected $service;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="Usergroup", inversedBy="contacts")
      */
-    protected $url;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $icalendar_url;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    protected $latitude;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    protected $longitude;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Grouptype", inversedBy="usergroups")
-     */
-    protected $ugtype;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Groupcontact", mappedBy="group")
-     * @var Groupcontact[]
-     */
-    protected $contacts;
+    protected $group;
 
     /**
     * Magic getter to expose protected properties.
@@ -134,11 +103,6 @@ class Usergroup
      */
     public function toArray() {
         return get_object_vars($this);
-    }
-    
-    public function __construct()
-    {
-        $this->contacts = new ArrayCollection();
     }
 
 }

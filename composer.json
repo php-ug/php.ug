@@ -1,10 +1,11 @@
  {
      "minimum-stability": "dev",
      "require": {
-         "doctrine/doctrine-module": "dev-master",
+         "doctrine/doctrine-module":     "dev-master",
          "doctrine/doctrine-orm-module": "dev-master",
-         "zendframework/zendframework": "master",
-         "org_heigl/contact" : "dev-master",
-         "org_heigl/mailproxy" : "dev-master"
+         "zendframework/zendframework":  "master",
+         "org_heigl/contact" :           "dev-master",
+         "org_heigl/mailproxy" :         "dev-master",  
+         "org_heigl/hybridauth" :       "master"
      }
  }

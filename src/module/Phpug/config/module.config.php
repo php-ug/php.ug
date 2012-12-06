@@ -59,6 +59,36 @@ return array(
 						),
 					),
 				),
+			    'api' => array(
+			        'may_terminate' => false,
+			        'type'          => 'Segment',
+			        'options'       => array(
+			            'route' => '/api',
+			            'defaults' => array(
+			                '__NAMESPACE__' => 'Phpug\Api',
+			                'controller'    => 'Rest\ListtypeController',
+			            ),
+			        ),
+			        'child_routes' => array(
+			            'rest'    => array(
+			                'type' => 'Segment',
+			                'options' => array(
+			                    'route' => '/rest/:controller[.:format][/:id]',
+			                    'constraints' => array(
+			                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]+',
+			                        'format'     => '(json|sphp)',
+			                        'id'         => '[1-9][0-9]*',
+			                    ),
+			                    'defaults' => array(
+			                        '__NAMESPACE__' => 'Phpug\Api\Rest',
+			                        'controller'    => 'ListtypeController',
+			                        'format'        => 'json',
+			                    ),
+			                ),
+			            ),
+			            
+			        ),
+			    ),
 				'ug' => array(
 					'type' => 'Literal',
 					'options' => array(
@@ -164,7 +194,10 @@ return array(
 		'controllers' => array(
 			'invokables' => array(
 				'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
-				'Phpug\Controller\MapController'   => 'Phpug\Controller\MapController',	
+				'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',	
+			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
+			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
+			    'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
 			),
 		),
 		'view_manager' => array(
