@@ -243,3 +243,29 @@ section > div#grouptype_selector {
  	top: 0;
 	z-index: 0;
 }
+
+
+.popup > h1 {
+	font-size:14px;
+}
+.popup > ul {
+	liststyletype: none;
+    padding: 0px;
+    margin: 0px;
+}
+.popup li {
+	display: inline-block;
+}
+
+.popup li>a {
+	display: inline-block;
+	width: 16px;
+    height: 16px;
+    margin: 2px;
+    text-indent: -10000px;
+    background: transparent none center no-repeat;
+}
+
+.popup li>a.twitter { background-image: url(../../img/phpug/services/twitter.png);}
+.popup li>a.icalendar { background-image: url(../../img/phpug/services/icalendar.png);}
+.popup li>a.mail { background-image: url(../../img/phpug/services/mail.png);}

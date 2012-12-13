@@ -128,6 +128,16 @@ class Grouptype
     {
         return $this->description;
     } 
+    
+    /**
+     * Get the usergropus for this groputype
+     * 
+     * @return Usergroup[]
+     */
+    public function getUsergroups()
+    {
+        return $this->usergroups;
+    }
 
     /**
      * Convert the object to an array.

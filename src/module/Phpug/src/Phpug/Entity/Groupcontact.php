@@ -67,12 +67,16 @@ class Groupcontact
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Service" inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="Service")
+     * 
+     * inversedBy="contacts")
      */
     protected $service;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usergroup", inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="Usergroup")
+     * 
+     *  inversedBy="contacts")
      */
     protected $group;
 
@@ -102,7 +106,16 @@ class Groupcontact
      * @return array
      */
     public function toArray() {
-        return get_object_vars($this);
+        $return = get_object_vars($this);
+        $return['url'] = $this->getUrl();
+        $return['type'] = $this->service->name;
+        return $return;
+    }
+    
+    public function getUrl() 
+    {
+        $baseUrl = $this->service->baseurl;
+        return sprintf($baseUrl, $this->name);
     }
 
 }

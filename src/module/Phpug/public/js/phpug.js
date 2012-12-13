@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+/*
 var geojsonLayer = new L.GeoJSON();
 
 var coord = new L.LatLng(20,0);
@@ -80,13 +82,13 @@ window.onbeforeunload = function(e){
     
 $('#grouptype').change(function(){
     var t=$(this).attr('value');
-    param = "";
+    param = "/1";
     if(t){
         param="/"+t;
     }
     $.ajax({
-        type: "POST",
-        url: "/m/map/poi"+param,
+        type: "GET",
+        url: "/api/rest/listtype.geozjson/"+param,
         dataType: "json",
         success: function (response) {
             geojsonLayer.clearLayers();
@@ -95,8 +97,156 @@ $('#grouptype').change(function(){
     });
 });
 
+//*/
+
+var coord = new L.LatLng(20,0);
+var zoom  = 2;
+if($.cookie("mapLat")){
+    coord.lat = $.cookie("mapLat");
+}
+if($.cookie("mapLng")){
+    coord.lng = $.cookie("mapLng");
+}
+if($.cookie("mapZoom")){
+    zoom = $.cookie("mapZoom");
+}
+
+var tileUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+var attrib = 'Map data &copy; 2012 OpenStreetMap contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; 2012 CloudMade';
+var baseTile = [new L.TileLayer(tileUrl, {maxZoom: 18,attribution:attrib})];
+var map = L.map('map',{
+    center: coord,
+    zoom: zoom,
+    layers: baseTile
+});
+
+var createSelector = function(data){
+    for (i in data) {
+        item = data[i];
+        $('#grouptype').append($('<option value="'+item.id+'">' + item.name + '</option>'));
+    }
+    $('#grouptype').bind('change',function(){
+        var val = this.value;
+        loadGroupData(val);
+    });
+    loadGroupData($('#grouptype')[0].value);
+};
+
+var loadGroupData = function(id){
+    $.ajax({
+        'type' : 'GET',
+        'url'  : 'api/rest/listtype.json/' + id,
+        'dataType' : 'json',
+        'success' : function(data){
+            data = transformToGeoJson(data);
+            if ('undefined' != typeof pointsLayer) {
+                console.log('removing old layer');
+                map.removeLayer(pointsLayer)
+            }
+            var geojsonMarkerOptions = {
+                    radius: 8,
+                    fillColor: "#FF6788",
+                    color: "YELLOW",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.5
+            };
+            pointsLayer = L.geoJson(data, {
+//                pointToLayer: function (feature, latlng) {
+//                    return L.circleMarker(latlng, geojsonMarkerOptions)
+//                },
+                onEachFeature: function (feature, pointsLayer) {
+                    pointsLayer.on('click',openPopup);
+                }
+            }).addTo(map)
+        }
+    })
+};
+
+var openPopup = function(marker, foo){
+    console.log(marker);
+    $.ajax({
+        type: 'GET',
+        url: "/api/rest/usergroup.json/" + marker.target.feature.properties.id,
+        dataTpye: 'json',
+        success : createPopup
+    });
+};
+
+var createPopup = function(data) {
+    console.log(data);
+    var popup = new L.Popup({offset:new L.Point(0, -20)});
+    latlng = new L.LatLng(data.group.latitude,data.group.longitude);
+    popup.setLatLng(latlng);
+    var content = '<div class="popup">'
+                + '<h1>'
+                + '<a href="%url%" target="_blank">'
+                + '%name%'
+                + '</a>'
+                + '</h1>'
+                + '%contacts%'
+                + '</div>';
+                
+    var contact = '<a class="%type%" href="%url%" target="_blank">'
+                + '%value%'
+                + '</a>';
+    var contacts = [];
+    
+    if (data.group.icalendar_url) {
+        contacts.push(contact.replace(/%type%/,'icalendar').replace(/%url%/,data.group.icalendar_url).replace(/%value%/,'iCal-File'));
+    }
+    for (i in data.contacts) {
+        cont = data.contacts[i];
+        contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name));
+    }
+    contacts = contacts.join('</li><li>');
+    if (contacts) {
+        contacts = '<ul><li>' + contacts + '</li></ul>';
+    }
+    content = content.replace(/%url%/,data.group.url)
+           .replace(/%name%/,data.group.name)
+           .replace(/%contacts%/, contacts);
+    popup.setContent(content);
+    map.openPopup(popup);
+};
+
+var transformToGeoJson = function(data)
+{
+    var jsonGeo = {
+            type : data.list.name,
+            features : []
+    };
+    console.log(data);
+    for (i in data.groups) {
+        var point = data.groups[i];
+        var feature = {
+            'type' : 'Feature',
+            'geometry' : {
+                type : 'Point',
+                coordinates : [point.longitude, point.latitude]
+            },
+            properties : {
+                'name' : point.name,
+                'url' : point.url,
+                'id' : point.id
+            }
+        };
+        jsonGeo.features.push(feature);
+    }
+    return jsonGeo;
+}
+
 $.ajax({
     type: 'GET',
     url: "/api/rest/listtype.json",
-    dataTpye: 'json'
+    dataTpye: 'json',
+    success : createSelector
 });
+
+
+
+window.onbeforeunload = function(e){
+    $.cookie("mapLat", map.getCenter().lat);
+    $.cookie("mapLng", map.getCenter().lng);
+    $.cookie("mapZoom", map.getZoom());
+};

@@ -140,5 +140,10 @@ class Usergroup
     {
         $this->contacts = new ArrayCollection();
     }
+    
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
 
 }

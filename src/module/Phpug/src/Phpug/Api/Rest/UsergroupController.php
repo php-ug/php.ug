@@ -48,7 +48,7 @@ use Phpug\Entity\Usergroup;
  * @since     05.12.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class ListtypeController extends AbstractRestfulController
+class UsergroupController extends AbstractRestfulController
 {
     /**
     * Store the EntityManager
@@ -77,7 +77,7 @@ class ListtypeController extends AbstractRestfulController
         $content  = array();
          
         $id    = $this->getEvent()->getRouteMatch()->getParam('id');
-        $types = $this->getEntityManager()->getRepository('Phpug\Entity\Grouptype')->findBy(array('id' => $id));
+        $types = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('id' => $id));
         if (! $types) {
             $content['error'] = 'No group with that ID available';
             $response->setContent($adapter->serialize($content));
@@ -90,10 +90,11 @@ class ListtypeController extends AbstractRestfulController
             return $response;
         }
         
-        $content['error'] = null;
-        $content['list']   = $types[0]->toArray(); 
-        foreach ($types[0]->getUSergroups() as $group) {
-            $content['groups'][] = $group->toArray();
+        $content['error']    = null;
+        $content['group']    = $types[0]->toArray(); 
+        $content['contacts'] = array();
+        foreach ($types[0]->getContacts() as $contact) {
+            $content['contacts'][] = $contact->toArray();
         }
         $response->setContent($adapter->serialize($content));
         return $response;   
@@ -128,7 +129,7 @@ class ListtypeController extends AbstractRestfulController
     
     public function getList()
     {
-        $groups = $this->getEntityManager()->getRepository('Phpug\Entity\Grouptype')->findAll();
+        $groups = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findAll();
         $content = array ();
         foreach ($groups as $group) {
             $content[] = array(

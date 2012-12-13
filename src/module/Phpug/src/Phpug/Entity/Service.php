@@ -52,7 +52,7 @@ use Doctrine\ORM\Mapping as ORM
  * @property string $name
  * @property string $baseurl
  */
-class Grouptype
+class Service
 {
     /**
     * @ORM\Id
@@ -72,7 +72,7 @@ class Grouptype
     protected $baseurl;
 
     /**
-     * @ORM\@OneToMany(targetEntity="Service", mappedBy="service")
+     * @ORM\OneToMany(targetEntity="Service", mappedBy="service")
      * @var Groupcontact[]
      */
     protected $contacts;
@@ -103,7 +103,8 @@ class Grouptype
      * @return array
      */
     public function toArray() {
-        return get_object_vars($this);
+        $array = get_object_vars($this);
+        return $array;
     }
     
     public function __construct()
