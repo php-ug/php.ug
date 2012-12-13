@@ -16,8 +16,7 @@ return array(
         'cache_dir'=>'data/cache',
         'module_paths'=>array(
             './module',
-            './vendor',
-        	'../vendor',	
+        	'../vendor',
         ),
     ),
 );

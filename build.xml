@@ -49,17 +49,17 @@
               depends="sniff, clean, test, api, manual, distribute" />
 
     <target name="test">
-        <mkdir dir="${basedir}/build/logs"/>
-        <mkdir dir="${basedir}/build/phpunit"/>
-        <mkdir dir="${basedir}/build/phpunit/coverage"/>
+        <mkdir dir="${basedir}/build/Phpug/logs"/>
+        <mkdir dir="${basedir}/build/Phpug/phpunit"/>
+        <mkdir dir="${basedir}/build/Phpug/coverage"/>
         <delete includeemptydirs="true" verbose="false">
             <fileset dir="${basedir}/build/phpunit/coverage">
                 <include name="**/*" />
             </fileset>
         </delete>
-        <exec executable="phpunit" dir="${basedir}/tests" failonerror="on"/>
-        <exec executable="${basedir}/tools/removeBasePath.sh" dir="${basedir}/build/phpunit/coverage" failonerror="true">
-            <arg line="${basedir}/src/"/>
+        <exec executable="phpunit" dir="${basedir}/src/module/Phpug" failonerror="on"/>
+        <exec executable="${basedir}/tools/removeBasePath" dir="${basedir}/build/Phpug/coverage" failonerror="true">
+        	<arg path="${basedir}/src/" />
         </exec>
     </target>
 

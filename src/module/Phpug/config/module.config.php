@@ -32,99 +32,150 @@
 namespace Phpug;
 
 return array(
-    'di' => array(
-        'definition' => array(
-            'class' => array(
-                'Zend\Mvc\Router\RouteStack' => array(
-                    'instantiator' => array(
-                        'Zend\Mvc\Router\Http\TreeRouteStack',
-                        'factory'
-                    ),
-                ),
-            ),
-        ),
-        'instance' => array(
-            'orm_driver_chain' => array('parameters' => array(
-                'drivers' => array(
-                    'Usergroup' => array(
-                        'class'     => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                        'namespace' => __NAMESPACE__ . '\Entity',
-                        'paths'     => array(
-                            __DIR__ . '/../src/' . __NAMESPACE__ . '/Entity'
-                        ),
-                    ),
-                ),
-            )),
-            'Phpug\Controller\MapController' => array(
-                'parameters' => array(
-                    'em' => 'doctrine_em',
-                ),
-            ),
-            'Phpug\Controller\IndexController' => array(
-                'parameters' => array(
-                    'em' => 'doctrine_em',
-                ),
-            ),
-            // Inject the plugin broker for controller plugins into
-            // the action controller for use by all controllers that
-            // extend it.
-            'Zend\Mvc\Controller\ActionController' => array(
-                'parameters' => array(
-                    'broker'       => 'Zend\Mvc\Controller\PluginBroker',
-                ),
-            ),
-            'Zend\Mvc\Controller\PluginBroker' => array(
-                'parameters' => array(
-                    'loader' => 'Zend\Mvc\Controller\PluginLoader',
-                ),
-            ),
-
-            // Setup the View layer
-            'Zend\View\Resolver\AggregateResolver' => array(
-                'injections' => array(
-                    'Zend\View\Resolver\TemplateMapResolver',
-                    'Zend\View\Resolver\TemplatePathStack',
-                ),
-            ),
-            'Zend\View\Resolver\TemplateMapResolver' => array(
-                'parameters' => array(
-                    'map'  => array(
-                        'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
-                    ),
-                ),
-            ),
-            'Zend\View\Resolver\TemplatePathStack' => array(
-                'parameters' => array(
-                    'paths'  => array(
-                        'application' => __DIR__ . '/../view',
-                    ),
-                ),
-            ),
-            'Zend\View\Renderer\PhpRenderer' => array(
-                'parameters' => array(
-                    'resolver' => 'Zend\View\Resolver\AggregateResolver',
-                ),
-            ),
-            'Zend\Mvc\View\DefaultRenderingStrategy' => array(
-                'parameters' => array(
-                    'layoutTemplate' => 'layout/layout',
-                ),
-            ),
-            'Zend\Mvc\View\ExceptionStrategy' => array(
-                'parameters' => array(
-                    'displayExceptions' => true,
-                    'exceptionTemplate' => 'error/index',
-                ),
-            ),
-            'Zend\Mvc\View\RouteNotFoundStrategy' => array(
-                'parameters' => array(
-                    'displayNotFoundReason' => true,
-                    'displayExceptions'     => true,
-                    'notFoundTemplate'      => 'error/404',
-                ),
-            ),
-        ),
-    ),
+		'router' => array(
+			'routes' => array(
+				'default' => array(
+					'type'    => 'Segment',
+					'options' => array(
+						'route'    => '/:ugid',
+						'constraints' => array(
+							'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+							'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+						),
+						'defaults' => array(
+							'controller' => 'Phpug\Controller\IndexController',
+							'action'     => 'redirect',
+						),
+					),
+				),
+				'home' => array(
+					'type' => 'Literal',
+					'options' => array(
+						'route'    => '/',
+						'defaults' => array(
+							'__NAMESPACE__' => 'Phpug\Controller',
+							'controller' => 'IndexController',
+							'action'     => 'index',
+						),
+					),
+				),
+			    'api' => array(
+			        'may_terminate' => false,
+			        'type'          => 'Segment',
+			        'options'       => array(
+			            'route' => '/api',
+			            'defaults' => array(
+			                '__NAMESPACE__' => 'Phpug\Api',
+			                'controller'    => 'Rest\ListtypeController',
+			            ),
+			        ),
+			        'child_routes' => array(
+			            'rest'    => array(
+			                'type' => 'Segment',
+			                'options' => array(
+			                    'route' => '/rest/:controller[.:format][/:id]',
+			                    'constraints' => array(
+			                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]+',
+			                        'format'     => '(json|sphp)',
+			                        'id'         => '[1-9][0-9]*',
+			                    ),
+			                    'defaults' => array(
+			                        '__NAMESPACE__' => 'Phpug\Api\Rest',
+			                        'controller'    => 'ListtypeController',
+			                        'format'        => 'json',
+			                    ),
+			                ),
+			            ),
+			            
+			        ),
+			    ),
+				'ug' => array(
+					'type' => 'Literal',
+					'options' => array(
+						'route' => '/ug',
+						'defaults' => array(
+							'__NAMESPACE__' => 'Phpug\Controller',
+							'controller'    => 'IndexController',
+							'action'        => 'index',
+						),
+					),
+					'may_terminate' => true,
+					'child_routes'  => array(
+						'default' => array(
+							'type' => 'Segment',
+							'options' => array(
+								'route' => '/[:action]',
+								'constraints'=> array(
+                              		'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+								),
+								'defaults' => array(),
+							),
+						),
+						'imprint' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route'    => '/imprint',
+								'defaults' => array(
+									'action'     => 'imprint',
+								),
+							),
+						),
+						'legal' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route' => '/legal',
+								'defaults' => array(
+									'action'	 => 'legal',
+								),
+							),
+						),
+						'about' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route'    => '/about',
+								'defaults' => array(
+									'action'     => 'about',
+								),
+							),
+						),
+						'team' => array(
+							'type' => 'Literal',
+							'options' => array(
+								'route'    => '/team',
+								'defaults' => array(
+									'action'     => 'team',
+								),
+							),
+						),
+					),					
+				),
+				'poi' => array(
+					'type'    => 'Zend\Mvc\Router\Http\Literal',
+					'options' => array(
+						'route'    => '/m/map/poi',
+						'defaults' => array(
+							'controller' => 'Phpug\Controller\MapController',
+							'action'     => 'poi',
+						),
+					),
+			        'may_terminate' => true,
+			        'child_routes'  => array(
+		                'default' => array(
+	                        'type' => 'Segment',
+	                        'options' => array(
+                                'route' => '/[:type]',
+                                'constraints'=> array(
+                              		'type' => '[a-zA-Z]+',
+                                ),
+                                'defaults' => array(
+                                    'type' => '',
+                                ),
+	                        ),
+		                ),
+			        ),
+				),
+ 			),
+		),
 		'service_manager' => array(
 				'factories' => array(
 						'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
@@ -141,9 +192,13 @@ return array(
 				),
 		),
 		'controllers' => array(
-				'invokables' => array(
-						'Phpug\Controller\Index' => 'Phpug\Controller\IndexController'
-				),
+			'invokables' => array(
+				'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
+				'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',	
+			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
+			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
+			    'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
+			),
 		),
 		'view_manager' => array(
 				'display_not_found_reason' => true,
@@ -153,91 +208,13 @@ return array(
 				'exception_template'       => 'error/index',
 				'template_map' => array(
 						'layout/layout'  => __DIR__ . '/../view/layout/layout.phtml',
-						'index/index'    => __DIR__ . '/../view/index/index.phtml',
+						'index/index'    => __DIR__ . '/../view/phpug/index/index.phtml',
 						'error/404'      => __DIR__ . '/../view/error/404.phtml',
 						'error/index'    => __DIR__ . '/../view/error/index.phtml',
 				),
 				'template_path_stack' => array(
 						__DIR__ . '/../view',
 				),
-		),
-		'router' => array(
-			'routes' => array(
-					'default' => array(
-							'type'    => 'Zend\Mvc\Router\Http\Segment',
-							'options' => array(
-									'route'    => '/:ugid',
-									'constraints' => array(
-											'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-											'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-									),
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'redirect',
-									),
-							),
-					),
-					'home' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'index',
-									),
-							),
-					),
-					'poi' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/map/poi',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\MapController',
-											'action'     => 'poi',
-									),
-							),
-					),
-					'imprint' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/index/imprint',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'imprint',
-									),
-							),
-					),
-					'about' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/about',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'about',
-									),
-							),
-					),
-					'team' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/team',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'team',
-									),
-							),
-					),
-					'mailproxy' => array(
-							'type' => 'Zend\Mvc\Router\Http\Literal',
-							'options' => array(
-									'route'    => '/m/mailproxy',
-									'defaults' => array(
-											'controller' => 'Phpug\Controller\IndexController',
-											'action'     => 'mailproxy',
-									),
-							),
-					),
-			),
 		),
 		'doctrine' => array(
 	        'driver' => array(
