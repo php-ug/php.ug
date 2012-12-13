@@ -51,34 +51,6 @@ use Zend\Module\Manager,
  */
 class Module
 {
-//     public function init(Manager $moduleManager)
-//     {
-//         $events = StaticEventManager::getInstance();
-//         $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
-//         $events->attach('\Zend\Mvc\Controller\ActionController', 'dispatch', array($this, 'initializeController'), 100);
-//     }
-
-    public function initializeController($e)
-    {
-        var_Dump($e);
-        return;
-        $module = $e->getParam('module');
-        $config = $module->getmergedConfig();
-        var_Dump($config);
-    }
-
-    public function initializeView($e)
-    {
-        $app          = $e->getParam('application');
-        $basePath     = $app->getRequest()->getBasePath();
-        $locator      = $app->getLocator();
-        $renderer     = $locator->get('Zend\View\Renderer\PhpRenderer');
-        $renderer->plugin('url')->setRouter($app->getRouter());
-        $renderer->doctype()->setDoctype('HTML5');
-        $renderer->plugin('basePath')->setBasePath($basePath);
-
-    }
-    
     
     public function onBootstrap($e)
     {
@@ -99,6 +71,7 @@ class Module
     			'Zend\Loader\StandardAutoloader' => array(
     					'namespaces' => array(
     							__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+    					        __NAMESPACE__ . 'Test' => __DIR__ . '/tests/' . __NAMESPACE__,
     					),
     			),
     	);

@@ -38,29 +38,31 @@ echo $this->doctype();
   </head>
 
   <body>
-    <div class="header">
+    <header class="header">
       <h1><a class="brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
       <h2>One home for one community</h2>
-    </div>
-    <div class="content">
+    </header>
+    <section class="content">
       <?php echo $this->content; ?>
-    </div>
-    <div class="footer">
-      © 2011-<?php echo date('Y');?> - Andreas Heigl/<a href="<?php echo $this->url('team');?>">PHP.ug-Team</a>
+    </section>
+    <footer class="footer">
+      © 2011-<?php echo date('Y');?> - <a href="<?php echo $this->url('ug/team');?>">PHP.ug-Team</a>
       |
-      <a href="<?php echo $this->url('imprint'); ?>">Imprint</a>
+      <a href="<?php echo $this->url('ug/imprint'); ?>">Imprint</a>
       |
       <a href="<?php echo $this->url('contact'); ?>">Contact</a>
       |
-      <a href="<?php echo $this->url('about'); ?>">About</a>
-    </div>
-    <div class="navigation">
+      <a href="<?php echo $this->url('ug/legal'); ?>">Legal</a>
+      |
+      <a href="<?php echo $this->url('ug/about'); ?>">About</a>
+    </footer>
+    <aside class="navigation">
       <ul class="nav">
         <li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li>
         <!-- li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li-->
         <!--li><a href="http://blog.php.ug">Blog</a></li-->
       </ul>
-    </div>
+    </aside>
     <div class="_1" style="height:100px;"></div>
         <!-- Scripts -->
     <a href="http://github.com/php-ug/php.ug" class="fork-on-github">

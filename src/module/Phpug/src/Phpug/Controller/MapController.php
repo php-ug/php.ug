@@ -74,9 +74,10 @@ class MapController extends AbstractActionController
     public function poiAction()
     {
         $layout = $this->layout('layout/plain');
-
+        $type   = $this->getEvent()->getRouteMatch()->getParam('type', null);
+        
         return array(
-            'usergroups' => $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findAll(),
+            'usergroups' => $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('ugtype' => $type)),
         );
     }
 }

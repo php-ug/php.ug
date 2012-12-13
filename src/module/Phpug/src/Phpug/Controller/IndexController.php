@@ -32,6 +32,8 @@
 
 namespace Phpug\Controller;
 
+use Zend\View\Helper\ViewModel;
+
 use Zend\Mvc\Controller\AbstractActionController,
     Doctrine\ORM\EntityManager
 ;
@@ -109,6 +111,11 @@ class IndexController extends AbstractActionController
             ),
         );
     }
+    
+    public function legalAction()
+    {
+    	return array();
+    }
 
     /**
      * Redirect a user to the Usergroups homepage
@@ -119,16 +126,17 @@ class IndexController extends AbstractActionController
     {
         $id   = $this->getEvent()->getRouteMatch()->getParam('ugid');
         $base = $this->getEvent()->getRouteMatch()->getParam('base');
-
+        
         $result = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
         if ( ! $result ) {
             if ( ! $base ) {
                 $this->redirect()->toRoute('home');
-                return;
+                return false;
             }
             $this->redirect()->toUrl('http://' . $base);
-            return;
+            return false;
         }
         $this->redirect()->toUrl(current($result)->url);
+        return false;
     }
 }

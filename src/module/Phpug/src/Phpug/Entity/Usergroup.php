@@ -32,6 +32,7 @@
 
 namespace Phpug\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM
 ;
 
@@ -54,18 +55,19 @@ use Doctrine\ORM\Mapping as ORM
  * @property string $icalendar_url
  * @property double $latitude
  * @property double $longitude
+ * @property int    $ugtype
  */
 class Usergroup
 {
     /**
     * @ORM\Id
-    * @ORM\Column(type="integer");
+    * @ORM\Column(type="integer")
     * @ORM\GeneratedValue(strategy="AUTO")
     */
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string")    
      */
     protected $name;
 
@@ -93,6 +95,17 @@ class Usergroup
      * @ORM\Column(type="float")
      */
     protected $longitude;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Grouptype", inversedBy="usergroups")
+     */
+    protected $ugtype;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Groupcontact", mappedBy="group")
+     * @var Groupcontact[]
+     */
+    protected $contacts;
 
     /**
     * Magic getter to expose protected properties.
@@ -121,6 +134,16 @@ class Usergroup
      */
     public function toArray() {
         return get_object_vars($this);
+    }
+    
+    public function __construct()
+    {
+        $this->contacts = new ArrayCollection();
+    }
+    
+    public function getContacts()
+    {
+        return $this->contacts;
     }
 
 }

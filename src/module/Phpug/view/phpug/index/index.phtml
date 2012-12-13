@@ -5,51 +5,11 @@ $this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css','text/css',
     array('conditional' => 'lte IE8',)
 );
 $this->headScript()->appendFile('lib/phpug/leaflet/leaflet.js');
-$this->headScript()->appendFile('m/map/poi');
-$this->headScript()->appendScript('//<![CDATA[
-		
-var geojsonLayer = new L.GeoJSON(data);
-
-    var coord = new L.LatLng(20,0);
-    var zoom  = 2;
-    if($.cookie("mapLat")){
-        coord.lat = $.cookie("mapLat");
-    }
-    if($.cookie("mapLng")){
-        coord.lng = $.cookie("mapLng");
-    }
-    if($.cookie("mapZoom")){
-        zoom = $.cookie("mapZoom");
-    }
-
-    var map = new L.Map("map", {
-        center: coord,
-        zoom: zoom
-    });
-    var cloudmadeUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-		attrib = \'Map data &copy; 2012 OpenStreetMap contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; 2012 CloudMade\',
-    cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18,attribution:attrib});
-
-    // add the CloudMade layer to the map
-    map.addLayer(cloudmade);
-
-    map.addLayer(geojsonLayer);
-
-    // Display the name property on click
-    geojsonLayer.on("featureparse", function (e) {
-        if (e.properties && e.properties.name){
-            e.layer.bindPopup("<a target=\"_blank\" href=\""+e.properties.url+"\">"+e.properties.name+"</a>");
-        }
-    });
-
-    // Populate our geojson layer with data
-    geojsonLayer.addGeoJSON(data);
-
-    window.onbeforeunload = function(e){
-        $.cookie("mapLat", map.getCenter().lat);
-        $.cookie("mapLng", map.getCenter().lng);
-        $.cookie("mapZoom", map.getZoom());
-	}
-//]]>');
+    $this->headScript()->appendFile('js/phpug/phpug.js');
 ?>
 <div id="map"></div>
+<div id="grouptype_selector">
+    <select name="grouptype" id="grouptype" size="1">
+
+    </select>
+</div>"

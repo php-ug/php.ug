@@ -1,7 +1,9 @@
 <?php
 $this->headTitle('Imprint');
+$this->headLink()->appendStylesheet('/css/orgheiglmailproxy/orgHeiglMailproxy.css');
+
 ?>
-<div id="imprint">
+<section id="imprint">
 <dl>
     <dt>Imprint</dt>
     <dd>
@@ -9,7 +11,7 @@ $this->headTitle('Imprint');
         <address>
             <?php echo $this->user; ?><br/>
             <?php echo $this->address; ?><br/>
-            <span class="emailobfuscate"><?php echo strrev($this->mail);?></span>
+            <?php echo $this->mailto($this->mail);?>
         </address>
     </dd>
     <dt>Contact</dt>
@@ -17,4 +19,4 @@ $this->headTitle('Imprint');
     <dt>Legal</dt>
     <dd>//</dd>
 </dl>
-</div>
+</section>
