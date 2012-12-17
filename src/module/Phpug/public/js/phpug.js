@@ -19,96 +19,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/*
-var geojsonLayer = new L.GeoJSON();
-
-var coord = new L.LatLng(20,0);
+var coord = new L.LatLng(0,0);
 var zoom  = 2;
-if($.cookie("mapLat")){
-    coord.lat = $.cookie("mapLat");
-}
-if($.cookie("mapLng")){
-    coord.lng = $.cookie("mapLng");
-}
-if($.cookie("mapZoom")){
-    zoom = $.cookie("mapZoom");
-}
-
-var map = new L.Map("map", {
-    center: coord,
-    zoom: zoom
-});
-var cloudmadeUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attrib = 'Map data &copy; 2012 OpenStreetMap contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; 2012 CloudMade',
-cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18,attribution:attrib});
-
-// add the CloudMade layer to the map
-map.addLayer(cloudmade);
-
-map.addLayer(geojsonLayer);
-
-// Display the name property on click
-geojsonLayer.on("featureparse", function (e) {
-    if (e.properties && e.properties.name){
-        var content = "<h4>"+e.properties.name+"</h4>"
-                    + "<ul>"
-                    + "<li><a target=\"_blank\" href=\""+e.properties.url+"\">Homepage</a></li>";
-        if (e.properties.ical) {
-            content += "<li><a href=\""+e.properties.ical+"\">Calendar</a></li>";
-        }
-        content    += "</ul>"
-        e.layer.bindPopup(content);
-    }
-});
-
-// Populate our geojson layer with data
-
-$.ajax({
-    type: "POST",
-    url: "/m/map/poi/1",
-    dataType: "json",
-    success: function (response) {
-        geojsonLayer.addGeoJSON(response);
-    }
-});
-
-
-window.onbeforeunload = function(e){
-    $.cookie("mapLat", map.getCenter().lat);
-    $.cookie("mapLng", map.getCenter().lng);
-    $.cookie("mapZoom", map.getZoom());
-}
-    
-$('#grouptype').change(function(){
-    var t=$(this).attr('value');
-    param = "/1";
-    if(t){
-        param="/"+t;
-    }
-    $.ajax({
-        type: "GET",
-        url: "/api/rest/listtype.geozjson/"+param,
-        dataType: "json",
-        success: function (response) {
-            geojsonLayer.clearLayers();
-            geojsonLayer.addGeoJSON(response);
-        }
-    });
-});
-
-//*/
-
-var coord = new L.LatLng(20,0);
-var zoom  = 2;
-if($.cookie("mapLat")){
-    coord.lat = $.cookie("mapLat");
-}
-if($.cookie("mapLng")){
-    coord.lng = $.cookie("mapLng");
-}
-if($.cookie("mapZoom")){
-    zoom = $.cookie("mapZoom");
+if($.cookie("map")){
+    var mp = $.parseJSON($.cookie('map'));
+    coord.lat = mp.lat;
+    coord.lng = mp.lng;
+    zoom      = mp.zoom;
+}else{
+    navigator.geolocation.getCurrentPosition(function(position){
+        coord.lat = position.coords.latitude;
+        coord.lng = position.coords.longitude;
+        zoom = 8;
+        map.setView(coord, zoom);
+        return true;
+    },function(){
+        return true;
+    },{timeout:3000});
 }
 
 var tileUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -246,7 +173,5 @@ $.ajax({
 
 
 window.onbeforeunload = function(e){
-    $.cookie("mapLat", map.getCenter().lat);
-    $.cookie("mapLng", map.getCenter().lng);
-    $.cookie("mapZoom", map.getZoom());
+    $.cookie("map", JSON.stringify({lat:map.getCenter().lat, lng:map.getCenter().lng, zoom:map.getZoom()}));
 };
