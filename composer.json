@@ -6,6 +6,6 @@
          "zendframework/zendframework":  "master",
          "org_heigl/contact" :           "dev-master",
          "org_heigl/mailproxy" :         "dev-master",  
-         "org_heigl/hybridauth" :       "master"
+         "org_heigl/deploy" :            "master"
      }
  }
