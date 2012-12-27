@@ -161,13 +161,18 @@ aside {
 aside ul
 {
     list-style-type:none;
+    box-shadow:2px 2px 6px 6px #454546;
+    position:relative;
+    display: inline-block;
+    z-index:4;
 }
 
 aside li {
-    float:right;
+    display: inline-block;
     padding:0 10px;
     height:32px;
     line-height:32px;
+    border-left: 1px solid rgb(196,196,196);
     background-image: -moz-linear-gradient(top, #808080, #454546);
     background-image: -ms-linear-gradient(top, #808080, #454546);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#808080), to(#454546));
@@ -176,9 +181,11 @@ aside li {
     background-image: linear-gradient(top, #808080, #454546);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#808080', endColorstr='#454546', GradientType=0);
 /*    border-radius:16px 16px 0 0; */
-    box-shadow:2px 2px 6px 6px #454546;
-    position:relative;
-    z-index:4;
+
+}
+
+aside li:first-child {
+    border-left-width: 0;
 }
 aside li>a {
     color: rgb(196,196,196);
@@ -193,8 +200,11 @@ aside li.active{
     filter: progid:DXImageTransform.Microsoft.gradient(endColorstr='#808080', startColorstr='#454546', GradientType=0);
     z-index:3;
 }
-aside li.active>a{
-    color: #7cfc00;
+ .navigation li.active>a{
+    color: rgb(128,196,128);
+}
+.navigation li>a:hover{
+    color: rgb(196,128,128);
 }
 .btn-success {
   background-color: #57a900;
@@ -283,3 +293,34 @@ section > div#grouptype_selector {
 .navigation>li>a:hover{text-decoration:none; background-color:transparent;}
 .navigation>li>a:visited{text-decoration:none; background-color:transparent;}
 .navigation>li>a:active{text-decoration:none; background-color:transparent;}
+
+footer>.navigation>li {
+    display:inline-block;
+    width: auto;
+    white-space: nowrap;
+    border: 0 solid rgb(192,192,192);
+    border-right-width: 1px;
+    padding: 0 10px;
+    height: 20px;
+    line-height:20px;
+    margin:0px;
+}
+
+footer>.navigation>.active {
+    background-image: -moz-linear-gradient(top, #454546, #808080);
+    background-image: -ms-linear-gradient(top, #454546, #808080);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#454546), from(#808080));
+    background-image: -webkit-linear-gradient(top, #454546, #808080);
+    background-image: -o-linear-gradient(top, #454546, #808080);
+    background-image: linear-gradient(top, #454546, #808080);
+    filter: progid:DXImageTransform.Microsoft.gradient(endColorstr='#808080', startColorstr='#454546', GradientType=0);
+
+}
+
+footer>.navigation>li:first-child {
+    border-left-width: 1px;
+}
+
+footer>.navigation {
+    display: inline-block;
+}
