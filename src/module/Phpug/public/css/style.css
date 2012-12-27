@@ -247,7 +247,7 @@ section > div#map {
 }
 
 section > div#grouptype_selector {
-	bottom: 0px;
+	bottom: 10px;
 	height: 16px;
 	min-width: 150px;
 	left:0px;
