@@ -139,4 +139,14 @@ class IndexController extends AbstractActionController
         $this->redirect()->toUrl(current($result)->url);
         return false;
     }
+
+    /**
+     * Show a page containing tips and tricks for running a usergroup
+     *
+     * @return array
+     */
+    public function tipsAction()
+    {
+        return array();
+    }
 }

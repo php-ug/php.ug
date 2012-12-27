@@ -36,6 +36,10 @@ div.container a.brand {
     padding: 8px 20px 12px 40px;
 }
 
+footer>.navigation>li {
+    display:inline-block;
+}
+
 #map {width:800px;height:500px;margin-left:50%;padding-left:-400px;border:1px solid gray;}
 
 address {

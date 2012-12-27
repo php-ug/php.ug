@@ -147,32 +147,16 @@ return array(
 								),
 							),
 						),
-					),					
-				),
-				'poi' => array(
-					'type'    => 'Zend\Mvc\Router\Http\Literal',
-					'options' => array(
-						'route'    => '/m/map/poi',
-						'defaults' => array(
-							'controller' => 'Phpug\Controller\MapController',
-							'action'     => 'poi',
-						),
-					),
-			        'may_terminate' => true,
-			        'child_routes'  => array(
-		                'default' => array(
-	                        'type' => 'Segment',
-	                        'options' => array(
-                                'route' => '/[:type]',
-                                'constraints'=> array(
-                              		'type' => '[a-zA-Z]+',
-                                ),
+                        'tips' => array(
+                            'type' => 'Literal',
+                            'options' => array(
+                                'route' => '/tips',
                                 'defaults' => array(
-                                    'type' => '',
+                                    'action' => 'tips',
                                 ),
-	                        ),
-		                ),
-			        ),
+                            ),
+                        ),
+					),					
 				),
  			),
 		),
