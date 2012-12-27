@@ -67,11 +67,7 @@ echo $this->doctype();
       <a href="<?php echo $this->url('ug/about'); ?>">About</a>
     </footer>
     <aside class="navigation">
-      <ul class="nav">
-        <li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li>
-        <!-- li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li-->
-        <!--li><a href="http://blog.php.ug">Blog</a></li-->
-      </ul>
+        <?php echo $this->navigation('Navigation')->menu(); ?>
     </aside>
     <div class="_1" style="height:100px;"></div>
         <!-- Scripts -->
