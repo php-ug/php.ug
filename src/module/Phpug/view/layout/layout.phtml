@@ -31,6 +31,8 @@ try {
     piwikTracker.trackPageView();
     piwikTracker.enableLinkTracking();
 } catch( err ) {}
+
+$(".navigation").contents().filter(function(){return this.nodeType === 3;}).remove();
 //]]>');
 echo $this->doctype();
 ?>
@@ -56,22 +58,10 @@ echo $this->doctype();
       <?php echo $this->content; ?>
     </section>
     <footer class="footer">
-      © 2011-<?php echo date('Y');?> - <a href="<?php echo $this->url('ug/team');?>">PHP.ug-Team</a>
-      |
-      <a href="<?php echo $this->url('ug/imprint'); ?>">Imprint</a>
-      |
-      <a href="<?php echo $this->url('contact'); ?>">Contact</a>
-      |
-      <a href="<?php echo $this->url('ug/legal'); ?>">Legal</a>
-      |
-      <a href="<?php echo $this->url('ug/about'); ?>">About</a>
+      <?php echo $this->navigation('footer')->menu('footer'); ?>
     </footer>
     <aside class="navigation">
-      <ul class="nav">
-        <li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li>
-        <!-- li class="active"><a href="<?php echo $this->url('home') ?>">Home</a></li-->
-        <!--li><a href="http://blog.php.ug">Blog</a></li-->
-      </ul>
+        <?php echo $this->navigation('navigation')->menu('navigation'); ?>
     </aside>
     <div class="_1" style="height:100px;"></div>
         <!-- Scripts -->
