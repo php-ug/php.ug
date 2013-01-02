@@ -9,7 +9,7 @@ body {
     position:absolute;
     top:0px;
     bottom:0px;
-    padding-top:100px;
+    padding-top:100px!important;
     padding-bottom: 50px;
     left:0px;
     right:0px;
