@@ -20,8 +20,9 @@ $this->headLink(array(
 $this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript',
     array('conditional' => 'lt IE9',));
 
-$this->headScript()->prependFile($basePath . '/js/jquery.cookie.js');
-$this->headScript()->prependFile($basePath . '/js/jquery-1.7.1.min.js');
+$this->headScript()->appendFile($basePath . '/js/jquery-1.7.1.min.js');
+$this->headScript()->appendFile($basePath . '/js/jquery.cookie.js');
+$this->headScript()->appendFile($basePath . '/js/bootstrap.min.js');
 $this->headScript()->appendScript('//<![CDATA[
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.heigl.org/" : "http://piwik.heigl.org/");
 document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
@@ -35,17 +36,12 @@ try {
 $(".navigation").contents().filter(function(){return this.nodeType === 3;}).remove();
 //]]>');
 echo $this->doctype();
-?>
-
-<html lang="en">
+?><html lang="en">
   <head>
     <meta charset="utf-8">
     <?php echo $this->headTitle()->toString() ?>
-
     <?php echo $this->headMeta() ?>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1">
-
-    <!-- Le styles -->
     <?php echo $this->headLink() ?>
   </head>
 
@@ -57,14 +53,12 @@ echo $this->doctype();
     <section class="content">
       <?php echo $this->content; ?>
     </section>
-    <footer class="footer">
-      <?php echo $this->navigation('footer')->menu('footer'); ?>
-    </footer>
     <aside class="navigation">
         <?php echo $this->navigation('navigation')->menu('navigation'); ?>
     </aside>
-    <div class="_1" style="height:100px;"></div>
-        <!-- Scripts -->
+    <footer class="footer">
+        <?php echo $this->navigation('footer')->menu('footer'); ?>
+    </footer>
     <a href="http://github.com/php-ug/php.ug" class="fork-on-github">
     	<img src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub">
     </a>
