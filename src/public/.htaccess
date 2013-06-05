@@ -39,5 +39,7 @@ RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
-#RewriteRule ^(css|fonts|img|images|lib|js)/([^/]+)/(.*)$ %{DOCUMENT_ROOT}/../../vendor/$2/public/$1/$3
+
+RewriteRule ^(css|fonts|img|images|lib|js)/([^/]+)/(.*)$ proxy.php?module=$2&type=$1&file=$3 [NC,L]
+
 RewriteRule ^.*$ index.php [NC,L]
