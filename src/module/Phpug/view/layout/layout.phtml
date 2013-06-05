@@ -20,9 +20,9 @@ $this->headLink(array(
 $this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript',
     array('conditional' => 'lt IE9',));
 
-$this->headScript()->appendFile($basePath . '/js/jquery-1.7.1.min.js');
-$this->headScript()->appendFile($basePath . '/js/jquery.cookie.js');
-$this->headScript()->appendFile($basePath . '/js/bootstrap.min.js');
+$this->headScript()->prependFile($basePath . '/js/bootstrap.min.js');
+$this->headScript()->prependFile($basePath . '/js/jquery.cookie.js');
+$this->headScript()->prependFile($basePath . '/js/jquery-1.7.1.min.js');
 $this->headScript()->appendScript('//<![CDATA[
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.heigl.org/" : "http://piwik.heigl.org/");
 document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
