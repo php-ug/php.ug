@@ -64,22 +64,22 @@ header h1 {
     line-height:45px;
     
 }
-header a, footer a, aside .nav>li>a{
+footer a, aside .nav>li>a{
     text-decoration:none;
     background:transparent;
     color:rgb(232,232,232);
 }
-header a:link, footer a:link, aside a:link{
+footer a:link, aside a:link{
     color:rgb(232,232,232);
 }
-header a:active, footer a:active{
+footer a:active{
     color:rgb(128,0,0);
     /*color:rgb(232,232,232);*/
 }
-header a:visited, footer a:visited{
+footer a:visited{
     color:rgb(232,232,232);
 }
-header a:hover, footer a:hover, aside .nav>li>a:hover{
+footer a:hover, aside .nav>li>a:hover{
     color:rgb(180,200,180);
     background-color:transparent;
 }
@@ -323,4 +323,28 @@ footer>.navigation>li:first-child {
 
 footer>.navigation {
     display: inline-block;
+}
+
+header {
+    background-color: black;
+}
+header h1{
+    color: transparent !important;
+    text-shadow: 0px 1px 1px 1px rgba(255,255,255,0.5);
+    background-color: rgb(90,92,92);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+}
+header a:hover {
+    color: transparent;
+}
+header a:visited {
+    color: transparent;
+}
+header a:link {
+    color: transparent;
+}
+header a:active {
+    color: transparent;
 }
