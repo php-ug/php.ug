@@ -21,18 +21,22 @@ $this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript',
     array('conditional' => 'lt IE9',));
 
 $this->headScript()->prependFile($basePath . '/js/jquery.cookie.js');
+$this->headScript()->prependFile($basePath . 'lib/phpug/patternizer/jquery.patternizer.js');
 $this->headScript()->prependFile($basePath . '/js/jquery-1.7.1.min.js');
 $this->headScript()->appendScript('//<![CDATA[
-var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.heigl.org/" : "http://piwik.heigl.org/");
-document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
+//var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.heigl.org/" : "http://piwik.heigl.org/");
+//document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
 </script><script type="text/javascript">
 try {
-    var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
-    piwikTracker.trackPageView();
-    piwikTracker.enableLinkTracking();
+//    var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+//    piwikTracker.trackPageView();
+//    piwikTracker.enableLinkTracking();
 } catch( err ) {}
 
 $(".navigation").contents().filter(function(){return this.nodeType === 3;}).remove();
+jQuery(function ($) {
+    $(".background-clip").patternizer();
+});
 //]]>');
 echo $this->doctype();
 ?>
@@ -51,7 +55,7 @@ echo $this->doctype();
 
   <body>
     <header class="header">
-      <h1><a class="brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
+      <h1><a class="brand" href="<?php echo $this->url('home') ?>">php.usergroup&nbsp;</a></h1>
       <h2>One home for one community</h2>
     </header>
     <section class="content">

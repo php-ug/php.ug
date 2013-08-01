@@ -1,8 +1,9 @@
-@import url(../../fonts/phpug/Sketch_Block_Bold/stylesheet.css);
+/*@import url(../../fonts/phpug/Sketch_Block_Bold/stylesheet.css);
 @import url(../../fonts/phpug/sketchy/stylesheet.css);
 @import url(../../fonts/phpug/TeXGyrePagella-Regular/stylesheet.css);
 @import url(../../fonts/phpug/Vinegar/stylesheet.css);
-@import url(../../fonts/phpug/angelina/stylesheet.css);
+@import url(../../fonts/phpug/angelina/stylesheet.css); */
+@import url("../../fonts/phpug/Handel Gothic/fonts.css");
 
 
 body {
@@ -34,34 +35,22 @@ div._1{
 }
 
 header h1, header h2{
-    position:absolute;
-    top:0px;
-    left:0px;
-    margin-top:0;
-    margin-left:0;
-    -webkit-transform: rotate(-5deg);
-    -webkit-transform-origin: top right;
-    -moz-transform: rotate(-5deg);
-    -moz-transform-origin: top right;
-    -ms-transform: rotate(-5deg);
-    -ms-transform-origin: top right;
-    -o-transform: rotate(-5deg);
-    -o-transform-origin: top right;
-    transform: rotate(-5deg);
-    transform-origin: top right;
+position: relative;
     text-align:left;
     padding-left:20px;
-    z-index:1000;
-    font-family:"SketchyRegular";
+    z-index:10;
+    font-family:'Conv_Handel Gothic',sans-serif;
     color:rgb(232,232,232);
-    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-/*    background-image:linear-gradient(top,#707070,#202020);*/
-/*    background-image:-webkit-linear-gradient(top,#e0e0e0,#a0a0a0); */
+    font-style: italic;
+}
+
+.leaflet-container .leaflet-control-attribution {
+    font-size:10px;
 }
 header h1 {
     font-size:53px;
     font-weight:500;
-    line-height:45px;
+    line-height:53px;
     
 }
 footer a, aside .nav>li>a{
@@ -87,7 +76,7 @@ footer a:hover, aside .nav>li>a:hover{
 header h2 {
     font-size:14px;
     font-weight:700;
-    line-height:12px;
+    line-height:14px;
 }
 
 header{
@@ -132,7 +121,7 @@ footer {
     line-height:20px;
     padding-top: 30px;
     height:40px;
-    font-size:9px;
+    font-size:10px;
     color:gray;
     background-color:#454546;
     background-image: -moz-linear-gradient(top, #808080, #454546);
@@ -328,23 +317,27 @@ footer>.navigation {
 header {
     background-color: black;
 }
-header h1{
-    color: transparent !important;
-    text-shadow: 0px 1px 1px 1px rgba(255,255,255,0.5);
-    background-color: rgb(90,92,92);
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
+header h1 {
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    color: rgba(128,128,128,0.5);
+}
+header h2 {
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+    color: rgba(128,128,128,0.5);
+}
+
+header a {
+    text-decoration: none;
 }
 header a:hover {
-    color: transparent;
+    color: rgba(128,128,128,0.7);
 }
 header a:visited {
-    color: transparent;
+    color: rgba(128,128,128,0.7);
 }
 header a:link {
-    color: transparent;
+    color: rgba(128,128,128,0.7);
 }
 header a:active {
-    color: transparent;
+    color: rgba(128,128,128,0.7);
 }
