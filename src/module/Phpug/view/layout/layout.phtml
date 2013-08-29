@@ -54,6 +54,10 @@ echo $this->doctype();
     <section class="content">
       <?php echo $this->content; ?>
     </section>
+    <footer class="footer">
+      <a class="uberspacelink" href="http://uberspace.de"><img src="img/phpug/uberspace.png"/></a>
+      <?php echo $this->navigation('footer')->menu('footer'); ?>
+    </footer>
     <aside class="navigation">
         <?php echo $this->navigation('navigation')->menu('navigation'); ?>
     </aside>
