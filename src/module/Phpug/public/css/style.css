@@ -9,28 +9,11 @@ body {
     position:absolute;
     top:0px;
     bottom:0px;
-    padding-top:100px;
+    padding-top:100px!important;
     padding-bottom: 50px;
     left:0px;
     right:0px;
     background-color: transparent;
-}
-
-div._1{
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, rgb(0,0,0)),
-        color-stop(0.4, rgb(64,64,64)),
-        color-stop(0.41, rgb(128,128,128)),
-        color-stop(0.9, rgb(255,255,255))
-    );
-    background-image: linear-gradient(bottom, rgb(198,176,210) 24%, rgb(238,212,252) 62%, rgb(255,255,255) 81%);
-    position:absolute;
-    top:0px;
-    left:0px;
-    height:100px;
 }
 
 header h1, header h2{
@@ -51,11 +34,13 @@ header h1, header h2{
     transform-origin: top right;
     text-align:left;
     padding-left:20px;
-    z-index:1000;
+    z-index:1;
     font-family:"SketchyRegular";
     color:rgb(232,232,232);
     text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-/*    background-image:linear-gradient(top,#707070,#202020);*/
+    text-shadow: 0 0 2px rgba(0,0,0,0.98);
+
+    /*    background-image:linear-gradient(top,#707070,#202020);*/
 /*    background-image:-webkit-linear-gradient(top,#e0e0e0,#a0a0a0); */
 }
 header h1 {
@@ -86,7 +71,7 @@ header a:hover, footer a:hover, aside .nav>li>a:hover{
 
 header h2 {
     font-size:14px;
-    font-weight:700;
+    font-weight:500;
     line-height:12px;
 }
 
@@ -229,12 +214,6 @@ aside li.active{
   background-color: #57a900 \9;
 }
 
-div.container a.brand {
-    background: url("../images/zf2-logo.png") no-repeat scroll 0 10px transparent;
-    margin-left: 0;
-    padding: 8px 20px 12px 40px;
-}
-
 section > div {
 	padding: 10px;
 }
@@ -325,7 +304,6 @@ footer>.navigation {
     display: inline-block;
 }
 
-
 #authentication {
     position: absolute;
     top: -20px;
@@ -383,4 +361,55 @@ footer>.uberspacelink {
     -moz-transition-property: bottom;
     -moz-transition-duration: 1.5s;
     -moz-transition-timing-function:ease-in-out;
+}
+
+@media (max-width:480px) {
+    aside.navigation{width:90%;padding-left: 5%; padding-right: 5%}
+    body>section {width:90%;margin-left: 5%; margin-right: 5%;}
+    body>.fork-on-github{display:none;}
+}
+
+@media (max-height: 480px) {
+    aside.navigation{top:30px;}
+    footer {padding-top: 30px; height:20px; top:-20px;}
+    body {padding-top:60px!important;padding-bottom: 30px;}
+    header{height:80px;}
+}
+
+@media (max-height: 500px) and (max-width:768px){
+    header h1 {font-size:40px;line-height:40px;}
+    header h2 {font-size:12px;line-height:12px;}
+}
+
+@media (max-height: 300px) and (max-width:480px){
+    header h1 {font-size:20px;line-height:20px;margin-top:10px;}
+    header h2 {font-size:12px;line-height:12px;}
+    header h1, header h2{-webkit-transform: none;-moz-transform: none;-ms-transform: none;-o-transform: none;transform: none;font-family:sans-serif;position:relative;}
+}
+
+@media (min-width:480px) and (max-width:768px){
+    header h1 {font-size:40px;line-height:40px;}
+    header h2 {font-size:12px;line-height:12px;}
+    aside.navigation{width:85%;padding-left:7.5%; padding-right:7.5%;}
+    body>section {width:85%;margin-left: 7.5%;margin-right:7.5%}
+}
+
+@media (min-height: 300px) and (max-height: 500px){
+    aside.navigation{top:50px;}
+    footer {padding-top: 30px; height:30px; top:-20px;}
+    body {padding-top:80px!important;padding-bottom: 30px;}
+    header{height:100px;}
+}
+
+
+@media (min-width:768px) and (max-width:980px){
+
+}
+
+@media (max-width:980px){
+
+}
+
+@media (max-width:1200px){
+
 }

@@ -157,7 +157,17 @@ return array(
                             ),
                         ),
 					),					
-				),
+                ),
+                'subdomain' => array(
+                    'type' => 'Hostname',
+                    'options' => array(
+                        'route' => ':ugid.php.ug',
+                        'defaults' => array(
+                            'controller' => 'Phpug\Controller\IndexController',
+                            'action' => 'redirect',
+                        ),
+                    ),
+                ),
  			),
 		),
 		'service_manager' => array(
