@@ -104,11 +104,14 @@ return array(
 						'default' => array(
 							'type' => 'Segment',
 							'options' => array(
-								'route' => '/[:action]',
+								'route' => '/[:controller]/[:action]',
 								'constraints'=> array(
                               		'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
 								),
-								'defaults' => array(),
+								'defaults' => array(
+                                    'controller' => 'IndexController',
+                                    'action' => 'index',
+                                ),
 							),
 						),
 						'imprint' => array(
@@ -156,6 +159,30 @@ return array(
                                 ),
                             ),
                         ),
+                        'promote' => array(
+                            'type' => 'Literal',
+                            'options' => array(
+                                'route' => '/promote',
+                                'defaults' => array(
+                                    'controller'    => 'PromoteController',
+                                    'action'        => 'index',
+                                ),
+                            ),
+//                            'may_terminate' => true,
+//                            'child_routes' => array(
+//                                'add' => array(
+//                                    'type' => 'Literal',
+//                                    'options' => array(
+//                                        'route' => '/add',
+//                                        'defaults' => array(
+//                                            'action' => 'edit',
+//                                            'id'     => null,
+//                                        ),
+//
+//                                    ),
+//                                ),
+//                            ),
+                        ),
 					),					
                 ),
                 'subdomain' => array(
@@ -187,9 +214,10 @@ return array(
 		),
 		'controllers' => array(
 			'invokables' => array(
-				'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
-				'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',	
-			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
+                'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
+                'Phpug\Controller\PromoteController' => 'Phpug\Controller\IndexController',
+                'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',
+                'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
 			),

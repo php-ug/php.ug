@@ -4,3 +4,5 @@
 .buildpath
 composer.lock
 src/config/autoload/*.local.php
+*.ini
+*.properties

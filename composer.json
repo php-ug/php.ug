@@ -5,7 +5,7 @@
          "doctrine/doctrine-orm-module": "dev-master",
          "zendframework/zendframework":  "master",
          "org_heigl/contact" :           "dev-master",
-         "org_heigl/mailproxy" :         "dev-master",  
-         "org_heigl/deploy" :            "master"
+         "org_heigl/mailproxy" :         "dev-master",
+         "org_heigl/geolocation" :       "dev-master"
      }
  }
