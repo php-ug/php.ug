@@ -7,7 +7,7 @@ $this->headTitle('PHP-UserGroup');
 $basePath = $this->basePath();
 $this->headLink()->appendStylesheet($basePath . '/css/bootstrap.min.css')
                  ->appendStylesheet($basePath . '/css/phpug/style.css')
-                 ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css')
+              //   ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css')
 ;
 
 $this->headLink(array(
@@ -20,6 +20,7 @@ $this->headLink(array(
 $this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript',
     array('conditional' => 'lt IE9',));
 
+$this->headScript()->prependFile($basePath . '/js/bootstrap.js');
 $this->headScript()->prependFile($basePath . '/js/jquery.cookie.js');
 $this->headScript()->prependFile($basePath . '/js/jquery-1.7.1.min.js');
 $this->headScript()->appendScript('//<![CDATA[
@@ -50,24 +51,31 @@ echo $this->doctype();
   </head>
 
   <body>
-    <header class="header">
-      <h1><a class="brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
-      <h2>One home for one community</h2>
-    </header>
-    <section class="content">
-      <?php echo $this->content; ?>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-inner">
+            <a class="brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
+            <?php echo $this->navigation('navigation')->menu('navigation')->setUlClass('nav'); ?>
+        </div>
+    </nav>
+    <section class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12 content">
+                <?php echo $this->content; ?>
+            </div>
+        </div>
     </section>
-    <footer class="footer">
-      <?php echo $this->navigation('footer')->menu('footer'); ?>
+    <footer class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+        <div class="navbar-inner">
+        <small>
+        <span class="pull-left navbar-text">© 2011-<?php echo date('Y');?> by</span>
+            <?php echo $this->navigation('footer')->menu('footer')->setUlClass('nav'); ?>
+        </small>
+        </div>
     </footer>
-    <aside class="navigation">
-        <?php echo $this->navigation('navigation')->menu('navigation'); ?>
-    </aside>
-    <div class="_1" style="height:100px;"></div>
-        <!-- Scripts -->
     <a href="http://github.com/php-ug/php.ug" class="fork-on-github">
     	<img src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub">
     </a>
+        <!-- Scripts -->
     <?php echo $this->headScript() ?>
   </body>
 </html>
