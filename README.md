@@ -9,9 +9,9 @@ their existence, their meetings and their contact-details.
 
 For that we include a map on the frontpage that displays every registered 
 location worldwide. The User can then select the nearest UG and see the
-relevant informations like next meeting and contact-informations
+relevant informations like next meeting and contact-informations.
 
-From their you can jump to their website immediately
+From there you can jump to their website immediately.
 
 Also a shortlink is provided for every UG so their website can be reached
 using a URL like http://php.ug/ffm or http://ffm.php.ug for the Usergroup at 
@@ -26,7 +26,7 @@ via the contact-form on the website.
 
 You will be able to log in using any social plattform account associated with 
 your usergroup to edit entries of your usergroup. As long as this is not 
-implemented, please also use the contact-form 
+implemented, please also use the contact-form.
 
 All Usergroups will have to verify their existence at least once a year so we
 can archive inactive groups.
@@ -46,7 +46,7 @@ The registering usergroups will not have to pay for this service!
 
 All costs are currently covered by the team-members. But - of course - donations
 to pay the bills are always welcome. For more information on donating either use
-the contact form or contact any one of the team by PM
+the contact form or contact any one of the team by PM.
 
 Also help by coding the stuff behind is highly appreciated!
 
