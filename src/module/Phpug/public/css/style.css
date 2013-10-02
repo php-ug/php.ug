@@ -23,14 +23,10 @@ div._1{
 
 .content {
     /*box-shadow:3px 3px 6px 6px #454546;*/
-    margin-top: 45px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
-@media (max-width:979px){
-    .content {
-        margin-top:0;
-    }
-}
 aside {
     position:absolute;
     top:70px;
@@ -62,6 +58,28 @@ section > div#map {
     bottom: 50px;
     left: 0px;
 }
+
+.navbar-inverse .navbar-inner {
+    padding-right: 150px;
+}
+
+.navbar-inverse .nav>li>.hybridauth>a {
+    color: #999999;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    float:none;
+    padding: 10px 15px 10px;
+    text-decoration:none;
+}
+
+.fork-on-github{
+    border: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10000;
+    display:block;
+}
+
 @media(max-width: 979px){
     .fork-on-github{
         display:none;
@@ -74,23 +92,16 @@ section > div#map {
         margin-right: 0;
     }
     .content {
-        margin-top: 50px;
-        margin-bottom: 50px;
+        margin-top: 60px;
+        margin-bottom: 60px;
     }
     #map {
         top: 50px;
         bottom: 50px;
     }
 
+    .navbar-inverse .navbar-inner {
+        padding-right: 20px;
+    }
+
 }
-.fork-on-github{
-    border: 0;
-    position: absolute;
- 	right: 0;
- 	top: 0;
-	z-index: 10000;
-    display:block;
-}
-
-
-

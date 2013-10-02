@@ -7,6 +7,7 @@ return array(
         'OrgHeiglMailproxy',
         'OrgHeiglContact',
   //      'OrgHeiglDeploy',
+        'OrgHeiglHybridAuth',
     ),
     'module_listener_options'=>array(
     	'config_glob_paths'    => array(

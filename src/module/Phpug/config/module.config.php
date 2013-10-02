@@ -156,6 +156,17 @@ return array(
                                 ),
                             ),
                         ),
+                        'edit' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route' => '/edit/:id',
+                                'defaults' => array(
+                                    'action' => 'edit',
+                                    'controller' => 'UsergroupController',
+                                    '__NAMESPACE__' => 'Phpug\Controller',
+                                ),
+                            ),
+                        ),
 					),					
 				),
  			),
@@ -178,6 +189,7 @@ return array(
 		'controllers' => array(
 			'invokables' => array(
 				'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
+                'Phpug\Controller\UsergroupController' => 'Phpug\Controller\UsergroupController',
 				'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',	
 			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',

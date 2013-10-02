@@ -55,6 +55,11 @@ echo $this->doctype();
         <div class="navbar-inner">
             <a class="brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
             <?php echo $this->navigation('navigation')->menu('navigation')->setUlClass('nav'); ?>
+            <ul class="nav pull-right">
+                <li>
+                    <?php echo $this->hybridauthinfo(); ?>
+                </li>
+            </ul>
         </div>
     </nav>
     <section class="container-fluid">

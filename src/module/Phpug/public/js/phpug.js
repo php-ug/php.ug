@@ -106,11 +106,11 @@ var createPopup = function(data) {
     latlng = new L.LatLng(data.group.latitude,data.group.longitude);
     popup.setLatLng(latlng);
     var content = '<div class="popup">'
-                + '<h1>'
+                + '<h4>'
                 + '<a href="%url%" target="_blank">'
                 + '%name%'
                 + '</a>'
-                + '</h1>'
+                + '</h4>'
                 + '%contacts%'
                 + '</div>';
                 
@@ -125,6 +125,11 @@ var createPopup = function(data) {
     for (i in data.contacts) {
         cont = data.contacts[i];
         contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name));
+    }
+    console.log(data);
+    if (data.edit) {
+        var edit = '<a href="ug/edit/'+data.group.shortname +'" class="groupedit">Edit</a>';
+        contacts.push(edit);
     }
     contacts = contacts.join('</li><li>');
     if (contacts) {

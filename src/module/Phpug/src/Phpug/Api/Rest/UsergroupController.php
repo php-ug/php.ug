@@ -93,9 +93,17 @@ class UsergroupController extends AbstractRestfulController
         $content['error']    = null;
         $content['group']    = $types[0]->toArray(); 
         $content['contacts'] = array();
+
+        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthCurrentUser');
+
         foreach ($types[0]->getContacts() as $contact) {
-            $content['contacts'][] = $contact->toArray();
+            $contactData = $contact->toArray();
+            $content['contacts'][] = $contactData;
+            if ($currentUser && 'Twitter' === $contactData['service']->name && $currentUser->getDisplayName() == $contactData['name']) {
+                $content['edit'] = true;
+            }
         }
+
         $response->setContent($adapter->serialize($content));
         return $response;   
     } 
