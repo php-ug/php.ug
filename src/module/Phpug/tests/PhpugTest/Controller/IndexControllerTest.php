@@ -9,8 +9,8 @@
 
 namespace PhpugTest\Controller;
 
-use \PhpugTest\Framework\TestCase;
-use \Phpug\Controller\IndexController;
+use PhpugTest\Framework\TestCase;
+use Phpug\Controller\IndexController;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;

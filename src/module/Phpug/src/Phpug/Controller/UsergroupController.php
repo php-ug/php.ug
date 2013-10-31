@@ -50,7 +50,7 @@ use Zend\Mvc\Controller\AbstractActionController,
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class IndexController extends AbstractActionController
+class UsergroupController extends AbstractActionController
 {
 
     protected $config = null;
@@ -75,80 +75,44 @@ class IndexController extends AbstractActionController
    		return $this->em;
     }
 
-    public function indexAction()
+    public function editAction()
     {
-        return array(
-            'acl' => $this->getServiceLocator()->get('acl'),
-        );
-    }
-
-    public function imprintAction()
-    {
-        return array(
-            'user' => 'Andreas Heigl',
-            'mail' => 'andreas@heigl.org',
-            'address' => 'Forsthausstraße 7<br/>61279 Grävenwiesbach<br/>Germany',
-        );
-    }
-
-    public function aboutAction()
-    {
-        return array();
-    }
-
-    public function teamAction()
-    {
-        return array(
-            'team' => array(
-                'andreas@heigl.org'=> array(
-                    'name' => 'Andreas Heigl',
-                    'twitter' => 'heiglandreas',
-                    'google+' => '104738361153508561515',
-                ),
-                'cn@dmr-solutions.com' => array(
-                    'name' => 'Christian Nielebock',
-                    'twitter' => 'ravetracer',
-                    'google+' => 'ravetracer',
-                ),
-            ),
-        );
-    }
-    
-    public function legalAction()
-    {
-    	return array();
-    }
-
-    /**
-     * Redirect a user to the Usergroups homepage
-     *
-     * @return void
-     */
-    public function redirectAction()
-    {
-        $id   = $this->getEvent()->getRouteMatch()->getParam('ugid');
-        $base = $this->getEvent()->getRouteMatch()->getParam('base');
-        
-        $result = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
-        if ( ! $result ) {
-            if ( ! $base ) {
-                $this->redirect()->toRoute('home');
-                return false;
-            }
-            $this->redirect()->toUrl('http://' . $base);
-            return false;
+        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthCurrentUser');
+        if (! $currentUser) {
+            $this->getResponse()->setStatusCode(401);
+            return;
         }
-        $this->redirect()->toUrl(current($result)->url);
-        return false;
+
+        $id    = $this->getEvent()->getRouteMatch()->getParam('id');
+        $group = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
+        if (! $group)  {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $acl = $this->getServiceLocator()->get('acl');
+        $acl->setCurrentUser($currentUser)->setGroup($group);
+        if (! $acl) {
+            $this->getResponse()->setSTatusCode(500);
+            return true;
+        }
+        if (! $acl->checkRight('ug', 'edit')) {
+            $this->getResponse()->setStatusCode(401);
+            return true;
+        }
+
+        return array();
     }
 
-    /**
-     * Show a page containing tips and tricks for running a usergroup
-     *
-     * @return array
-     */
-    public function tipsAction()
+    public function promoteAction()
     {
-        return array();
+    }
+
+    public function validateAction()
+    {
+    }
+
+    public function thankYouAction()
+    {
     }
 }

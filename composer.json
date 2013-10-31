@@ -5,7 +5,16 @@
          "doctrine/doctrine-orm-module": "dev-master",
          "zendframework/zendframework":  "master",
          "org_heigl/contact" :           "dev-master",
-         "org_heigl/mailproxy" :         "dev-master",  
-         "org_heigl/deploy" :            "master"
+         "org_heigl/mailproxy" :         "dev-master",
+         "org_heigl/hybridauth" :        "dev-feature/multipleProviders"
+     },
+     "require-dev" : {
+         "mockery/mockery": "dev-master"
+     },
+     "autoload" : {
+         "psr-0" : {
+             "Phpug\\" : "src/module/Phpug/src",
+             "PhpugTest\\" : "src/module/Phpug/tests"
+         }
      }
  }

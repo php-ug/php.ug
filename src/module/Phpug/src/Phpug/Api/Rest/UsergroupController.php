@@ -94,14 +94,26 @@ class UsergroupController extends AbstractRestfulController
         $content['group']    = $types[0]->toArray(); 
         $content['contacts'] = array();
 
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthCurrentUser');
+        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
 
+        $acl = $this->getServiceLocator()->get('acl');
+        $this->getServiceLocator()
+             ->get('usersGroupAssertion')
+             ->setUser($currentUser)
+             ->setGroup($types[0]);
+
+        $roleManager = $this->getServiceLocator()->get('roleManager');
+        $roleManager->setUserToken($currentUser);
+
+        // FIXME: This has to be checked via an ACL!
         foreach ($types[0]->getContacts() as $contact) {
+
             $contactData = $contact->toArray();
             $content['contacts'][] = $contactData;
-            if ($currentUser && 'Twitter' === $contactData['service']->name && $currentUser->getDisplayName() == $contactData['name']) {
-                $content['edit'] = true;
-            }
+        }
+
+        if ($acl->isAllowed($roleManager, 'ug', 'edit')) {
+            $content['edit'] = true;
         }
 
         $response->setContent($adapter->serialize($content));

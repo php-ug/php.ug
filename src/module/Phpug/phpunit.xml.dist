@@ -9,7 +9,9 @@
             <group>disable</group>
         </exclude>
     </groups>
-
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
     <logging>
         <!-- 
             Adapt these paths to your special needs 

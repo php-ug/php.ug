@@ -118,4 +118,9 @@ class Groupcontact
         return sprintf($baseUrl, $this->name);
     }
 
+    public function getService()
+    {
+        return $this->service->name;
+    }
+
 }
