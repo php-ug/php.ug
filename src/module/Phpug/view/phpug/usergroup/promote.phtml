@@ -1,0 +1,62 @@
+<?php
+
+$form->prepare();
+
+$this->headTitle('Promote your UserGroup');
+
+$form->setAttribute('action', $this->url('ug/promote'));
+$form->setAttribute('class', 'form-horizontal');
+if ($form->getMessages()) {
+    echo '<div class="alert alert-danger">There have been errors during form validation. Please fix them</div>';
+}
+
+$contactsRow = $this->getHelperPluginManager()->getServiceLocator()->get('contactsRow');
+$contactsRow->setView($this);
+
+$this->plugin('formCollection')
+     ->setFieldsetHelper($contactsRow)
+     ->setWrapper('<ul id="contactCollection" class="form-inline">%1$s</ul>%3$s');
+
+echo $this->showForm($form);
+
+$this->headScript()->appendScript("
+    function addContact() {
+        var currentCount = $('#contactCollection>li').length;
+        var templateField = $('#promoteUserGroup span[data-template]').first();
+        var template = templateField.data('template');
+        template = template.replace(/__index__/g, currentCount);
+
+        $('#contactCollection').append(template);
+
+        setButtons();
+
+        return false;
+    }
+
+    function removeContact(elem) {
+        $(elem).parent('li').remove();
+        setButtons();
+    }
+
+    function setButtons() {
+        var collection = $('#contactCollection>li');
+        $('#contactCollection>li span.remove').remove();
+        $('#contactCollection>li span.add').remove();
+        if (1 < collection.length) {
+            collection.append('<span class=\"remove\" onclick=\"javascript:removeContact(this)\"><i class=\"fa fa-minus-circle\"></i></span>');
+        }
+        collection.last().append('<span class=\"add\" onclick=\"javascript:addContact()\"><i class=\"fa fa-plus-circle\"></i></span>');
+    }
+    setButtons();
+
+    $('input').focus(function(e){
+        $(e.target).popover('show');
+    });
+    $('input').click(function(e){
+        $(e.target).popover('show');
+    });
+    $('input').blur(function(e){
+        $(e.target).popover('hide');
+    });
+    $('[data-toggle=tooltip]').tooltip({container:'body'});
+");

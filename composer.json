@@ -6,11 +6,17 @@
          "zendframework/zendframework":  "master",
          "org_heigl/contact" :           "dev-master",
          "org_heigl/mailproxy" :         "dev-master",
-         "org_heigl/hybridauth" :        "dev-feature/multipleProviders"
+         "org_heigl/hybridauth" :        "dev-feature/multipleProviders",
+         "org_heigl/geolocation" :       "dev-master"
      },
      "require-dev" : {
          "mockery/mockery": "dev-master"
      },
+     "repositories" : [{
+         "type" : "vcs",
+         "url"  : "/Volumes/Sites/Sites/org.heigl.HybridAuth/.git"
+     }],
+
      "autoload" : {
          "psr-0" : {
              "Phpug\\" : "src/module/Phpug/src",

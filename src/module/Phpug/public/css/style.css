@@ -23,8 +23,8 @@ div._1{
 
 .content {
     /*box-shadow:3px 3px 6px 6px #454546;*/
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 70px;
+    margin-bottom: 70px;
 }
 
 aside {
@@ -39,7 +39,7 @@ aside {
 }
 
 section > div#map {
-	margin: 0px;
+	margin: 70px;
 	padding: 0px;
 	width: 100%;
 	height: 100%;
@@ -47,9 +47,9 @@ section > div#map {
 
 #map {
     position:absolute;
-    top: 40px;
+    top: 50px;
     left:0px;
-    bottom:40px;
+    bottom:50px;
     right:0px;
 }
 
@@ -59,17 +59,41 @@ section > div#map {
     left: 0px;
 }
 
+.navbar-collapse .navbar-nav.navbar-right:last-child.navbar-login {
+    margin-right: 100px;
+}
+
+.error-group label {
+    color: darkred;
+}
+
+.tooltip ul {
+    list-style-type: none;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+#contactCollection {
+    padding-left: 0px;
+}
+
+.form-horizontal .form-inline .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 30%;
+}
+/*
 .navbar-inverse .navbar-inner {
     padding-right: 150px;
 }
-
+*//*
 .navbar-inverse .nav>li>.hybridauth>a {
     color: #999999;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
     float:none;
     padding: 10px 15px 10px;
     text-decoration:none;
-}
+}*/
 
 .fork-on-github{
     border: 0;
@@ -80,9 +104,29 @@ section > div#map {
     display:block;
 }
 
+/* handle styling of ad and remove-buttons */
+#contactCollection {
+    list-style-type: none;
+}
+
+#contactCollection span {
+    margin-left: 0.5em;
+}
+
+#contactCollection .add {
+    color: green;
+}
+
+#contactCollection .remove {
+    color: red;
+}
+
 @media(max-width: 979px){
     .fork-on-github{
         display:none;
+    }
+    .navbar-login {
+        margin-right: 0;
     }
 
     .navbar-fixed-top,

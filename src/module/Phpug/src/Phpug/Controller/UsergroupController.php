@@ -32,11 +32,14 @@
 
 namespace Phpug\Controller;
 
+use Phpug\Entity\Usergroup;
+use Phpug\Form\PromoteUsergroupForm;
 use Zend\View\Helper\ViewModel;
 
-use Zend\Mvc\Controller\AbstractActionController,
-    Doctrine\ORM\EntityManager
-;
+use Zend\Mvc\Controller\AbstractActionController;
+use Doctrine\ORM\EntityManager;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+
 
 /**
  * The Controller for de default actions
@@ -77,7 +80,7 @@ class UsergroupController extends AbstractActionController
 
     public function editAction()
     {
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthCurrentUser');
+        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
         if (! $currentUser) {
             $this->getResponse()->setStatusCode(401);
             return;
@@ -91,12 +94,17 @@ class UsergroupController extends AbstractActionController
         }
 
         $acl = $this->getServiceLocator()->get('acl');
-        $acl->setCurrentUser($currentUser)->setGroup($group);
         if (! $acl) {
             $this->getResponse()->setSTatusCode(500);
             return true;
         }
-        if (! $acl->checkRight('ug', 'edit')) {
+
+        /** @var Phpug\Acl\UsersGroupAssertion $assertion */
+        $assertion = $this->getServiceLocator()->get('usersGroupAssertion');
+        $assertion->setUser($currentUser)->setGroup($group);
+
+        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
+        if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
             $this->getResponse()->setStatusCode(401);
             return true;
         }
@@ -106,10 +114,113 @@ class UsergroupController extends AbstractActionController
 
     public function promoteAction()
     {
+        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
+        if (! $currentUser) {
+            $this->getResponse()->setStatusCode(401);
+            return;
+        }
+
+        $acl = $this->getServiceLocator()->get('acl');
+        if (! $acl) {
+            $this->getResponse()->setSTatusCode(500);
+            return true;
+        }
+
+        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
+        if (! $acl->isAllowed((string) $role, 'ug', 'promote')) {
+            $this->getResponse()->setStatusCode(401);
+            return true;
+        }
+
+        $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
+
+        $objectManager = $this->getEntityManager();
+        $usergroup = new Usergroup();
+
+        $form->bind($usergroup);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            // Handle form sending
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                // Handle storage of form data
+                try {
+                   // var_Dump($form->getData());
+                    // Store content
+                    $objectManager->persist($form->getData());
+                    $objectManager->flush();
+                }catch(Exception $e){var_dump($e);}
+
+               // return $this->redirect()->toRoute('ug/thankyou');
+            } else {
+//                var_Dump($form->getMessages());
+            }
+        }
+        return array('form' => $form);
+
     }
 
     public function validateAction()
     {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $promote = false;
+        if (!$id) {
+            $promote = true;
+        }
+
+        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
+        if (! $currentUser) {
+            $this->getResponse()->setStatusCode(401);
+            return;
+        }
+
+        $acl = $this->getServiceLocator()->get('acl');
+        if (! $acl) {
+            $this->getResponse()->setSTatusCode(500);
+            return true;
+        }
+
+        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
+        if (! $acl->isAllowed((string) $role, 'ug', 'promote')) {
+            $this->getResponse()->setStatusCode(401);
+            return true;
+        }
+
+        $form = new PromoteUsergroupForm();
+        $form->init();
+
+        $request = $this->getRequest();
+        if (! $request->isPost()) {
+            if ($promote) {
+                return $this->redirect()->toRoute('ug/promote');
+            }
+            return $this->redirect()->toRoute('ug/edit', array('id' => $id));
+        }
+
+        //    $form->setInputFilter($album->getInputFilter());
+        $form->setData($request->getPost());
+
+        if (! $form->isValid()) {
+            return array('form' => $form);
+        }
+
+try {
+        // Store content
+        $objectManager = $this->getEntityManager();
+        $hydrator = new DoctrineObject(
+            $objectManager,
+            'Phpug\Entity\Usergroup'
+        );
+
+        $usergroup = new Usergroup();
+        $data = $form->getValues();
+
+        $usergroup = $hydrator->hydrate($data, $usergroup);
+        $objectManager->persist($usergroup);
+        $objectManager->flush();
+}catch(Exception $e){var_dump($e);}
+    //    return $this->redirect()->toRoute('ug/thankyou');
     }
 
     public function thankYouAction()

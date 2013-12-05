@@ -1,0 +1,14 @@
+<?php
+$this->headTitle('Promote your UserGroup');
+
+echo $this->form()->openTag($form);
+$label = $this->plugin('formLabel');
+foreach ($form->getElements() as $element) {
+    $type = $element->getType();
+    $typeName = 'form' . ucfirst($type);
+    echo $label->openTag() . $element->getOption('label');
+    echo $this->$typename($element);
+    echo $this->formElementErrors($element);
+    echo $label->closeTag();
+}
+echo $this->form()->closeTag($form);

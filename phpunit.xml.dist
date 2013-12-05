@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./tests/bootstrap.php">
+    <testsuite name="php.ug Test-Suite">
+        <directory>./tests</directory>
+    </testsuite>
+
+    <groups>
+        <exclude>
+            <group>disable</group>
+        </exclude>
+    </groups>
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
+    <logging>
+        <!-- 
+            Adapt these paths to your special needs 
+        -->
+	    <log type="coverage-html" target="build/Phpug/coverage" charset="UTF-8"
+	         yui="true" highlight="false"
+	         lowUpperBound="35" highLowerBound="70"/>
+	    <!--log type="coverage-xml" target="build/phpunit/coverage.xml"/-->
+	    <!--log type="graphviz" target="build/phpunit/logfile.dot"/-->
+	    <!--log type="json" target="build/phpunit/logfile.json"/-->
+	    <!--log type="metrics-xml" target="build/phpunit/metrics.xml"/-->
+	    <!--log type="plain" target="build/phpunit/logfile.txt"/-->
+	    <!--log type="pmd-xml" target="build/phpunit/pmd.xml" cpdMinLines="5" cpdMinMatches="70"/-->
+	    <!--log type="tap" target="build/phpunit/logfile.tap"/-->
+	    <!--log type="test-xml" target="build/phpunit/logfile.xml" logIncompleteSkipped="false"/-->
+	    <!--log type="testdox-html" target="build/phpunit/testdox.html"/-->
+	    <!--log type="testdox-text" target="build/phpunit/testdox.txt"/-->
+    </logging>
+</phpunit>

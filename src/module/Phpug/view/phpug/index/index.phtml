@@ -4,8 +4,8 @@ $this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css');
 $this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css','text/css',
     array('conditional' => 'lte IE8',)
 );
-$this->headScript()->appendFile('lib/phpug/leaflet/leaflet.js');
-    $this->headScript()->appendFile('js/phpug/phpug.js');
+$this->headScript()->prependFile('js/phpug/phpug.js');
+$this->headScript()->prependFile('lib/phpug/leaflet/leaflet.js');
 ?>
 <div id="map"></div>
 <div id="grouptype_selector">
