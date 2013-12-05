@@ -1,13 +1,14 @@
 <?php
 return array(
     'modules'=>array(
+        'ZendDeveloperTools',
         'DoctrineModule',
         'DoctrineORMModule',
         'Phpug',
         'OrgHeiglMailproxy',
         'OrgHeiglContact',
-  //      'OrgHeiglDeploy',
         'OrgHeiglHybridAuth',
+        'OrgHeiglGeolocation',
     ),
     'module_listener_options'=>array(
     	'config_glob_paths'    => array(

@@ -10,7 +10,8 @@
          "org_heigl/geolocation" :       "dev-master"
      },
      "require-dev" : {
-         "mockery/mockery": "dev-master"
+         "mockery/mockery": "dev-master",
+         "zendframework/zend-developer-tools" : "dev-master"
      },
      "repositories" : [{
          "type" : "vcs",
