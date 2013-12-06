@@ -34,6 +34,7 @@ namespace Phpug\Entity;
 
 use Doctrine\ORM\Mapping as ORM
 ;
+use Zend\Validator\IsInstanceOf;
 
 /**
  * The Persistent-Storage Entity
@@ -116,7 +117,10 @@ class Groupcontact
 
     public function getService()
     {
-        return $this->service->name;
+        if (! $this->service instanceof Service) {
+            return 0;
+        }
+        return $this->service->id;
     }
 
     /**

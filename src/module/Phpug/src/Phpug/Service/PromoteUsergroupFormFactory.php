@@ -51,38 +51,6 @@ class PromoteUsergroupFormFactory implements  FactoryInterface
         $form = $factory->createForm(array(
             'name' => 'promoteUserGroup',
             'elements' => array(
-//                array('spec' => array(
-//                    'name'    => 'twitternick',
-//                    'type'    => '\Zend\Form\Element\Text',
-//                        'label'       => 'Twitter-Nick',
-//                    'options' => array(
-//                        'label'       => 'Twitter-Nick',
-//                        'label_attributes' => array(
-//                            'class' => 'control-label',
-//                        ),
-//                        'description' => 'Is there a twitter-nick for your Usergroup? Tell us whom we should follow to get the newest informations!',
-//                        'required'    => false,
-//                        'validators'  => array(
-//                            // TODO get this from a service?
-//                            new \Phpug\Validator\SocialMediaAccountExists('twitter'),
-//                        ),
-//                    ),
-//                )),
-//                array('spec' => array(
-//                    'name'    => 'city',
-//                    'type'    => '\Zend\Form\Element\Text',
-//                    'options' => array(
-//                        'label'       => 'Irrelephpant',
-//                        'label_attributes' => array(
-//                            'class' => 'control-label',
-//                        ),
-//                        'description' => 'Leave this field as it is',
-//                        'required'    => true,
-//                        'validators'  => array(
-//                            new Validator\Identical(''),
-//                        ),
-//                    ),
-//                )),
                 array(
                     'spec' => array(
                         'name' => 'csrf',

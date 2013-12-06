@@ -198,7 +198,7 @@ class Usergroup
     /**
      * @param mixed $icalendar_url
      */
-    public function setIcalendarUrl($icalendar_url)
+    public function setIcalendar_Url($icalendar_url)
     {
         $this->icalendar_url = $icalendar_url;
 
@@ -314,4 +314,87 @@ class Usergroup
         return $this->validSince;
     }
 
+    /**
+     * Get the name of the entity
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get the shortname of the entity
+     *
+     * @return string
+     */
+    public function getShortname()
+    {
+        return $this->shortname;
+    }
+
+    /**
+     * Get the ID of the entity
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the Location of the entity
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->latitude . ' ' . $this->longitude;
+    }
+
+    /**
+     * Get the latitude of the entity
+     *
+     * @return float
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+
+    /**
+     * Get the url of the entity
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Get the iCalendar-URL of this entity
+     *
+     * @return string
+     */
+    public function getIcalendar_url()
+    {
+        return $this->icalendar_url;
+    }
+
+    /**
+     * Get the UG-Type of this entity
+     *
+     * @return mixed
+     */
+    public function getUgtype()
+    {
+        if (! $this->ugtype instanceof Grouptype) {
+            return 0;
+        }
+        return $this->ugtype->getId();
+    }
 }

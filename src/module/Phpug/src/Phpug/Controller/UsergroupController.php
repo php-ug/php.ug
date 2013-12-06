@@ -34,6 +34,7 @@ namespace Phpug\Controller;
 
 use Phpug\Entity\Usergroup;
 use Phpug\Form\PromoteUsergroupForm;
+use Zend\Mvc\View\Http\ViewManager;
 use Zend\View\Helper\ViewModel;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -78,40 +79,6 @@ class UsergroupController extends AbstractActionController
    		return $this->em;
     }
 
-    public function editAction()
-    {
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
-        if (! $currentUser) {
-            $this->getResponse()->setStatusCode(401);
-            return;
-        }
-
-        $id    = $this->getEvent()->getRouteMatch()->getParam('id');
-        $group = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
-        if (! $group)  {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
-
-        $acl = $this->getServiceLocator()->get('acl');
-        if (! $acl) {
-            $this->getResponse()->setSTatusCode(500);
-            return true;
-        }
-
-        /** @var Phpug\Acl\UsersGroupAssertion $assertion */
-        $assertion = $this->getServiceLocator()->get('usersGroupAssertion');
-        $assertion->setUser($currentUser)->setGroup($group);
-
-        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
-        if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
-            $this->getResponse()->setStatusCode(401);
-            return true;
-        }
-
-        return array();
-    }
-
     public function promoteAction()
     {
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
@@ -133,11 +100,14 @@ class UsergroupController extends AbstractActionController
         }
 
         $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
+        $form->get('userGroupFieldset')->remove('id');
+
 
         $objectManager = $this->getEntityManager();
         $usergroup = new Usergroup();
 
         $form->bind($usergroup);
+        $form->setAttribute('action', $this->url()->fromRoute('ug/promote'));
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -152,12 +122,72 @@ class UsergroupController extends AbstractActionController
                     $objectManager->flush();
                 }catch(Exception $e){var_dump($e);}
 
-               // return $this->redirect()->toRoute('ug/thankyou');
+                return $this->redirect()->toRoute('ug/thankyou');
             } else {
 //                var_Dump($form->getMessages());
             }
         }
         return array('form' => $form);
+
+    }
+
+    public function editAction()
+    {
+        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
+        if (! $currentUser) {
+            $this->getResponse()->setStatusCode(401);
+            return;
+        }
+
+        $acl = $this->getServiceLocator()->get('acl');
+        if (! $acl) {
+            $this->getResponse()->setSTatusCode(500);
+            return true;
+        }
+
+        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
+        if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
+            $this->getResponse()->setStatusCode(401);
+            return true;
+        }
+
+        $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
+
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        $objectManager = $this->getEntityManager();
+        $usergroup = $objectManager->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
+        if (! $usergroup) {
+            $this->getResponse()->setStatusCode(404);
+            return true;
+        }
+        $usergroup = $usergroup[0];
+        $form->bind($usergroup);
+
+        $form->setAttribute('action', $this->url()->fromRoute('ug/edit', array('id' => $id)));
+        $form->get('userGroupFieldset')->get('location')->setValue($usergroup->getLocation());
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            // Handle form sending
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                // Handle storage of form data
+                try {
+                    // var_Dump($form->getData());
+                    // Store content
+                    $objectManager->persist($form->getData());
+                    $objectManager->flush();
+                }catch(Exception $e){var_dump($e);}
+
+                return $this->redirect()->toRoute('ug/thankyou');
+            } else {
+//                var_Dump($form->getMessages());
+            }
+        }
+
+        $view = new \Zend\View\Model\ViewModel(array('form' => $form));
+        $view->setTemplate('phpug/usergroup/promote.phtml');
+        return $view;
 
     }
 

@@ -4,7 +4,6 @@ $form->prepare();
 
 $this->headTitle('Promote your UserGroup');
 
-$form->setAttribute('action', $this->url('ug/promote'));
 $form->setAttribute('class', 'form-horizontal');
 if ($form->getMessages()) {
     echo '<div class="alert alert-danger">There have been errors during form validation. Please fix them</div>';

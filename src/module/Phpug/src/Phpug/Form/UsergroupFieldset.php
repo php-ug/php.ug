@@ -60,6 +60,10 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
              ->setName('userGroupFieldset');
 
         $this->add(array(
+            'name' => 'id',
+            'type' => '\Zend\Form\Element\Hidden',
+        ));
+        $this->add(array(
             'name'    => 'name',
             'type'    => '\Zend\Form\Element\Text',
             'options' => array(
@@ -106,7 +110,7 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
         ));
 
         $this->add(array(
-            'name'    => 'icalendarUrl',
+            'name'    => 'icalendar_url',
             'type'    => '\Zend\Form\Element\Text',
             'options' => array(
                 'label'       => 'Calendar-URL',
@@ -154,21 +158,6 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 'should_create_template' => true,
             )
         ));
-
-        /*$this->add(array(
-            'type' => 'Zend\Form\Element\Button',
-            'name' => 'addContact',
-            'label' => 'Contacts',
-            'options' =>  array(
-                'type' => 'button',
-                'label' => 'Add further contact',
-            ),
-            'attributes' => array(
-                'onclick' => 'return addContact();',
-                'id' => 'addContactButton',
-            ),
-        ));*/
-
     }
 
     /**
@@ -204,13 +193,13 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                         ),
                     ),
                     array(
-                        'name' => 'DoctrineModule\Validator\NoObjectExists',
+                        'name' => 'DoctrineModule\Validator\UniqueObject',
                         'options' => array(
                             'object_repository' => $em->getRepository('Phpug\Entity\Usergroup'),
                             'object_manager' => $em,
                             'fields' => array('shortname'),
                             'messages' => array(
-                                'objectFound' => 'This shortname is already in use.',
+                                'objectNotUnique' => 'This shortname is already in use.',
                             ),
                         ),
                     ),
