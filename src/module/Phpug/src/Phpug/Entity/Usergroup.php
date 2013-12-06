@@ -281,7 +281,7 @@ class Usergroup
     {
         foreach ($contacts as $contact) {
             $contact->setGroup(null);
-            $this->group->removeElement($contact);
+            $this->contacts->removeElement($contact);
         }
 
         return $this;
