@@ -122,7 +122,11 @@ class UsergroupController extends AbstractActionController
                     $objectManager->flush();
                 }catch(Exception $e){var_dump($e);}
 
-                return $this->redirect()->toRoute('ug/thankyou');
+                $this->flashMessenger()->addSuccessMessage(sprintf(
+                    'Thanks for telling us about %1$s. We will revise your entry and inform you as soon as it\'s publicised',
+                    $usergroup->getName()
+                ));
+                return $this->redirect()->toRoute('home');
             } else {
 //                var_Dump($form->getMessages());
             }
@@ -179,7 +183,11 @@ class UsergroupController extends AbstractActionController
                     $objectManager->flush();
                 }catch(Exception $e){var_dump($e);}
 
-                return $this->redirect()->toRoute('ug/thankyou');
+                $this->flashMessenger()->addSuccessMessage(sprintf(
+                    'Your Entry has been stored and you should already see the changes you did for %1$s.',
+                    $usergroup->getName()
+                ));
+                return $this->redirect()->toRoute('home');
             } else {
 //                var_Dump($form->getMessages());
             }

@@ -78,6 +78,7 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         return array(
+            'flash' => $this->flashMessenger()->getSuccessMessages(),
             'acl' => $this->getServiceLocator()->get('acl'),
         );
     }

@@ -8,6 +8,16 @@ $this->headScript()->prependFile('js/phpug/phpug.js');
 $this->headScript()->prependFile('lib/phpug/leaflet/leaflet.js');
 ?>
 <div id="map"></div>
+<?php if(count($flash)) : ?>
+<div class="alert alert-success alert-dismissable" style="position:absolute; list-style-type: none">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <ul style="list-style-type:none;">
+        <?php foreach ($flash as $msg) : ?>
+            <li><?php echo $msg; ?></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>
 <div id="grouptype_selector">
     <select name="grouptype" id="grouptype" size="1">
 
