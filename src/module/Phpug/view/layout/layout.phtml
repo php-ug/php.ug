@@ -77,15 +77,14 @@ echo $this->doctype();
         </div>
     </section>
     <footer class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
-        <div class="navbar-footer">
+        <div class="navbar-header">
         <small>
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-footer-collapse">
-                <span class="sr-only">Toggle navigation</span>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bottom-collapse">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <div class="collapse navbar-collapse bs-navbar-footer-collapse">
+            <div class="collapse navbar-collapse bottom-collapse">
                 <span class="pull-left navbar-text">© 2011-<?php echo date('Y');?> by</span>
             <?php echo $this->navigation('footer')->menu('footer')->setUlClass('nav navbar-nav'); ?>
             </div>
