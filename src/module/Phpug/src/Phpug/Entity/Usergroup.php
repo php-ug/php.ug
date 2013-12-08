@@ -55,9 +55,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @property double $latitude
  * @property double $longitude
  * @property int    $ugtype
+ * @property int    $state
  */
 class Usergroup
 {
+
+    const PROMOTED = 0;
+    const ACTIVE   = 1;
+    const OBSOLETE = 2;
+
     /**
     * @ORM\Id
     * @ORM\Column(type="integer")
@@ -107,9 +113,9 @@ class Usergroup
     protected $contacts;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer")
      */
-    protected $validSince;
+    protected $state;
 
     protected $inputFilter;
 
@@ -288,30 +294,28 @@ class Usergroup
     }
 
     /**
-     * Set the date and time this entry is valid since
+     * Set the state of the UG
      *
-     * @param string|DateTime $date
+     * @param int $date
      *
      * @return self
      */
-    public function setValidSince($date)
+    public function setState($state)
     {
-        if (! $date instanceof \DateTime) {
-            $date = new DateTime($date);
-        }
-        $this->validSince = $date;
+
+        $this->state = $state;
 
         return $this;
     }
 
     /**
-     * Get the date and time this entry is valid sinde
+     * Get the state of this ug
      *
-     * @return DAteTime
+     * @return int
      */
-    public function getValidSince()
+    public function getState()
     {
-        return $this->validSince;
+        return $this->state;
     }
 
     /**

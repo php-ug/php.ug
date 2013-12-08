@@ -145,6 +145,23 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
             ),
         ));
 
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'state',
+            'options' => array(
+                'label' => 'Group-State',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
+                'description' => 'In what state is this Usergroup-entry?',
+                'value_options' => array(
+                    Usergroup::PROMOTED => 'Promoted',
+                    Usergroup::ACTIVE   => 'Active',
+                    Usergroup::OBSOLETE => 'Obsolete',
+                ),
+            ),
+        ));
+
         $groupcontactFieldset = new GroupcontactFieldset($this->serviceLocator);
         $this->add(array(
             'type'    => 'Zend\Form\Element\Collection',
@@ -236,6 +253,9 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 ),
             ),
             'ugtype' => array(
+                'required' => true,
+            ),
+            'state' => array(
                 'required' => true,
             ),
         );

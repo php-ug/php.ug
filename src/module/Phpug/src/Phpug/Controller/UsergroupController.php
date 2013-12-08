@@ -108,6 +108,9 @@ class UsergroupController extends AbstractActionController
 
         $form->bind($usergroup);
         $form->setAttribute('action', $this->url()->fromRoute('ug/promote'));
+        if (! $acl->isAllowed((string) $role, 'ug', 'validate')) {
+            $form->get('userGroupFieldset')->remove('state');
+        }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -169,6 +172,9 @@ class UsergroupController extends AbstractActionController
 
         $form->setAttribute('action', $this->url()->fromRoute('ug/edit', array('id' => $id)));
         $form->get('userGroupFieldset')->get('location')->setValue($usergroup->getLocation());
+        if (! $acl->isAllowed((string) $role, 'ug', 'validate')) {
+            $form->get('userGroupFieldset')->remove('state');
+        }
 
         $request = $this->getRequest();
         if ($request->isPost()) {

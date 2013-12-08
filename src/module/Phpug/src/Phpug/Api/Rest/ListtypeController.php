@@ -92,7 +92,7 @@ class ListtypeController extends AbstractRestfulController
         
         $content['error'] = null;
         $content['list']   = $types[0]->toArray(); 
-        foreach ($types[0]->getUSergroups() as $group) {
+        foreach ($types[0]->getUsergroups() as $group) {
             $content['groups'][] = $group->toArray();
         }
         $response->setContent($adapter->serialize($content));

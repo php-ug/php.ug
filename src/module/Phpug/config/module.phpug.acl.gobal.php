@@ -48,11 +48,7 @@ return array(
                         'role' => 'member',
                         'assert' => 'usersGroupAssertion',
                     ),
-                    'validatepromote' => 'member',
-                    'validateedit' => array(
-                        'role' => 'member',
-                        'assert' => 'usersGroupAssertion',
-                    ),
+                    'validate' => 'admin',
                 ),
             ),
         ),
