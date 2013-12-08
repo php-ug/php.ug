@@ -237,9 +237,12 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                             'allowRelative' => false,
                         ),
                     ),
+                    array(
+                        'name' => 'Phpug\Validator\WebsiteExists',
+                    ),
                 ),
             ),
-            'icalendarUrl' => array(
+            'icalendar_url' => array(
                 'required' => false,
                 'validators' => array(
                     array(
@@ -249,7 +252,7 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                             'allowRelative' => false,
                         )
                     ),
-//                    array('name' => 'Phpug\Validator\IsCalendarUrl'),
+                    array('name' => 'Phpug\Validator\IsCalendarUrl'),
                 ),
             ),
             'ugtype' => array(
