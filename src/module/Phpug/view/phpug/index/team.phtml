@@ -9,18 +9,24 @@ $this->headLink()->appendStylesheet($this->basePath() . '/css/phpug/phpugteam.cs
         <dt><?php echo $this->gravatar(trim($mail), array('img_size'=>'100'))?></dt>
         <dd>
             <h3><?php echo $person['name']; ?></h3>
-            <?php echo $this->mailto($mail, null, array('class' => 'email'))?>
+            <?php echo $this->mailto($mail, null, array('title' => 'Send Email to ' . $person['name']))?>
             <?php if ( isset($person['twitter']) ) :?>
-            <a class="twitter" href="http://twitter.com/<?php echo $person['twitter']; ?>">
-                <?php echo $person['twitter']; ?>
+            <a title="Go to the Twitter-account of <?php echo $person['name']; ?>" href="http://twitter.com/!#<?php echo $person['twitter']; ?>">
+                <i class="fa fa-twitter fa-2x"></i>
             </a>
             <?php endif; ?>
             <?php if ( isset($person['google+']) ) :?>
-            <a class="googleplus" href="https://plus.google.com/<?php echo $person['google+']; ?>">
-                Google+
-            </a>
+                <a title="Go to the google+-account of <?php echo $person['name']; ?>" href="https://plus.google.com/<?php echo $person['google+']; ?>">
+                    <i class="fa fa-google-plus fa-2x"></i>
+                </a>
+            <?php endif; ?>
+            <?php if ( isset($person['github']) ) :?>
+                <a title="Go to the github-account of <?php echo $person['name']; ?>" href="https://github.com/<?php echo $person['github']; ?>">
+                    <i class="fa fa-github fa-2x"></i>
+                </a>
             <?php endif; ?>
         </dd>
     <?php endforeach; ?>
     </dl>
 </div>
+

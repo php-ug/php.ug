@@ -105,6 +105,7 @@ class IndexController extends AbstractActionController
                     'name' => 'Andreas Heigl',
                     'twitter' => 'heiglandreas',
                     'google+' => '104738361153508561515',
+                    'github'  => 'heiglandreas'
                 ),
                 'cn@dmr-solutions.com' => array(
                     'name' => 'Christian Nielebock',
