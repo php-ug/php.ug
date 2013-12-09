@@ -47,6 +47,15 @@ var map = L.map('map',{
     layers: baseTile
 });
 
+
+var RedIcon = L.Icon.Default.extend({
+    options: {
+        iconUrl: 'img/phpug/marker-icon-orange.png'
+    }
+});
+
+var redIcon = new RedIcon();
+
 var createSelector = function(data){
     for (i in data) {
         item = data[i];
@@ -67,7 +76,6 @@ var loadGroupData = function(id){
         'success' : function(data){
             data = transformToGeoJson(data);
             if ('undefined' != typeof pointsLayer) {
-                console.log('removing old layer');
                 map.removeLayer(pointsLayer)
             }
             var geojsonMarkerOptions = {
@@ -79,9 +87,14 @@ var loadGroupData = function(id){
                     fillOpacity: 0.5
             };
             pointsLayer = L.geoJson(data, {
-//                pointToLayer: function (feature, latlng) {
-//                    return L.circleMarker(latlng, geojsonMarkerOptions)
-//                },
+                pointToLayer: function (feature, latlng) {
+                    icon = {};
+                    if (! feature.properties.active) {
+                        icon = {icon : redIcon};
+                    }
+                    $.extend(icon, geojsonMarkerOptions);
+                    return L.marker(latlng, icon)
+                },
                 onEachFeature: function (feature, pointsLayer) {
                     pointsLayer.on('click',openPopup);
                 }
@@ -101,7 +114,6 @@ var openPopup = function(marker, foo){
 };
 
 var createPopup = function(data) {
-    console.log(data);
     var popup = new L.Popup({offset:new L.Point(0, -20)});
     latlng = new L.LatLng(data.group.latitude,data.group.longitude);
     popup.setLatLng(latlng);
@@ -160,7 +172,8 @@ var transformToGeoJson = function(data)
             properties : {
                 'name' : point.name,
                 'url' : point.url,
-                'id' : point.id
+                'id' : point.id,
+                'active' : point.state===1?true:false
             }
         };
         jsonGeo.features.push(feature);
