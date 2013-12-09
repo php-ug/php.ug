@@ -126,7 +126,7 @@ var createPopup = function(data) {
                 + '%contacts%'
                 + '</div>';
                 
-    var contact = '<a class="%type%" href="%url%" title="%value%" target="_blank">'
+    var contact = '<a href="%url%" title="%value%" target="_blank">'
                 + '<i class="fa-%faicon% fa"></i>'
                 + '</a>';
     var contacts = [];
@@ -138,15 +138,18 @@ var createPopup = function(data) {
     icons = {
         'twitter' : 'twitter',
         'github' : 'github',
-        'email'   : 'envelope',
-        'facebook' : 'facebook'
+        'mail'   : 'envelope',
+        'facebook' : 'facebook',
+        'meetup' : 'meetup',
+        'google-plus' : 'google-plus',
+        'bitbucket' : 'bitbucket'
     }
     for (i in data.contacts) {
         cont = data.contacts[i];
         contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name).replace(/%faicon%/,icons[cont.type.toLowerCase()]));
     }
     if (data.edit) {
-        var edit = '<a href="ug/edit/'+data.group.shortname +'" class="groupedit">Edit</a>';
+        var edit = '<a href="ug/edit/'+data.group.shortname +'" title="Edit"><i class="fa fa-edit"></i></a>';
         contacts.push(edit);
     }
     contacts = contacts.join('</li><li>');

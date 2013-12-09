@@ -132,6 +132,10 @@ section > div#map {
     padding-left: 0.5em;
 }
 
+.leaflet-container a {
+    color: rgb(64,64,64);
+}
+
 @media(max-width: 979px){
     .fork-on-github{
         display:none;
