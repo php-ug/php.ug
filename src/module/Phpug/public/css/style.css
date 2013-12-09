@@ -121,6 +121,17 @@ section > div#map {
     color: red;
 }
 
+.leaflet-popup-content ul {
+    list-style-type: none;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+.leaflet-popup-content li {
+    display:inline-block;
+    padding-left: 0.5em;
+}
+
 @media(max-width: 979px){
     .fork-on-github{
         display:none;

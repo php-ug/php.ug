@@ -126,19 +126,25 @@ var createPopup = function(data) {
                 + '%contacts%'
                 + '</div>';
                 
-    var contact = '<a class="%type%" href="%url%" target="_blank">'
-                + '%value%'
+    var contact = '<a class="%type%" href="%url%" title="%value%" target="_blank">'
+                + '<i class="fa-%faicon% fa"></i>'
                 + '</a>';
     var contacts = [];
-    
+
+
     if (data.group.icalendar_url) {
-        contacts.push(contact.replace(/%type%/,'icalendar').replace(/%url%/,data.group.icalendar_url).replace(/%value%/,'iCal-File'));
+        contacts.push(contact.replace(/%type%/,'icalendar').replace(/%url%/,data.group.icalendar_url).replace(/%value%/,'iCal-File').replace(/%faicon%/,'calendar'));
+    }
+    icons = {
+        'twitter' : 'twitter',
+        'github' : 'github',
+        'email'   : 'envelope',
+        'facebook' : 'facebook'
     }
     for (i in data.contacts) {
         cont = data.contacts[i];
-        contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name));
+        contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name).replace(/%faicon%/,icons[cont.type.toLowerCase()]));
     }
-    console.log(data);
     if (data.edit) {
         var edit = '<a href="ug/edit/'+data.group.shortname +'" class="groupedit">Edit</a>';
         contacts.push(edit);
