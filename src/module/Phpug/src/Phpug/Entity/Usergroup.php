@@ -33,8 +33,7 @@
 namespace Phpug\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM
-;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The Persistent-Storage Entity
@@ -56,9 +55,15 @@ use Doctrine\ORM\Mapping as ORM
  * @property double $latitude
  * @property double $longitude
  * @property int    $ugtype
+ * @property int    $state
  */
 class Usergroup
 {
+
+    const PROMOTED = 0;
+    const ACTIVE   = 1;
+    const OBSOLETE = 2;
+
     /**
     * @ORM\Id
     * @ORM\Column(type="integer")
@@ -67,7 +72,7 @@ class Usergroup
     protected $id;
 
     /**
-     * @ORM\Column(type="string")    
+     * @ORM\Column(type="string")
      */
     protected $name;
 
@@ -102,10 +107,17 @@ class Usergroup
     protected $ugtype;
 
     /**
-     * @ORM\OneToMany(targetEntity="Groupcontact", mappedBy="group")
-     * @var Groupcontact[]
+     * @ORM\OneToMany(targetEntity="Groupcontact", mappedBy="group", cascade={"persist"})
+     * @var ArrayCollection
      */
     protected $contacts;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $state;
+
+    protected $inputFilter;
 
     /**
     * Magic getter to expose protected properties.
@@ -140,10 +152,253 @@ class Usergroup
     {
         $this->contacts = new ArrayCollection();
     }
-    
+
+    /**
+     * Get the Contacts
+     *
+     * @return ArrayCollection
+     */
     public function getContacts()
     {
         return $this->contacts;
     }
 
+    /**
+     * Set the name
+     *
+     * @param string $name
+     *
+     * @return Usergroup
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Set the acronym
+     *
+     * @param string $acronym
+     *
+     * @return Usergroup
+     */
+    public function setShortname($acronym)
+    {
+        $this->shortname = $acronym;
+
+        return $this;
+    }
+
+    /**
+     * @param \Phpug\Entity\Groupcontact[] $contacts
+     */
+    public function setContacts(ArrayCollection $contacts)
+    {
+        $this->contacts = $contacts;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $icalendar_url
+     */
+    public function setIcalendar_Url($icalendar_url)
+    {
+        $this->icalendar_url = $icalendar_url;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $latitude
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $longitude
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * @param string $location
+     */
+    public function setLocation($location)
+    {
+        $loc = preg_split('/[^\d\.\-]+/', $location);
+        $this->setLatitude($loc[0]);
+        $this->setLongitude($loc[1]);
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $ugtype
+     */
+    public function setUgtype($ugtype)
+    {
+        $this->ugtype = $ugtype;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function addContacts(ArrayCollection $contacts)
+    {
+        foreach ($contacts as $contact) {
+            $contact->setGroup($this);
+            $this->contacts->add($contact);
+        }
+
+        return $this;
+    }
+
+    public function removeContacts(ArrayCollection $contacts)
+    {
+        foreach ($contacts as $contact) {
+            $contact->setGroup(null);
+            $this->contacts->removeElement($contact);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the state of the UG
+     *
+     * @param int $date
+     *
+     * @return self
+     */
+    public function setState($state)
+    {
+
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get the state of this ug
+     *
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Get the name of the entity
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get the shortname of the entity
+     *
+     * @return string
+     */
+    public function getShortname()
+    {
+        return $this->shortname;
+    }
+
+    /**
+     * Get the ID of the entity
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the Location of the entity
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->latitude . ' ' . $this->longitude;
+    }
+
+    /**
+     * Get the latitude of the entity
+     *
+     * @return float
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+
+    /**
+     * Get the url of the entity
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Get the iCalendar-URL of this entity
+     *
+     * @return string
+     */
+    public function getIcalendar_url()
+    {
+        return $this->icalendar_url;
+    }
+
+    /**
+     * Get the UG-Type of this entity
+     *
+     * @return mixed
+     */
+    public function getUgtype()
+    {
+        if (! $this->ugtype instanceof Grouptype) {
+            return 0;
+        }
+        return $this->ugtype->getId();
+    }
 }

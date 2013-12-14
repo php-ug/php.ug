@@ -32,10 +32,11 @@
 
 namespace Phpug;
 
-use Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider,
-	Zend\Mvc\ModuleRouteListener;
+use Zend\Module\Manager;
+use Zend\Module\Consumer\AutoloaderProvider;
+use Zend\Mvc\ModuleRouteListener;
+use Zend\View\HelperPluginManager;
+
 
 /**
  * The Module-Provider
@@ -64,7 +65,30 @@ class Module
     {
     	return include __DIR__ . '/config/module.config.php';
     }
-    
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                // This will overwrite the native navigation helper
+                'navigation' => function(HelperPluginManager $pm) {
+                        // Setup ACL:
+                        $acl = $pm->getServiceLocator()->get('acl');
+                        $role = $pm->getServiceLocator()->get('roleManager');
+                        $role->setUserToken($pm->getServiceLocator()->get('OrgHeiglHybridAuthToken'));
+
+                        // Get an instance of the proxy helper
+                        $navigation = $pm->get('Zend\View\Helper\Navigation');
+
+                        // Store ACL and role in the proxy helper:
+                        $navigation->setAcl($acl)
+                            ->setRole((string) $role);
+
+                        // Return the new navigation helper instance
+                        return $navigation;
+                    }
+            )
+        );
+    }
     public function getAutoloaderConfig()
     {
     	return array(

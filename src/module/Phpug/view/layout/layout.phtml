@@ -5,24 +5,27 @@ $this->headTitle()->setSeparator(' - ')
 $this->headTitle('PHP-UserGroup');
 
 $basePath = $this->basePath();
-$this->headLink()->appendStylesheet($basePath . '/css/bootstrap.min.css')
+$this->headLink()->appendStylesheet($basePath . '/lib/bootstrap/css/bootstrap.min.css')
                  ->appendStylesheet($basePath . '/css/phpug/style.css')
-                 ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css')
+                 ->appendStylesheet($basePath . '/lib/font-awesome/css/font-awesome.min.css')
+              //   ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css')
 ;
 
 $this->headLink(array(
             'rel'  => 'shortcut icon',
-            'type' => 'image/vnd.microsoft.icon',
-            'href' => $basePath . '/img/phpug/favicon.ico',
+         //   'type' => 'image/vnd.microsoft.icon',
+            'type' => 'image/png',
+            'href' => $basePath . '/img/phpug/favicon.png',
         ));
 
 // HTML5 shim, for IE6-8 support of HTML elements
 $this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript',
     array('conditional' => 'lt IE9',));
 
-$this->headScript()->prependFile($basePath . '/js/bootstrap.min.js');
+$this->headScript()->prependFile($basePath . '/lib/bootstrap/js/bootstrap.min.js');
 $this->headScript()->prependFile($basePath . '/js/jquery.cookie.js');
-$this->headScript()->prependFile($basePath . '/js/jquery-1.7.1.min.js');
+$this->headScript()->prependFile($basePath . '/lib/jquery/jquery-migrate-1.2.1.min.js');
+$this->headScript()->prependFile($basePath . '/lib/jquery/jquery.js');
 $this->headScript()->appendScript('//<![CDATA[
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.heigl.org/" : "http://piwik.heigl.org/");
 document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
@@ -47,26 +50,51 @@ echo $this->doctype();
   </head>
 
   <body>
-    <header class="header">
-      <h1><a class="brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
-      <h2>One home for one community</h2>
+    <header class="navbar navbar-inverse navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="<?php echo $this->url('home') ?>">PHP.UserGroup</a></h1>
+        </div>
+        <div class="collapse navbar-collapse bs-navbar-collapse">
+            <?php echo $this->navigation('navigation')->menu('navigation')->setUlClass('nav navbar-nav'); ?>
+            <ul class="nav navbar-nav navbar-right navbar-login">
+                <li>
+                    <?php echo $this->hybridauthinfo(); ?>
+                </li>
+            </ul>
+        </div>
     </header>
-    <section class="content">
-      <?php echo $this->content; ?>
+    <section class="container content">
+        <div class="row">
+            <div class="span12">
+                <?php echo $this->content; ?>
+            </div>
+        </div>
     </section>
-    <footer class="footer">
-      <a class="uberspacelink" href="http://uberspace.de"><img src="img/phpug/uberspace.png"/></a>
-      <?php echo $this->navigation('footer')->menu('footer'); ?>
-    </footer>
-    <aside class="navigation">
-        <?php echo $this->navigation('navigation')->menu('navigation'); ?>
-    </aside>
-    <footer class="footer">
-        <?php echo $this->navigation('footer')->menu('footer'); ?>
+    <footer class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+        <div class="navbar-header">
+        <small>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bottom-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="collapse navbar-collapse bottom-collapse">
+                <span class="pull-left navbar-text">© 2011-<?php echo date('Y');?> by</span>
+            <?php echo $this->navigation('footer')->menu('footer')->setUlClass('nav navbar-nav'); ?>
+            </div>
+        </small>
+        </div>
     </footer>
     <a href="http://github.com/php-ug/php.ug" class="fork-on-github">
     	<img src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub">
     </a>
+        <!-- Scripts -->
     <?php echo $this->headScript() ?>
   </body>
 </html>

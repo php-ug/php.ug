@@ -47,6 +47,15 @@ var map = L.map('map',{
     layers: baseTile
 });
 
+
+var RedIcon = L.Icon.Default.extend({
+    options: {
+        iconUrl: 'img/phpug/marker-icon-orange.png'
+    }
+});
+
+var redIcon = new RedIcon();
+
 var createSelector = function(data){
     for (i in data) {
         item = data[i];
@@ -67,7 +76,6 @@ var loadGroupData = function(id){
         'success' : function(data){
             data = transformToGeoJson(data);
             if ('undefined' != typeof pointsLayer) {
-                console.log('removing old layer');
                 map.removeLayer(pointsLayer)
             }
             var geojsonMarkerOptions = {
@@ -79,9 +87,14 @@ var loadGroupData = function(id){
                     fillOpacity: 0.5
             };
             pointsLayer = L.geoJson(data, {
-//                pointToLayer: function (feature, latlng) {
-//                    return L.circleMarker(latlng, geojsonMarkerOptions)
-//                },
+                pointToLayer: function (feature, latlng) {
+                    icon = {};
+                    if (! feature.properties.active) {
+                        icon = {icon : redIcon};
+                    }
+                    $.extend(icon, geojsonMarkerOptions);
+                    return L.marker(latlng, icon)
+                },
                 onEachFeature: function (feature, pointsLayer) {
                     pointsLayer.on('click',openPopup);
                 }
@@ -101,30 +114,43 @@ var openPopup = function(marker, foo){
 };
 
 var createPopup = function(data) {
-    console.log(data);
     var popup = new L.Popup({offset:new L.Point(0, -20)});
     latlng = new L.LatLng(data.group.latitude,data.group.longitude);
     popup.setLatLng(latlng);
     var content = '<div class="popup">'
-                + '<h1>'
+                + '<h4>'
                 + '<a href="%url%" target="_blank">'
                 + '%name%'
                 + '</a>'
-                + '</h1>'
+                + '</h4>'
                 + '%contacts%'
                 + '</div>';
                 
-    var contact = '<a class="%type%" href="%url%" target="_blank">'
-                + '%value%'
+    var contact = '<a href="%url%" title="%value%" target="_blank">'
+                + '<i class="fa-%faicon% fa"></i>'
                 + '</a>';
     var contacts = [];
-    
+
+
     if (data.group.icalendar_url) {
-        contacts.push(contact.replace(/%type%/,'icalendar').replace(/%url%/,data.group.icalendar_url).replace(/%value%/,'iCal-File'));
+        contacts.push(contact.replace(/%type%/,'icalendar').replace(/%url%/,data.group.icalendar_url).replace(/%value%/,'iCal-File').replace(/%faicon%/,'calendar'));
+    }
+    icons = {
+        'twitter' : 'twitter',
+        'github' : 'github',
+        'mail'   : 'envelope',
+        'facebook' : 'facebook',
+        'meetup' : 'meetup',
+        'google-plus' : 'google-plus',
+        'bitbucket' : 'bitbucket'
     }
     for (i in data.contacts) {
         cont = data.contacts[i];
-        contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name));
+        contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name).replace(/%faicon%/,icons[cont.type.toLowerCase()]));
+    }
+    if (data.edit) {
+        var edit = '<a href="ug/edit/'+data.group.shortname +'" title="Edit"><i class="fa fa-edit"></i></a>';
+        contacts.push(edit);
     }
     contacts = contacts.join('</li><li>');
     if (contacts) {
@@ -155,7 +181,8 @@ var transformToGeoJson = function(data)
             properties : {
                 'name' : point.name,
                 'url' : point.url,
-                'id' : point.id
+                'id' : point.id,
+                'active' : point.state===1?true:false
             }
         };
         jsonGeo.features.push(feature);

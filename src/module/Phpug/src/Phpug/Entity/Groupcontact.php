@@ -34,6 +34,7 @@ namespace Phpug\Entity;
 
 use Doctrine\ORM\Mapping as ORM
 ;
+use Zend\Validator\IsInstanceOf;
 
 /**
  * The Persistent-Storage Entity
@@ -67,16 +68,12 @@ class Groupcontact
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Service")
-     * 
-     * inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="Service", inversedBy="contacts")
      */
     protected $service;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usergroup")
-     * 
-     *  inversedBy="contacts")
+     * @ORM\ManyToOne(targetEntity="Usergroup", inversedBy="contacts")
      */
     protected $group;
 
@@ -116,6 +113,85 @@ class Groupcontact
     {
         $baseUrl = $this->service->baseurl;
         return sprintf($baseUrl, $this->name);
+    }
+
+    public function getService()
+    {
+        if (! $this->service instanceof Service) {
+            return 0;
+        }
+        return $this->service->id;
+    }
+
+    /**
+     * Set the name
+     *
+     * @param string $name The name of the contact
+     *
+     * @return Groupcontact
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the service
+     *
+     * @param mixed $service
+     *
+     * @return Groupcontact
+     */
+    public function setService($service)
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * Set the id
+     *
+     * @param int $id
+     *
+     * @return Groupcontact
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the group
+     *
+     * @param int $group
+     *
+     * @return Groupcontact
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    public function getGroup()
+    {
+        return $this->group;
     }
 
 }

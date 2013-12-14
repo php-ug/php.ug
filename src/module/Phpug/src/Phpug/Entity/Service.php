@@ -112,4 +112,14 @@ class Service
         $this->contacts = new ArrayCollection();
     }
 
+    /**
+     * Get the name of this instance
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
 }
