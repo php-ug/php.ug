@@ -129,6 +129,7 @@ class UsergroupController extends AbstractActionController
                     'Thanks for telling us about %1$s. We will revise your entry and inform you as soon as it\'s publicised',
                     $usergroup->getName()
                 ));
+                $this->sendNotification($usergroup);
                 return $this->redirect()->toRoute('home');
             } else {
 //                var_Dump($form->getMessages());
@@ -205,69 +206,21 @@ class UsergroupController extends AbstractActionController
 
     }
 
-    public function validateAction()
+    protected function sendNotification(Usergroup $usergroup)
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        $promote = false;
-        if (!$id) {
-            $promote = true;
-        }
+        $message = $this->getServiceLocator()->get('Phpug\Service\UsergroupMessage');
+        $message->setBody(sprintf(
+            $message->getBody(),
+            $usergroup->getName()
+        ));
+        $message->setSubject(sprintf(
+            $message->getSubject(),
+            $usergroup->getName()
+        ));
 
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
-        if (! $currentUser) {
-            $this->getResponse()->setStatusCode(401);
-            return;
-        }
+        $transport = $this->getServiceLocator()->get('Phpug\Service\Transport');
+        $transport->send($message);
 
-        $acl = $this->getServiceLocator()->get('acl');
-        if (! $acl) {
-            $this->getResponse()->setSTatusCode(500);
-            return true;
-        }
-
-        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
-        if (! $acl->isAllowed((string) $role, 'ug', 'promote')) {
-            $this->getResponse()->setStatusCode(401);
-            return true;
-        }
-
-        $form = new PromoteUsergroupForm();
-        $form->init();
-
-        $request = $this->getRequest();
-        if (! $request->isPost()) {
-            if ($promote) {
-                return $this->redirect()->toRoute('ug/promote');
-            }
-            return $this->redirect()->toRoute('ug/edit', array('id' => $id));
-        }
-
-        //    $form->setInputFilter($album->getInputFilter());
-        $form->setData($request->getPost());
-
-        if (! $form->isValid()) {
-            return array('form' => $form);
-        }
-
-try {
-        // Store content
-        $objectManager = $this->getEntityManager();
-        $hydrator = new DoctrineObject(
-            $objectManager,
-            'Phpug\Entity\Usergroup'
-        );
-
-        $usergroup = new Usergroup();
-        $data = $form->getValues();
-
-        $usergroup = $hydrator->hydrate($data, $usergroup);
-        $objectManager->persist($usergroup);
-        $objectManager->flush();
-}catch(Exception $e){var_dump($e);}
-    //    return $this->redirect()->toRoute('ug/thankyou');
-    }
-
-    public function thankYouAction()
-    {
+        return $this;
     }
 }
