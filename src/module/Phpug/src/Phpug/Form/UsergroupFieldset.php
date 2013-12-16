@@ -44,6 +44,7 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
 {
     protected $serviceLocator = null;
 
+    protected $edit = true;
 
     public function __construct(ServiceLocatorInterface $serviceLocator)
     {
@@ -187,6 +188,12 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
     {
         $em = $this->serviceLocator->get('doctrine.entitymanager.orm_default');
 
+        $shortnameValidator = 'DoctrineModule\Validator\NoObjectExists';
+        $errorMessageTemplate = 'objectFound';
+        if (true === $this->edit) {
+            $shortnameValidator = 'DoctrineModule\Validator\UniqueObject';
+            $errorMessageTemplate = 'objectNotUnique';
+        }
         return array(
             'name' => array(
                 'required' => true,
@@ -210,13 +217,13 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                         ),
                     ),
                     array(
-                        'name' => 'DoctrineModule\Validator\UniqueObject',
+                        'name' => $shortnameValidator,
                         'options' => array(
                             'object_repository' => $em->getRepository('Phpug\Entity\Usergroup'),
                             'object_manager' => $em,
                             'fields' => array('shortname'),
                             'messages' => array(
-                                'objectNotUnique' => 'This shortname is already in use.',
+                                $errorMessageTemplate => 'This shortname is already in use.',
                             ),
                         ),
                     ),
@@ -262,5 +269,13 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 'required' => true,
             ),
         );
+    }
+
+    public function remove($elementOrFieldset)
+    {
+        if ('id' === $elementOrFieldset) {
+            $this->edit = false;
+        }
+        return parent::remove($elementOrFieldset);
     }
 }

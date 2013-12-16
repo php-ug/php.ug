@@ -213,11 +213,14 @@ return array(
                 'roleManager' => 'Phpug\Service\RoleManagerFactory',
                 'PromoteUsergroupForm' => 'Phpug\Service\PromoteUsergroupFormFactory',
                 'UsergroupFieldset'    => 'Phpug\Service\UsergroupFieldsetFactory',
+                'Phpug\Service\UsergroupMessage' => 'Phpug\Service\UsergroupMessageFactory',
+                'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
             ),
             'invokables' => array(
                 'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
                 'contactsRow'   => 'Phpug\View\Helper\ContactsRow',
-
+                'Phpug\Service\Message' => 'Zend\Mail\Message',
+                'Zend\Mail\Transport' => 'Zend\Mail\Transport\File',
             ),
 		),
 		'translator' => array(
