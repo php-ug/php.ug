@@ -123,6 +123,15 @@ class Groupcontact
         return $this->service->id;
     }
 
+    public function getServiceName()
+    {
+        if (! $this->service instanceof Service) {
+            return '';
+        }
+        return $this->service->getName();
+
+    }
+
     /**
      * Set the name
      *

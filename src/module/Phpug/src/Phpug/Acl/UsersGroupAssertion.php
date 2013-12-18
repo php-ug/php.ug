@@ -105,7 +105,7 @@ class UsersGroupAssertion implements  AssertionInterface
         $uid     = strtolower($this->user->getDisplayName());
 
         foreach($this->group->getContacts() as $contact) {
-            if (strtolower($contact->getService()) !== $service) {
+            if (strtolower($contact->getServiceName()) !== $service) {
                 continue;
             }
             if (strtolower($contact->name) !== $uid) {
