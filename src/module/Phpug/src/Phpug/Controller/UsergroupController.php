@@ -153,14 +153,6 @@ class UsergroupController extends AbstractActionController
             return true;
         }
 
-        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
-        if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
-            $this->getResponse()->setStatusCode(401);
-            return true;
-        }
-
-        $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
-
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
         $objectManager = $this->getEntityManager();
         $usergroup = $objectManager->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
@@ -169,6 +161,22 @@ class UsergroupController extends AbstractActionController
             return true;
         }
         $usergroup = $usergroup[0];
+
+        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
+
+        $this->getServiceLocator()
+            ->get('usersGroupAssertion')
+            ->setUser($currentUser)
+            ->setGroup($usergroup);
+
+        if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
+            $this->getResponse()->setStatusCode(401);
+            return true;
+        }
+
+        $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
+
+
         $form->bind($usergroup);
 
         $form->setAttribute('action', $this->url()->fromRoute('ug/edit', array('id' => $id)));
