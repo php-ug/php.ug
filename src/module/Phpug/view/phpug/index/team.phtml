@@ -11,7 +11,7 @@ $this->headLink()->appendStylesheet($this->basePath() . '/css/phpug/team.css');
             <h3><?php echo $person['name']; ?></h3>
             <?php echo $this->mailto($mail, null, array('class' => 'email'))?>
             <?php if ( isset($person['twitter']) ) :?>
-            <a class="twitter" href="http://twitter.com/!#<?php echo $person['twitter']; ?>">
+            <a class="twitter" href="http://twitter.com/<?php echo $person['twitter']; ?>">
                 <?php echo $person['twitter']; ?>
             </a>
             <?php endif; ?>
