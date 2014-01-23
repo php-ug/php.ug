@@ -265,9 +265,9 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
             'ugtype' => array(
                 'required' => true,
             ),
-            'state' => array(
-                'required' => true,
-            ),
+//            'state' => array(
+//                'required' => true,
+//            ),
         );
     }
 
