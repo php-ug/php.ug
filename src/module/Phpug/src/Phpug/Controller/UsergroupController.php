@@ -192,11 +192,10 @@ class UsergroupController extends AbstractActionController
             if ($form->isValid()) {
                 // Handle storage of form data
                 try {
-                    // var_Dump($form->getData());
                     // Store content
                     $objectManager->persist($form->getData());
                     $objectManager->flush();
-                }catch(Exception $e){var_dump($e);}
+                } catch(Exception $e){error_log($e->getMessage());}
 
                 $this->flashMessenger()->addSuccessMessage(sprintf(
                     'Your Entry has been stored and you should already see the changes you did for %1$s.',
@@ -204,7 +203,6 @@ class UsergroupController extends AbstractActionController
                 ));
                 return $this->redirect()->toRoute('home');
             } else {
-//                var_Dump($form->getMessages());
             }
         }
 
