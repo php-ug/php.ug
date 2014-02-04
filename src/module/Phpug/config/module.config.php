@@ -86,6 +86,17 @@ return array(
 			                    ),
 			                ),
 			            ),
+                        'v1' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route' => '/v1/:controller/:action[/:id]',
+                                'defaults' => array(
+                                    '__NAMESPACE__' => 'Phpug\Api\v1',
+                                    'controller'    => 'UsergroupController',
+                                    'action'        => 'nextEvent',
+                                ),
+                            ),
+                        ),
 			            
 			        ),
 			    ),
@@ -215,6 +226,7 @@ return array(
                 'UsergroupFieldset'    => 'Phpug\Service\UsergroupFieldsetFactory',
                 'Phpug\Service\UsergroupMessage' => 'Phpug\Service\UsergroupMessageFactory',
                 'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
+                'logger'                  => 'Phpug\Service\LoggerFactory',
             ),
             'invokables' => array(
                 'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
@@ -241,6 +253,7 @@ return array(
 			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
+			    'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
 			),
 		),
         'view_helpers'    => array(
@@ -279,5 +292,12 @@ return array(
 	                )
 	            )
 	        )
-		)
+		),
+    'log' => array(
+        'debuglog' => array(
+            'location' => realpath(__DIR__ . '/../../../../log/'). '/' . date('Y-m-d') . '.debug.log',
+            'handler'  => 'Stream',
+            'level'    => 100,
+        )
+    )
 );

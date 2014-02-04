@@ -35,6 +35,7 @@ namespace Phpug;
 use Zend\Module\Manager;
 use Zend\Module\Consumer\AutoloaderProvider;
 use Zend\Mvc\ModuleRouteListener;
+use Zend\Mvc\MvcEvent;
 use Zend\View\HelperPluginManager;
 
 
@@ -55,10 +56,26 @@ class Module
     
     public function onBootstrap($e)
     {
-    	$e->getApplication()->getServiceManager()->get('translator');
+    	$em = $e->getApplication()->getServiceManager();
+        $em->get('translator');
     	$eventManager        = $e->getApplication()->getEventManager();
     	$moduleRouteListener = new ModuleRouteListener();
     	$moduleRouteListener->attach($eventManager);
+
+        $logger = $em->get('logger');
+        $eventManager->attach(MvcEvent::EVENT_ROUTE, function($e) use ($logger) {
+            $match = $e->getRouteMatch();
+
+            // No route, this is a 404
+            if (!$match instanceof RouteMatch) {
+                return;
+            }
+
+            $logger->debug(sprintf(
+                'Route event with route %s',
+                $match->getMatchedRouteName()
+            ));
+        });
     }
     
     public function getConfig()

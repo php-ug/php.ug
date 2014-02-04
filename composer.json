@@ -7,7 +7,10 @@
          "org_heigl/contact" :           "dev-master",
          "org_heigl/mailproxy" :         "dev-master",
          "org_heigl/hybridauth" :        "dev-feature/multipleProviders",
-         "org_heigl/geolocation" :       "dev-master"
+         "org_heigl/geolocation" :       "dev-master",
+         "sabre/vobject" :               "3.0.*",
+         "monolog/monolog" :             "dev-master"
+
      },
      "require-dev" : {
          "mockery/mockery": "dev-master",
