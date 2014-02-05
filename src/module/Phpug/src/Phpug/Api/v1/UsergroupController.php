@@ -33,6 +33,7 @@ namespace Phpug\Api\v1;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Sabre\VObject;
+use Zend\Json\Json;
 
 class UsergroupController extends AbstractActionController
 {
@@ -51,6 +52,8 @@ class UsergroupController extends AbstractActionController
         $adapter = $this->getAdapter();
         $response = $this->getResponse();
         $viewModel =  $this->getViewModel();
+
+        Json::$useBuiltinEncoderDecoder = true;
 
         $id    = $this->getEvent()->getRouteMatch()->getParam('id');
         if (! $id) {
@@ -78,6 +81,11 @@ class UsergroupController extends AbstractActionController
         $ical = VObject\Reader::read($data);
         $ical->expand($now, $then);
         $nextEvent = $ical->VEVENT;
+        if (! $nextEvent) {
+            throw new \UnexpectedValueException(sprintf(
+                'No Event defined'
+            ));
+        }
         $content = array(
             'start' => $nextEvent->DTSTART->getDateTime()->format(\DateTime::RFC2822),
             'end'   => $nextEvent->DTEND->getDateTime()->format(\DateTime::RFC2822),
@@ -103,7 +111,7 @@ class UsergroupController extends AbstractActionController
             $content['description'] = $description;
         }
 
-        return $response->setContent($adapter->serialize($content));
+        return $viewModel->setVariables($content);
     }
 
     protected function getAdapter()

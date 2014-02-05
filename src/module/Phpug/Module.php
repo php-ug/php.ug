@@ -37,6 +37,7 @@ use Zend\Module\Consumer\AutoloaderProvider;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\View\HelperPluginManager;
+use Phpug\View\Strategy\JsonExceptionStrategy;
 
 
 /**
@@ -76,6 +77,19 @@ class Module
                 $match->getMatchedRouteName()
             ));
         });
+
+        // Could also be put into a separate Module
+        // Config json enabled exceptionStrategy
+        $exceptionStrategy = new JsonExceptionStrategy();
+
+        $displayExceptions = false;
+
+        if (isset($config['view_manager']['display_exceptions'])) {
+            $displayExceptions = $config['view_manager']['display_exceptions'];
+        }
+
+        $exceptionStrategy->setDisplayExceptions($displayExceptions);
+        $exceptionStrategy->attach($e->getTarget()->getEventManager());
     }
     
     public function getConfig()
