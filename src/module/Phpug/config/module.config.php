@@ -226,7 +226,7 @@ return array(
                 'UsergroupFieldset'    => 'Phpug\Service\UsergroupFieldsetFactory',
                 'Phpug\Service\UsergroupMessage' => 'Phpug\Service\UsergroupMessageFactory',
                 'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
-                'logger'                  => 'Phpug\Service\LoggerFactory',
+                'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
             ),
             'invokables' => array(
                 'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
@@ -296,10 +296,11 @@ return array(
 	            )
 	        )
 		),
-    'log' => array(
+    'php.ug.log' => array(
         'debuglog' => array(
-            'location' => realpath(__DIR__ . '/../../../../log/'). '/' . date('Y-m-d') . '.debug.log',
-            'handler'  => 'Stream',
+            'location' => getcwd() . '/log/debug.log',
+            'handler'  => 'RotatingFile',
+            'maxFiles' => 7,
             'level'    => 100,
         )
     )

@@ -57,26 +57,9 @@ class Module
     
     public function onBootstrap($e)
     {
-    	$em = $e->getApplication()->getServiceManager();
-        $em->get('translator');
     	$eventManager        = $e->getApplication()->getEventManager();
     	$moduleRouteListener = new ModuleRouteListener();
     	$moduleRouteListener->attach($eventManager);
-
-        $logger = $em->get('logger');
-        $eventManager->attach(MvcEvent::EVENT_ROUTE, function($e) use ($logger) {
-            $match = $e->getRouteMatch();
-
-            // No route, this is a 404
-            if (!$match instanceof RouteMatch) {
-                return;
-            }
-
-            $logger->debug(sprintf(
-                'Route event with route %s',
-                $match->getMatchedRouteName()
-            ));
-        });
 
         // Could also be put into a separate Module
         // Config json enabled exceptionStrategy

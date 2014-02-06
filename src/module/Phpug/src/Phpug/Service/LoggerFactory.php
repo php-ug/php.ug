@@ -46,9 +46,16 @@ class LoggerFactory implements FactoryInterface
             $config = ArrayUtils::iteratorToArray($config);
         }
 
-        foreach ($config['log'] as $key => $writer) {
-            $handler = '\\Monolog\\Handler\\' . $writer['handler'] . 'Handler';
-            $log->pushHandler(new $handler($writer['location'], $writer['level']));
+        foreach ($config['php.ug.log'] as $writer) {
+            switch (strtolower($writer['handler'])) {
+                case 'rotatingfile':
+                    $handler = new Handler\RotatingFileHandler($writer['location'], $writer['maxFiles'], $writer['level']);
+                    break;
+                default:
+                    $handler = new Handler\StreamHandler($writer['location'], $writer['level']);
+                    break;
+            }
+            $log->pushHandler($handler);
         }
         return $log;
     }
