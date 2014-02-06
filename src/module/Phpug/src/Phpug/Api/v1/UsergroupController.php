@@ -75,12 +75,27 @@ class UsergroupController extends AbstractActionController
         }
         $uri = $result[0]->icalendar_url;
 
-        $data = file_get_contents($uri);
+        $data = @file_get_contents($uri);
+        if (! $data) {
+            throw new \UnexpectedValueException(sprintf(
+                'Could not read data'
+            ));
+        }
         $now = new \DateTime();
         $then = (new \DateTime())->add(new \DateInterval('P1Y'));
         $ical = VObject\Reader::read($data);
         $ical->expand($now, $then);
-        $nextEvent = $ical->VEVENT;
+        $nextEvent = null;
+        if (!isset($ical->VEVENT)) {
+            throw new \UnexpectedValueException(sprintf(
+                'No Event available'
+            ));
+        }
+        foreach ($ical->VEVENT as $event) {
+            if (null === $nextEvent || $nextEvent->DTSTART->getDateTime() > $event->DTSTART->getDateTime()) {
+                $nextEvent = $event;
+            }
+        }
         if (! $nextEvent) {
             throw new \UnexpectedValueException(sprintf(
                 'No Event defined'
@@ -90,25 +105,21 @@ class UsergroupController extends AbstractActionController
             'start' => $nextEvent->DTSTART->getDateTime()->format(\DateTime::RFC2822),
             'end'   => $nextEvent->DTEND->getDateTime()->format(\DateTime::RFC2822),
             'location' => '',
-            'summary'  => '',
+            'summary'  => 'Next event',
             'url'      => '',
             'description' => '',
         );
-        $location =  $nextEvent->LOCATION->getValue();
-        if ($location) {
-            $content['location'] = $location;
+        if (isset($nextEvent->LOCATION)) {
+            $content['location'] = $nextEvent->LOCATION->getValue();;
         }
-        $summary =  $nextEvent->SUMMARY->getValue();
-        if ($summary) {
-            $content['summary'] = $summary;
+        if (isset($nextEvent->SUMMARY)) {
+            $content['summary'] = $nextEvent->SUMMARY->getValue();
         }
-        $url =  $nextEvent->URL->getValue();
-        if ($url) {
-            $content['url'] = $url;
+        if (isset($nextEvent->URL)) {
+            $content['url'] = $nextEvent->URL->getValue();
         }
-        $description =  $nextEvent->DESCRIPTION->getValue();
-        if ($description) {
-            $content['description'] = $description;
+        if (isset($nextEvent->DESCRIPTION)) {
+            $content['description'] = $nextEvent->DESCRIPTION->getValue();;
         }
 
         return $viewModel->setVariables($content);
