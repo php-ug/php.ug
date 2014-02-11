@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./tests/bootstrap.php">
+<phpunit bootstrap="src/module/Phpug/tests/bootstrap.php">
     <testsuite name="php.ug Test-Suite">
-        <directory>./tests</directory>
+        <directory>src/module/Phpug/tests</directory>
     </testsuite>
 
     <groups>

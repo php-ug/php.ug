@@ -96,12 +96,16 @@ class ListtypeController extends AbstractRestfulController
         $acl = $this->getServiceLocator()->get('acl');
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
         foreach ($types[0]->getUsergroups() as $group) {
+            $currentGroup = $group->toArray();
+            $countryCache = $this->getServiceLocator()->get('Phpug\Cache\Country');
+            $countryCache->setUserGroup($group);
+            $currentGroup['country'] = $countryCache->getCache()->getCache();
             if (Usergroup::ACTIVE == $group->getState()) {
-                $content['groups'][] = $group->toArray();
+                $content['groups'][] = $currentGroup;
                 continue;
             }
             if ($acl && $acl->isAllowed((string) $role, 'ug', 'edit')) {
-                $content['groups'][] = $group->toArray();
+                $content['groups'][] = $currentGroup;
                 continue;
             }
         }

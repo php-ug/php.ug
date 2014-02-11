@@ -215,12 +215,19 @@ return array(
                 'UsergroupFieldset'    => 'Phpug\Service\UsergroupFieldsetFactory',
                 'Phpug\Service\UsergroupMessage' => 'Phpug\Service\UsergroupMessageFactory',
                 'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
+                'Phpug\Service\Geocoder' => 'Phpug\Service\GeocoderFactory',
+                'Phpug\Cache\Country'     => 'Phpug\Service\CountryCacheFactory',
+                'Phpug\Entity\Cache'  => 'Phpug\Service\CacheFactory',
             ),
             'invokables' => array(
                 'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
                 'contactsRow'   => 'Phpug\View\Helper\ContactsRow',
                 'Phpug\Service\Message' => 'Zend\Mail\Message',
                 'Zend\Mail\Transport' => 'Zend\Mail\Transport\File',
+            ),
+            'shared' => array(
+                'Phpug\Cache\Country' => false,
+                'Phpug\Entity\Cache'  => false,
             ),
 		),
 		'translator' => array(
@@ -279,5 +286,17 @@ return array(
 	                )
 	            )
 	        )
-		)
+		),
+        'phpug' => array(
+            'entity' => array(
+                'cache' => array(
+                    'country' => array(
+                        'cacheLifeTime' => 'P1M',
+                    ),
+                    'event' => array(
+                        'cacheLifeTime' => 'P1W',
+                    ),
+                ),
+            ),
+        ),
 );

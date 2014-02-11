@@ -60,4 +60,15 @@
     <target name="deploy" depends="build">
 
     </target>
+
+    <target name="test">
+        <phpunit configuration="phpunit.xml.dist">
+            <formatter type = "plain" usefile = "false"/>
+            <batchtest>
+                <fileset dir = "src/module/Phpug/tests">
+                    <include name = "**/*Test*.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
 </project>

@@ -113,6 +113,12 @@ class Usergroup
     protected $contacts;
 
     /**
+     * @ORM\OneToMany(targetEntity="Cache", mappedBy="usergroup", cascade={"persist"})
+     * @var ArrayCollection
+     */
+    protected $caches;
+
+    /**
      * @ORM\Column(type="integer")
      */
     protected $state;
@@ -151,6 +157,7 @@ class Usergroup
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
+        $this->caches   = new ArrayCollection();
     }
 
     /**
@@ -161,6 +168,16 @@ class Usergroup
     public function getContacts()
     {
         return $this->contacts;
+    }
+
+    /**
+     * Get the caches
+     *
+     * @return ArrayCollection
+     */
+    public function getCaches()
+    {
+        return $this->caches;
     }
 
     /**
@@ -368,6 +385,15 @@ class Usergroup
         return $this->latitude;
     }
 
+    /**
+     * Get the longitude of the entity
+     *
+     * @return float
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
 
     /**
      * Get the url of the entity
@@ -401,4 +427,40 @@ class Usergroup
         }
         return $this->ugtype->getId();
     }
+
+    /**
+     * Set the caches for this object
+     *
+     * @param ArrayCollection $contacts
+     *
+     * @return $this
+     */
+    public function addCaches(ArrayCollection $caches)
+    {
+        foreach ($caches as $cache) {
+            $cache->setGroup($this);
+            $this->caches->add($cache);
+        }
+
+        return $this;
+    }
+
+    /**
+     * remove all caches from this object
+     *
+     * @param ArrayCollection $contacts
+     *
+     * @return $this
+     */
+    public function removeCaches(ArrayCollection $caches)
+    {
+        foreach ($caches as $cache) {
+            $cache->setGroup(null);
+            $this->caches->removeElement($cache);
+        }
+
+        return $this;
+    }
+
+
 }
