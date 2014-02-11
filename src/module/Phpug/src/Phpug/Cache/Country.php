@@ -36,65 +36,8 @@ use Phpug\Entity\Cache;
 use Phpug\Entity\Usergroup;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class Country implements CacheInterface
+class Country extends AbstractCache
 {
-    /**
-     * Holds the Usergroup for which to fetch cached informations
-     *
-     * @var Usergroup $usergroup
-     */
-    protected $usergroup;
-
-    /**
-     * The type of cache
-     *
-     * @var string $type
-     */
-    protected $type = 'country';
-
-    /**
-     * The serviceManager
-     *
-     * @var ServiceLocatorInterface $serviceManager
-     */
-    protected $serviceManager;
-
-    /**
-     * Get the cache-value
-     *
-     * @param string $type
-     *
-     * @return Cache
-     */
-    public function getCache()
-    {
-        $caches = $this->usergroup->getCaches();
-        $myCache = null;
-        foreach($caches as $cache) {
-            if ($this->type != $cache->getType()) {
-                continue;
-            }
-            $myCache = $cache;
-            break;
-        }
-
-        if (! $myCache) {
-            $myCache = $this->serviceManager->get('Phpug\Entity\Cache');
-            $myCache->setType($this->type);
-            $this->usergroup->caches->add($myCache);
-            $myCache->setGroup($this->usergroup);
-        }
-
-        $config = $this->serviceManager->get('config');
-        $cacheLifeTime = $config['phpug']['entity']['cache'][$this->type]['cacheLifeTime'];
-        $cacheLifeTime = new \DateInterval($cacheLifeTime);
-        if ($myCache->getLastChangeDate()->add($cacheLifeTime) < new \DateTime()) {
-            $this->populateCache($myCache);
-
-        }
-        return $myCache;
-    }
-
     /**
      * Do the actual Cache-Popularion
      *
@@ -112,54 +55,11 @@ class Country implements CacheInterface
                 $this->usergroup->getLongitude()
             );
             $cache->setCache($geocode->getCountry());
-
-            $cache->setLastChangeDate(new \DateTime());
-            $em = $this->serviceManager->get('doctrine.entitymanager.orm_default');
-            $em->persist($cache);
-            $em->flush();
         }catch(Exception $e)
         {
             //
         }
 
         return $cache;
-    }
-
-    /**
-     * Set the usergroup
-     *
-     * @param Usergroup $usergroup
-     *
-     * @return self
-     */
-    public function setUsergroup(Usergroup $usergroup)
-    {
-        $this->usergroup = $usergroup;
-
-        return $this;
-    }
-
-    /**
-     * Set the serviceManager
-     *
-     * @param ServiceManager $serviceManager
-     *
-     * @return self
-     */
-    public function setServiceManager(ServiceLocatorInterface $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-
-        return $this;
-    }
-
-    public function __construct(Usergroup $usergroup = null, ServiceLocatorInterface $serviceManager = null)
-    {
-        if ($usergroup) {
-            $this->setUsergroup($usergroup);
-        }
-        if ($serviceManager) {
-            $this->setServiceManager($serviceManager);
-        }
     }
 }

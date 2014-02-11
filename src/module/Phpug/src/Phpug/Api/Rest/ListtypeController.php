@@ -99,6 +99,7 @@ class ListtypeController extends AbstractRestfulController
             $currentGroup = $group->toArray();
             $countryCache = $this->getServiceLocator()->get('Phpug\Cache\Country');
             $countryCache->setUserGroup($group);
+            unset($currentGroup['caches']);
             $currentGroup['country'] = $countryCache->getCache()->getCache();
             if (Usergroup::ACTIVE == $group->getState()) {
                 $content['groups'][] = $currentGroup;

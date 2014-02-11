@@ -225,18 +225,10 @@ class CountryTest extends \PHPUnit_Framework_TestCase
                   ->once()
                   ->andReturn($return);
 
-        $mockEm = M::mock('stdObject');
-        $mockEm->shouldReceive('persist')->once();
-        $mockEm->shouldReceive('flush')->once();
-
         $sm = M::mock('\Zend\ServiceManager\ServiceManager');
         $sm->shouldReceive('get')
             ->with('Phpug\Service\Geocoder')
             ->andReturn($Geocoding);
-
-        $sm->shouldReceive('get')
-            ->with('doctrine.entitymanager.orm_default')
-            ->andReturn($mockEm);
 
         $this->ug->shouldReceive('getLatitude')->once()->andReturn('a');
         $this->ug->shouldReceive('getLongitude')->once()->andReturn('b');
@@ -255,6 +247,30 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $method = \UnitTestHelper::getMethod($m, 'populateCache');
         $result = $method->invoke($m, $cache);
         $this->assertSame($cache,$result);
+    }
+
+    public function testPersistenceLayer()
+    {
+        $cache = M::mock('Phpug\Entity\Cache');
+        $cache->shouldReceive('setLastChangeDate');
+
+
+        $mockEm = M::mock('stdObject');
+        $mockEm->shouldReceive('persist')->once();
+        $mockEm->shouldReceive('flush')->once();
+
+        $sm = M::mock('\Zend\ServiceManager\ServiceManager');
+        $sm->shouldReceive('get')
+            ->with('doctrine.entitymanager.orm_default')
+            ->andReturn($mockEm);
+
+        $m = new Country($this->ug, $sm);
+
+        $method = \UnitTestHelper::getMethod($m, 'makePersistent');
+        $result = $method->invoke($m, $cache);
+        $this->assertSame($cache,$result);
+
+
     }
 }
  
