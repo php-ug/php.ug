@@ -320,8 +320,7 @@ return array(
             'maxFiles' => 7,
             'level'    => 100,
         )
-    )
-		),
+    ),
         'phpug' => array(
             'entity' => array(
                 'cache' => array(
