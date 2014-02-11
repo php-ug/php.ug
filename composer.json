@@ -16,11 +16,6 @@
          "mockery/mockery": "dev-master",
          "zendframework/zend-developer-tools" : "dev-master"
      },
-     "repositories" : [{
-         "type" : "vcs",
-         "url"  : "/Volumes/Sites/Sites/org.heigl.HybridAuth/.git"
-     }],
-
      "autoload" : {
          "psr-0" : {
              "Phpug\\" : "src/module/Phpug/src",
