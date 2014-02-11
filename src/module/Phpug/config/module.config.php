@@ -86,6 +86,17 @@ return array(
 			                    ),
 			                ),
 			            ),
+                        'v1' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route' => '/v1/:controller/:action[/:id]',
+                                'defaults' => array(
+                                    '__NAMESPACE__' => 'Phpug\Api\v1',
+                                    'controller'    => 'UsergroupController',
+                                    'action'        => 'nextEvent',
+                                ),
+                            ),
+                        ),
 			            
 			        ),
 			    ),
@@ -215,6 +226,7 @@ return array(
                 'UsergroupFieldset'    => 'Phpug\Service\UsergroupFieldsetFactory',
                 'Phpug\Service\UsergroupMessage' => 'Phpug\Service\UsergroupMessageFactory',
                 'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
+                'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
             ),
             'invokables' => array(
                 'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
@@ -241,6 +253,7 @@ return array(
 			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
+			    'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
 			),
 		),
         'view_helpers'    => array(
@@ -265,6 +278,9 @@ return array(
 				'template_path_stack' => array(
 						__DIR__ . '/../view',
 				),
+                'strategies' => array(
+                    'ViewJsonStrategy',
+                ),
 		),
 		'doctrine' => array(
 	        'driver' => array(
@@ -279,5 +295,13 @@ return array(
 	                )
 	            )
 	        )
-		)
+		),
+    'php.ug.log' => array(
+        'debuglog' => array(
+            'location' => getcwd() . '/log/debug.log',
+            'handler'  => 'RotatingFile',
+            'maxFiles' => 7,
+            'level'    => 100,
+        )
+    )
 );
