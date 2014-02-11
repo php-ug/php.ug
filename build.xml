@@ -36,29 +36,11 @@
 -->
 <project name="php.ug" default="build" basedir=".">
 
-    <!-- Load FTP-Properties -->
-    <property file="ftp.properties" prefix="ftp" />
-    <!-- This target deletes all temporary files from the directory -->
-    <target name="clean">
-        <delete includeemptydirs="true">
-            <fileset dir="${basedir}/build">
-                <include name="**/*" />
-            </fileset>
-        </delete>
-    </target>
-
-    <target name="build" depends="clean, build.js, build.css"/>
-
-    <target name="build.css">
-
-    </target>
-
-    <target name="build.js">
-
-    </target>
-
-    <target name="deploy" depends="build">
-
+    <target name="update">
+        <echo message="Updating composer-binary"/>
+        <exec command="composer self-update"/>
+        <echo message="Updating Requirements"/>
+        <exec command="composer update" />
     </target>
 
     <target name="test">

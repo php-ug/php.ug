@@ -121,7 +121,7 @@ class Usergroup
     /**
      * @ORM\Column(type="integer")
      */
-    protected $state;
+    protected $state = 0;
 
     protected $inputFilter;
 

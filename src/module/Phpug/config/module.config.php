@@ -86,6 +86,17 @@ return array(
 			                    ),
 			                ),
 			            ),
+                        'v1' => array(
+                            'type' => 'Segment',
+                            'options' => array(
+                                'route' => '/v1/:controller/:action[/:id]',
+                                'defaults' => array(
+                                    '__NAMESPACE__' => 'Phpug\Api\v1',
+                                    'controller'    => 'UsergroupController',
+                                    'action'        => 'nextEvent',
+                                ),
+                            ),
+                        ),
 			            
 			        ),
 			    ),
@@ -204,6 +215,16 @@ return array(
                         ),
 					),					
 				),
+                'subdomain' => array(
+                    'type' => 'Hostname',
+                    'options' => array(
+                        'route' => ':ugid.php.ug',
+                        'defaults' => array(
+                            'controller' => 'Phpug\Controller\IndexController',
+                            'action' => 'redirect',
+                        ),
+                    ),
+                ),
  			),
 		),
 		'service_manager' => array(
@@ -218,6 +239,7 @@ return array(
                 'Phpug\Service\Geocoder' => 'Phpug\Service\GeocoderFactory',
                 'Phpug\Cache\Country'     => 'Phpug\Service\CountryCacheFactory',
                 'Phpug\Entity\Cache'  => 'Phpug\Service\CacheFactory',
+                'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
             ),
             'invokables' => array(
                 'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
@@ -248,6 +270,7 @@ return array(
 			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
+			    'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
 			),
 		),
         'view_helpers'    => array(
@@ -272,6 +295,9 @@ return array(
 				'template_path_stack' => array(
 						__DIR__ . '/../view',
 				),
+                'strategies' => array(
+                    'ViewJsonStrategy',
+                ),
 		),
 		'doctrine' => array(
 	        'driver' => array(
@@ -286,6 +312,15 @@ return array(
 	                )
 	            )
 	        )
+		),
+    'php.ug.log' => array(
+        'debuglog' => array(
+            'location' => getcwd() . '/log/debug.log',
+            'handler'  => 'RotatingFile',
+            'maxFiles' => 7,
+            'level'    => 100,
+        )
+    )
 		),
         'phpug' => array(
             'entity' => array(
