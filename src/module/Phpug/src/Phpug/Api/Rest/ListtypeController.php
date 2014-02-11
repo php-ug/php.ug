@@ -97,7 +97,7 @@ class ListtypeController extends AbstractRestfulController
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
         foreach ($types[0]->getUsergroups() as $group) {
             $currentGroup = $group->toArray();
-            $countryCache = $this->getServiceLocator()->get('Phpug\Cache\Country');
+            $countryCache = $this->getServiceLocator()->get('Phpug\Cache\CountryCode');
             $countryCache->setUserGroup($group);
             unset($currentGroup['caches']);
             $currentGroup['country'] = $countryCache->getCache()->getCache();

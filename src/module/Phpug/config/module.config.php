@@ -238,6 +238,7 @@ return array(
                 'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
                 'Phpug\Service\Geocoder' => 'Phpug\Service\GeocoderFactory',
                 'Phpug\Cache\Country'     => 'Phpug\Service\CountryCacheFactory',
+                'Phpug\Cache\CountryCode'     => 'Phpug\Service\CountryCodeCacheFactory',
                 'Phpug\Entity\Cache'  => 'Phpug\Service\CacheFactory',
                 'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
             ),
@@ -249,6 +250,7 @@ return array(
             ),
             'shared' => array(
                 'Phpug\Cache\Country' => false,
+                'Phpug\Cache\CountryCode' => false,
                 'Phpug\Entity\Cache'  => false,
             ),
 		),
@@ -325,6 +327,9 @@ return array(
             'entity' => array(
                 'cache' => array(
                     'country' => array(
+                        'cacheLifeTime' => 'P1M',
+                    ),
+                    'countrycode' => array(
                         'cacheLifeTime' => 'P1M',
                     ),
                     'event' => array(
