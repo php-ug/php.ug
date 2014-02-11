@@ -114,6 +114,22 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $mockCache->shouldReceive('add');
         $mockCache->shouldReceive('getLastChangeDate')
             ->andReturn((new \DateTime())->sub(new \DateInterval('P1M1D')));
+        $mockCache->shouldReceive('setCache');
+        $mockCache->shouldReceive('setLastChangeDate');
+
+        $mockGeocode = M::mock('stdObject');
+        $mockGeocode->shouldReceive('getCountry')
+                    ->once()
+                    ->andReturn('string');
+        $mockGeocoder = M::mock('\Geocoder\Geocoder');
+        $mockGeocoder->shouldReceive('reverse')
+                     ->once()
+                     ->with(0,0)
+                     ->andReturn($mockGeocode);
+
+        $mockEm = M::mock('stdObject');
+        $mockEm->shouldReceive('persist')->once();
+        $mockEm->shouldReceive('flush')->once();
 
         $sm = M::mock('\Zend\ServiceManager\ServiceManager');
         $sm->shouldReceive('get')
@@ -122,12 +138,26 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $sm->shouldReceive('get')
             ->with('config')
             ->andReturn($mockConfig);
+        $sm->shouldReceive('get')
+           ->with('Phpug\Service\Geocoder')
+           ->andReturn($mockGeocoder);
+        $sm->shouldReceive('get')
+           ->with('doctrine.entitymanager.orm_default')
+           ->andReturn($mockEm);
 
         $ug = M::mock('\Phpug\Entity\Usergroup', array('foo'))
             ->shouldReceive('getCaches')
             ->once()
             ->andReturn(array())
             ->mock();
+        $ug->shouldReceive('getLatitude')
+           ->once()
+           ->andReturn(0);
+        $ug->shouldReceive('getLongitude')
+           ->once()
+           ->andReturn(0);
+
+
 
         $country = new Country();
         $country->setUsergroup($ug);
@@ -195,10 +225,18 @@ class CountryTest extends \PHPUnit_Framework_TestCase
                   ->once()
                   ->andReturn($return);
 
+        $mockEm = M::mock('stdObject');
+        $mockEm->shouldReceive('persist')->once();
+        $mockEm->shouldReceive('flush')->once();
+
         $sm = M::mock('\Zend\ServiceManager\ServiceManager');
         $sm->shouldReceive('get')
             ->with('Phpug\Service\Geocoder')
             ->andReturn($Geocoding);
+
+        $sm->shouldReceive('get')
+            ->with('doctrine.entitymanager.orm_default')
+            ->andReturn($mockEm);
 
         $this->ug->shouldReceive('getLatitude')->once()->andReturn('a');
         $this->ug->shouldReceive('getLongitude')->once()->andReturn('b');
@@ -210,6 +248,9 @@ class CountryTest extends \PHPUnit_Framework_TestCase
               ->with('foo')
               ->once()
               ->andReturn($cache);
+        $cache->shouldReceive('setCache');
+        $cache->shouldReceive('setLastChangeDate');
+
 
         $method = \UnitTestHelper::getMethod($m, 'populateCache');
         $result = $method->invoke($m, $cache);
