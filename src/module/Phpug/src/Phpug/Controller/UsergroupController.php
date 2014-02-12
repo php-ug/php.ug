@@ -82,21 +82,37 @@ class UsergroupController extends AbstractActionController
     public function promoteAction()
     {
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
-        if (! $currentUser) {
-            $this->getResponse()->setStatusCode(401);
-            return;
+        if (! $currentUser->isAuthenticated()) {
+            $this->getResponse()
+                ->setStatusCode(401)
+                ->getHeaders()
+                ->addHeader(
+                    \Zend\Http\Header\WWWAuthenticate::fromString(
+                        'WWW-Authenticate: OAuth'
+                    )
+                );
+            return array('error' => array(
+                'title' => 'You are not logged in',
+                'message' => 'You have to log in to promote a new usergroup.'
+            ));
         }
 
         $acl = $this->getServiceLocator()->get('acl');
         if (! $acl) {
             $this->getResponse()->setSTatusCode(500);
-            return true;
+            return array('error' => array(
+                'title' => 'Something went wrong on our side',
+                'message' => 'We apologize for the inconvenience, but someone seems to have misconfigured the Access Control System',
+            ));
         }
 
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
         if (! $acl->isAllowed((string) $role, 'ug', 'promote')) {
-            $this->getResponse()->setStatusCode(401);
-            return true;
+            $this->getREsponse()->setStatusCode(403)->setContent('You may not do that');
+            return array('error' => array(
+                'title' => 'You are not authorized to do that',
+                'message' => 'Your account has not the necessary rights to promote a new usergroup. If you feel like that is an error please contact us! '
+            ));
         }
 
         $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
@@ -142,15 +158,28 @@ class UsergroupController extends AbstractActionController
     public function editAction()
     {
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
-        if (! $currentUser) {
-            $this->getResponse()->setStatusCode(401);
-            return;
+        if (! $currentUser->isAuthenticated()) {
+            $this->getResponse()
+                 ->setStatusCode(401)
+                 ->getHeaders()
+                 ->addHeader(
+                     \Zend\Http\Header\WWWAuthenticate::fromString(
+                         'WWW-Authenticate: OAuth'
+                     )
+                 );
+            return array('error' => array(
+                'title' => 'You are not logged in',
+                'message' => 'You have to be logged in to edit the informations for this usergroup.'
+            ));
         }
 
         $acl = $this->getServiceLocator()->get('acl');
         if (! $acl) {
-            $this->getResponse()->setSTatusCode(500);
-            return true;
+            $this->getResponse()->setStatusCode(500);
+            return array('error' => array(
+                'title' => 'Something went wrong on our side',
+                'message' => 'We apologize for the inconvenience, but someone seems to have misconfigured the Access Control System',
+            ));
         }
 
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
@@ -158,7 +187,10 @@ class UsergroupController extends AbstractActionController
         $usergroup = $objectManager->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
         if (! $usergroup) {
             $this->getResponse()->setStatusCode(404);
-            return true;
+            return array('error' => array(
+                'title' => 'No Usergroup found',
+                'message' => 'We could not find the usergroup you requested!</p><p>Perhaps the usergroup has been renamed or there is a typo in its name? Please check back with the contac ts of the usergroup or feel free to contact us via the <a href="/contact">Contact-Form</a>!'
+            ));
         }
         $usergroup = $usergroup[0];
 
@@ -170,8 +202,11 @@ class UsergroupController extends AbstractActionController
             ->setGroup($usergroup);
 
         if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
-            $this->getResponse()->setStatusCode(401);
-            return true;
+            $this->getResponse()->setStatusCode(403);
+            return array('error' => array(
+                'title' => 'You are not authorized to do that',
+                'message' => 'Your account has not the necessary rights to edit this usergroup. If you feel like that is an error please contact one of the representatives of the usergroup. If that doesn\'t help (Or you have locked yourself out) feel free to contact us via the <a href="/contact">Contact-Form</a>!'
+            ));
         }
 
         $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
