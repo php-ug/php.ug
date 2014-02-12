@@ -1,16 +1,16 @@
  {
      "minimum-stability": "dev",
      "require": {
-         "doctrine/doctrine-module":     "dev-master",
-         "doctrine/doctrine-orm-module": "dev-master",
+         "doctrine/doctrine-module":     ">=0.8.0",
+         "doctrine/doctrine-orm-module": ">=0.8.0",
          "zendframework/zendframework":  "master",
          "org_heigl/contact" :           "dev-master",
          "org_heigl/mailproxy" :         "dev-master",
          "org_heigl/hybridauth" :        "dev-feature/multipleProviders",
          "org_heigl/geolocation" :       "dev-master",
          "sabre/vobject" :               "3.0.*",
-         "monolog/monolog" :             "1.7.*"
-
+         "monolog/monolog" :             "1.7.*",
+         "willdurand/geocoder" :         ">=2.4.2"
      },
      "require-dev" : {
          "mockery/mockery": "dev-master",

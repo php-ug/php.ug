@@ -42,4 +42,15 @@
         <echo message="Updating Requirements"/>
         <exec command="composer update" />
     </target>
+
+    <target name="test">
+        <phpunit configuration="phpunit.xml.dist">
+            <formatter type = "plain" usefile = "false"/>
+            <batchtest>
+                <fileset dir = "src/module/Phpug/tests">
+                    <include name = "**/*Test*.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
 </project>
