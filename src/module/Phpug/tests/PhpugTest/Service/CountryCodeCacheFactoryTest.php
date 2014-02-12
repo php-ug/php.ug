@@ -25,41 +25,26 @@
  * @copyright ©2014-2014 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
  * @version   0.0
- * @since     07.02.14
+ * @since     12.02.14
  * @link      https://github.com/heiglandreas/
  */
 
-namespace Phpug\Cache;
+namespace PhpugTest\Service;
 
-use Phpug\Cache\CacheInterface;
-use Phpug\Entity\Cache;
-use Phpug\Entity\Usergroup;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
-class Country extends AbstractCache
+use Mockery as M;
+use Phpug\Service\CountryCodeCacheFactory;
+
+class CountryCodeCacheFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Do the actual Cache-Popularion
-     *
-     * @var Cache $cache
-     *
-     * @return Cache
-     */
-    protected function populateCache(Cache $cache)
+
+    public function testCreationOfCountryCache()
     {
-        $geocoder = $this->serviceManager->get('Phpug\Service\Geocoder');
-
-        try {
-            $geocode = $geocoder->reverse(
-                $this->usergroup->getLatitude(),
-                $this->usergroup->getLongitude()
-            );
-            $cache->setCache($geocode->getCountry());
-        }catch(Exception $e)
-        {
-            //
-        }
-
-        return $cache;
+        $sm = M::mock('\Zend\ServiceManager\ServiceManager');
+        $factory = new CountryCodeCacheFactory();
+        $countryCache = $factory->createService($sm);
+        $this->assertInstanceof('Phpug\Cache\Cache', $countryCache);
+        $this->assertAttributeInstanceof('Phpug\Cache\Populator\CountryCode', 'populator', $countryCache);
     }
 }
+ 

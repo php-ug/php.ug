@@ -31,35 +31,24 @@
 
 namespace Phpug\Cache;
 
-use Phpug\Entity\Cache;
+use Phpug\Entity\Usergroup;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class CountryCode extends AbstractCache
+interface CachePopulatorInterface
 {
-    protected $type = 'countrycode';
 
     /**
-     * Do the actual Cache-Popularion
+     * @param Usergroup               $usergroup
+     * @param ServiceLocatorInterface $serviceManager
      *
-     * @var Cache $cache
-     *
-     * @return Cache
+     * @return string
      */
-    protected function populateCache(Cache $cache)
-    {
-        $geocoder = $this->serviceManager->get('Phpug\Service\Geocoder');
+    public function populate(Usergroup $usergroup, ServiceLocatorInterface $serviceManager);
 
-        try {
-            $geocode = $geocoder->reverse(
-                $this->usergroup->getLatitude(),
-                $this->usergroup->getLongitude()
-            );
-            $cache->setCache($geocode->getCountryCode());
-        }catch(Exception $e)
-        {
-            //
-        }
-
-        return $cache;
-    }
-}
+    /**
+     * Get the type of cachepopulator
+     *
+     * @return string
+     */
+    public function getType();
+} 

@@ -31,12 +31,11 @@
 
 namespace Phpug\Cache;
 
-use Phpug\Cache\CacheInterface;
-use Phpug\Entity\Cache;
 use Phpug\Entity\Usergroup;
+use Phpug\Entity\Cache as CacheEntity;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-abstract class AbstractCache implements CacheInterface
+class Cache implements CacheInterface
 {
     /**
      * Holds the Usergroup for which to fetch cached informations
@@ -58,6 +57,13 @@ abstract class AbstractCache implements CacheInterface
      * @var ServiceLocatorInterface $serviceManager
      */
     protected $serviceManager;
+
+    /**
+     * The populator to use
+     *
+     * @var CachePopulatorInterface
+     */
+    protected $populator;
 
     /**
      * Get the cache-value
@@ -89,7 +95,7 @@ abstract class AbstractCache implements CacheInterface
         $cacheLifeTime = $config['phpug']['entity']['cache'][$this->type]['cacheLifeTime'];
         $cacheLifeTime = new \DateInterval($cacheLifeTime);
         if ($myCache->getLastChangeDate()->add($cacheLifeTime) < new \DateTime()) {
-            $myCache = $this->populateCache($myCache);
+            $myCache->setCache($this->populator->populate($this->usergroup, $this->serviceManager));
             $myCache = $this->makePersistent($myCache);
 
         }
@@ -97,22 +103,13 @@ abstract class AbstractCache implements CacheInterface
     }
 
     /**
-     * Do the actual Cache-Popularion
-     *
-     * @var Cache $cache
-     *
-     * @return Cache
-     */
-    abstract protected function populateCache(Cache $cache);
-
-    /**
      * Make the cached data persistent
      *
-     * @param Cache $cache
+     * @param CacheEntity $cache
      *
-     * @return Cache
+     * @return CacheEntity
      */
-    protected function makePersistent(Cache $cache)
+    protected function makePersistent(CacheEntity $cache)
     {
 
         $cache->setLastChangeDate(new \DateTime());
@@ -151,7 +148,7 @@ abstract class AbstractCache implements CacheInterface
         return $this;
     }
 
-    public function __construct(Usergroup $usergroup = null, ServiceLocatorInterface $serviceManager = null)
+    public function __construct(Usergroup $usergroup = null, ServiceLocatorInterface $serviceManager = null, CachePopulatorInterface $populator = null)
     {
         if ($usergroup) {
             $this->setUsergroup($usergroup);
@@ -159,5 +156,15 @@ abstract class AbstractCache implements CacheInterface
         if ($serviceManager) {
             $this->setServiceManager($serviceManager);
         }
+        if ($populator) {
+            $this->setPopulator($populator);
+        }
+    }
+
+    public function setPopulator(CachePopulatorInterface $populator)
+    {
+        $this->populator = $populator;
+
+        return $this;
     }
 }

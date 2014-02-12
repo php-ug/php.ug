@@ -32,11 +32,10 @@
 namespace PhpugTest\Cache;
 
 
-use Phpug\Cache\Country;
-use Phpug\Entity\Cache;
+use Phpug\Cache\Cache as Country;
 use Mockery as M;
 
-class CountryTest extends \PHPUnit_Framework_TestCase
+class CacheTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $ug;
@@ -45,13 +44,18 @@ class CountryTest extends \PHPUnit_Framework_TestCase
 
     protected $country;
 
+    protected $populator;
+
     public function setup()
     {
         $this->ug = M::mock('\Phpug\Entity\Usergroup');
         $this->sm = M::mock('\Zend\ServiceManager\ServiceManager');
+        $this->populator = M::mock('Phpug\Cache\CachePopulatorInterface');
         $this->country = new Country();
         $this->country->setUsergroup($this->ug);
         $this->country->setServiceManager($this->sm);
+        $this->country->setPopulator($this->populator);
+
     }
 
     public function testSettingUsergroup()
@@ -68,6 +72,14 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEmpty('serviceManager', $country);
         $this->assertSame($country, $country->setServiceManager($this->sm));
         $this->assertAttributeEquals($this->sm, 'serviceManager', $country);
+    }
+
+    public function testSettingPopulator()
+    {
+        $country = new Country();
+        $this->assertAttributeEmpty('populator', $country);
+        $this->assertSame($country, $country->setPopulator($this->populator));
+        $this->assertAttributeEquals($this->populator, 'populator', $country);
     }
 
     public function testGettingCacheEntity()
@@ -96,8 +108,13 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             ->andReturn(array())
             ->mock();
 
+        $pe = M::mock('\Phpug\Cache\CachePopulatorInterface');
+        $pe->shouldReceive('populate')
+           ->andReturn($mockCache);
+
         $country = new Country();
         $country->setUsergroup($ug);
+        $country->setPopulator($pe);
         $this->assertSame($country, $country->setServiceManager($sm));
         $this->assertAttributeSame($sm, 'serviceManager', $country);
         $this->assertSame($mockCache, $country->getCache());
@@ -114,18 +131,9 @@ class CountryTest extends \PHPUnit_Framework_TestCase
         $mockCache->shouldReceive('add');
         $mockCache->shouldReceive('getLastChangeDate')
             ->andReturn((new \DateTime())->sub(new \DateInterval('P1M1D')));
-        $mockCache->shouldReceive('setCache');
+        $mockCache->shouldReceive('setCache')->with('foobar');
         $mockCache->shouldReceive('setLastChangeDate');
 
-        $mockGeocode = M::mock('stdObject');
-        $mockGeocode->shouldReceive('getCountry')
-                    ->once()
-                    ->andReturn('string');
-        $mockGeocoder = M::mock('\Geocoder\Geocoder');
-        $mockGeocoder->shouldReceive('reverse')
-                     ->once()
-                     ->with(0,0)
-                     ->andReturn($mockGeocode);
 
         $mockEm = M::mock('stdObject');
         $mockEm->shouldReceive('persist')->once();
@@ -139,9 +147,6 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             ->with('config')
             ->andReturn($mockConfig);
         $sm->shouldReceive('get')
-           ->with('Phpug\Service\Geocoder')
-           ->andReturn($mockGeocoder);
-        $sm->shouldReceive('get')
            ->with('doctrine.entitymanager.orm_default')
            ->andReturn($mockEm);
 
@@ -150,17 +155,14 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->andReturn(array())
             ->mock();
-        $ug->shouldReceive('getLatitude')
-           ->once()
-           ->andReturn(0);
-        $ug->shouldReceive('getLongitude')
-           ->once()
-           ->andReturn(0);
 
-
+        $pe = M::mock('\Phpug\Cache\CachePopulatorInterface');
+        $pe->shouldReceive('populate')
+            ->andReturn('foobar');
 
         $country = new Country();
         $country->setUsergroup($ug);
+        $country->setPopulator($pe);
         $this->assertSame($country, $country->setServiceManager($sm));
         $this->assertAttributeSame($sm, 'serviceManager', $country);
         $this->assertSame($mockCache, $country->getCache());
@@ -207,47 +209,15 @@ class CountryTest extends \PHPUnit_Framework_TestCase
 
     public function testInstantiation()
     {
-        $m = new Country($this->ug, $this->sm);
+        $m = new Country($this->ug, $this->sm, $this->populator);
         $this->assertInstanceof('\Phpug\Cache\CacheInterface', $m);
-        $this->assertInstanceof('\Phpug\Cache\Country', $m);
+        $this->assertInstanceof('\Phpug\Cache\Cache', $m);
         $this->assertAttributeSame($this->ug, 'usergroup', $m);
         $this->assertAttributeSame($this->sm, 'serviceManager', $m);
+        $this->assertAttributeSame($this->populator, 'populator', $m);
 
     }
 
-    public function testActualCaching()
-    {
-        $return = M::mock('stdObject');
-        $return->shouldReceive('getCountry')
-               ->andReturn('foo');
-        $Geocoding = M::mock('stdObject');
-        $Geocoding->shouldReceive('reverse')
-                  ->once()
-                  ->andReturn($return);
-
-        $sm = M::mock('\Zend\ServiceManager\ServiceManager');
-        $sm->shouldReceive('get')
-            ->with('Phpug\Service\Geocoder')
-            ->andReturn($Geocoding);
-
-        $this->ug->shouldReceive('getLatitude')->once()->andReturn('a');
-        $this->ug->shouldReceive('getLongitude')->once()->andReturn('b');
-
-        $m = new Country($this->ug, $sm);
-
-        $cache = M::mock('Phpug\Entity\Cache');
-        $cache->shouldReceive('setCache')
-              ->with('foo')
-              ->once()
-              ->andReturn($cache);
-        $cache->shouldReceive('setCache');
-        $cache->shouldReceive('setLastChangeDate');
-
-
-        $method = \UnitTestHelper::getMethod($m, 'populateCache');
-        $result = $method->invoke($m, $cache);
-        $this->assertSame($cache,$result);
-    }
 
     public function testPersistenceLayer()
     {

@@ -29,20 +29,44 @@
  * @link      https://github.com/heiglandreas/
  */
 
-namespace Phpug\Cache;
+namespace Phpug\Cache\Populator;
 
+use Phpug\Cache\CachePopulatorInterface;
 use Phpug\Entity\Usergroup;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-interface CacheInterface
+class CountryCode implements CachePopulatorInterface
 {
+    protected $type = 'countrycode';
 
-    public function setUsergroup(Usergroup $usergroup);
+    /**
+     * Do the actual Cache-Popularion
+     *
+     * @param Usergroup $usergroup
+     * @param ServiceLocatorInterface $serviceManager
+     *
+     * @return String
+     */
+    public function populate(Usergroup $usergroup, ServiceLocatorInterface $serviceManager)
+    {
+        try {
+            $geocoder = $serviceManager->get('Phpug\Service\Geocoder');
 
-    public function setServiceManager(ServiceLocatorInterface $serviceManager);
+            $geocode = $geocoder->reverse(
+                $usergroup->getLatitude(),
+                $usergroup->getLongitude()
+            );
+            return $geocode->getCountryCode();
+        } catch(\Exception $e)
+        {
+            //
+        }
 
-    public function setPopulator(CachePopulatorInterface $populator);
+        return '';
+    }
 
-    public function getCache();
-
-} 
+    public function getType()
+    {
+        return 'countrycode';
+    }
+}

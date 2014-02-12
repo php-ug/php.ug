@@ -31,13 +31,10 @@
 
 namespace Phpug\Service;
 
-use Zend\Form\Factory;
+use Phpug\Cache\Populator\Country;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Form\Element;
-use Zend\Stdlib\Hydrator\ClassMethods;
-use Zend\Validator;
-use Phpug\Cache\Country;
+use Phpug\Cache\Cache;
 
 /**
  * Class GeocoderFactory
@@ -50,8 +47,9 @@ class CountryCacheFactory implements  FactoryInterface
 
     public function createService(ServiceLocatorInterface $createService)
     {
-        $countryCache = new Country();
+        $countryCache = new Cache();
         $countryCache->setServiceManager($createService);
+        $countryCache->setPopulator(new Country());
 
         return $countryCache;
     }

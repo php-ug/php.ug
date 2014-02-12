@@ -25,24 +25,26 @@
  * @copyright ©2014-2014 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
  * @version   0.0
- * @since     07.02.14
+ * @since     12.02.14
  * @link      https://github.com/heiglandreas/
  */
 
-namespace Phpug\Cache;
+namespace PhpugTest\Service;
 
-use Phpug\Entity\Usergroup;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
-interface CacheInterface
+use Phpug\Service\CountryCacheFactory;
+use Mockery as M;
+
+class CountryCacheFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function setUsergroup(Usergroup $usergroup);
-
-    public function setServiceManager(ServiceLocatorInterface $serviceManager);
-
-    public function setPopulator(CachePopulatorInterface $populator);
-
-    public function getCache();
-
-} 
+    public function testCreationOfCountryCache()
+    {
+        $sm = M::mock('\Zend\ServiceManager\ServiceManager');
+        $factory = new CountryCacheFactory();
+        $countryCache = $factory->createService($sm);
+        $this->assertInstanceof('Phpug\Cache\Cache', $countryCache);
+        $this->assertAttributeInstanceof('Phpug\Cache\Populator\Country', 'populator', $countryCache);
+    }
+}
+ 
