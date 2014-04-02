@@ -1,13 +1,4 @@
 <?php
-if (isset($error) && $error)  {
-$this->headTitle('Failure');
-?>
-<div class="jumbotron"><h2><?php echo $error['title']; ?></h2>
-
-<p><?php echo $error['message']; ?></p></div>
-<?php
-}
-if (isset($form) && $form) {
 
 $form->prepare();
 
@@ -92,5 +83,3 @@ $this->headScript()->appendScript("
     });
     $('[data-toggle=tooltip]').tooltip({container:'body'});
 ");
-
-}
