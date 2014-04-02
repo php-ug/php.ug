@@ -32,6 +32,7 @@
 
 namespace Phpug;
 
+use Phpug\View\Strategy\UnauthorizedStrategy;
 use Zend\Module\Manager;
 use Zend\Module\Consumer\AutoloaderProvider;
 use Zend\Mvc\ModuleRouteListener;
@@ -73,6 +74,9 @@ class Module
 
         $exceptionStrategy->setDisplayExceptions($displayExceptions);
         $exceptionStrategy->attach($e->getTarget()->getEventManager());
+
+        $authStrategy = new UnauthorizedStrategy('error/unauthorized.phtml');
+        $authStrategy->attach($e->getTarget()->getEventManager());
     }
     
     public function getConfig()

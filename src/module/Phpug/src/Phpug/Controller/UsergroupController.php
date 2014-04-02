@@ -33,6 +33,8 @@
 namespace Phpug\Controller;
 
 use Phpug\Entity\Usergroup;
+use Phpug\Exception\UnauthenticatedException;
+use Phpug\Exception\UnauthorizedException;
 use Phpug\Form\PromoteUsergroupForm;
 use Zend\Mvc\View\Http\ViewManager;
 use Zend\View\Helper\ViewModel;
@@ -83,36 +85,24 @@ class UsergroupController extends AbstractActionController
     {
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
         if (! $currentUser->isAuthenticated()) {
-            $this->getResponse()
-                ->setStatusCode(401)
-                ->getHeaders()
-                ->addHeader(
-                    \Zend\Http\Header\WWWAuthenticate::fromString(
-                        'WWW-Authenticate: OAuth'
-                    )
-                );
-            return array('error' => array(
-                'title' => 'You are not logged in',
-                'message' => 'You have to log in to promote a new usergroup.'
-            ));
+            throw new UnauthenticatedException(
+                'You have to log in to promote a new usergroup.',
+                0,
+                null,
+                'You are not logged in'
+            );
         }
 
         $acl = $this->getServiceLocator()->get('acl');
-        if (! $acl) {
-            $this->getResponse()->setSTatusCode(500);
-            return array('error' => array(
-                'title' => 'Something went wrong on our side',
-                'message' => 'We apologize for the inconvenience, but someone seems to have misconfigured the Access Control System',
-            ));
-        }
 
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
         if (! $acl->isAllowed((string) $role, 'ug', 'promote')) {
-            $this->getREsponse()->setStatusCode(403)->setContent('You may not do that');
-            return array('error' => array(
-                'title' => 'You are not authorized to do that',
-                'message' => 'Your account has not the necessary rights to promote a new usergroup. If you feel like that is an error please contact us! '
-            ));
+            throw new UnauthorizedException(
+                'Your account has not the necessary rights to promote a new usergroup. If you feel like that is an error please contact us!',
+                0,
+                null,
+                'You are not authorized to do that'
+            );
         }
 
         $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
@@ -159,18 +149,12 @@ class UsergroupController extends AbstractActionController
     {
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
         if (! $currentUser->isAuthenticated()) {
-            $this->getResponse()
-                 ->setStatusCode(401)
-                 ->getHeaders()
-                 ->addHeader(
-                     \Zend\Http\Header\WWWAuthenticate::fromString(
-                         'WWW-Authenticate: OAuth'
-                     )
-                 );
-            return array('error' => array(
-                'title' => 'You are not logged in',
-                'message' => 'You have to be logged in to edit the informations for this usergroup.'
-            ));
+            throw new UnauthenticatedException(
+                'You have to be logged in to edit the informations for this usergroup.',
+                0,
+                null,
+                'You are not logged in'
+            );
         }
 
         $acl = $this->getServiceLocator()->get('acl');
@@ -203,10 +187,12 @@ class UsergroupController extends AbstractActionController
 
         if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
             $this->getResponse()->setStatusCode(403);
-            return array('error' => array(
-                'title' => 'You are not authorized to do that',
-                'message' => 'Your account has not the necessary rights to edit this usergroup. If you feel like that is an error please contact one of the representatives of the usergroup. If that doesn\'t help (Or you have locked yourself out) feel free to contact us via the <a href="/contact">Contact-Form</a>!'
-            ));
+            throw new UnauthorizedException(
+                'Your account has not the necessary rights to edit this usergroup. If you feel like that is an error please contact one of the representatives of the usergroup. If that doesn\'t help (Or you have locked yourself out) feel free to contact us via the <a href="/contact">Contact-Form</a>!',
+                0,
+                null,
+                'You are not authorized to do that'
+            );
         }
 
         $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
