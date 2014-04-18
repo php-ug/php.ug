@@ -5,31 +5,46 @@ $this->headTitle('About');
     <h3>PHP.ug</h3>
     <h4>An international meeting-point for the PHP-Community</h4>
     <dl>
-    <dt>What is it</dt>
-    <dd>
-    <p>This website provides you with a possibility to see which Usergroups are
-    available in your area as well as contact-informations for each of these usergroups.
-    </p>
-    </dd>
-    <dt>Who is displayed?</dt>
-    <dd><p>Every PHP-Usergroup worldwide <a href="<?php echo $this->url('ug/team');
-    ?>">we</a> know about.</p>
-    <p>If <strong>you</strong> know of a PHP-Usergroup that is not listed, then please extend
-     our knowledge by <!-- either using the enrollment form or by --><a href="<?php
-     echo $this->url('contact');?>">providing us</a> with some informations
-     about that Usergroup. Please provide at least
-     a short name, a location, a website and  some contact-information like
-      email-address, IM-Infos or twitter-nick.</p>
-    </dd>
-    <dt>Who benefits from it?</dt><dd>
-    <p>Clearly you, as you can check which Usergroup is near you!</p></dd>
-    <dt>Who pays for it?</dt><dd>
-    <p>Simple Question, simple answer - No one pays for it.</p><p> Well, obviously
-    someone has to pay for hosting etc, but thats our own private fun. There is
-    no company involved behind the scenes and no sponsorship that would benefit
-    from this WebSite.</p></dd>
-    <dt id="access">Access</dt><dd>
-            Access to the group and its informations should be free for everyone.
+        <dt>What is it</dt>
+        <dd>
+            <p>This website provides you with a possibility to see which Usergroups are
+            available in your area as well as contact-informations for each of these usergroups.
+            </p>
+        </dd>
+        <dt>Who is displayed?</dt>
+        <dd>
+            <p>Every PHP-Usergroup worldwide <a href="<?php echo $this->url('ug/team');
+            ?>">we</a> know about.</p>
+            <p>If <strong>you</strong> know of a PHP-Usergroup that is not listed, then please extend
+            our knowledge by either using the <a href="<?php echo
+                $this->url('ug/promote'); ?>">promotion-form</a>a> or by <a href="<?php
+            echo $this->url('contact');?>">providing us</a> with some informations
+            about that Usergroup. Please provide at least
+            a short name, a location, a website and  some contact-information like
+            email-address, IM-Infos or twitter-nick.</p>
+        </dd>
+        <dt>Who benefits from it?</dt>
+        <dd>
+            <p>Clearly you, as you can check which Usergroup is near you!</p>
+        </dd>
+        <dt>Who uses it?</dt>
+        <dd>The Whole PHP-Community. The data is available via an API which is
+            already being used to show the list of usergroups on the
+            <a href="http://www.php.net/ug.php">PHP.net</a>-Website
+        </dd>
+        <dt>Who pays for it?</dt>
+        <dd>
+            <p>Simple Question, simple answer - No one pays for it.</p><p> Well, obviously
+            someone has to pay for hosting etc, but that's our own private fun. There is
+            no company involved behind the scenes and no sponsorship that would benefit
+            from this WebSite. If you want to help us out with the bills feel free to <a href="<?php
+            echo $this->url('contact');?>">contact us</a></p>
+        </dd>
+        <dt id="access">Access</dt>
+        <dd>
+            <p>
+                Access to the group and its informations should be free for everyone.
+            </p>
             <p>That
             we do not want to pay for informations about a certain usergroup
             seems to be obvious. But do you want to register for a certain
@@ -41,61 +56,47 @@ $this->headTitle('About');
             of a usergroup-Meeting. Of course costs need to be covered, but
                 you'd better try to find a sponsor for covering the costs.
             Otherwise it seems more like a conference, doesn't it?</p>
-    </dd>
+        </dd>
+        <dt>How does it work?</dt>
+        <dd>
+            <p>
+                Whoever knows of a usergroup can promote it. You have to log in with
+            a twitter-account and are then able to promote a usergroup. We will
+            then check some basic stuff and might get in contact with the group
+            to clear issues and as soon as everything is cleared the group will
+            show up on the map.
+                </p><p>
+                As soon as the group appears on the map it is also available via the API
+                </p>
+            <p>Users whos twitter-account has been associated with a group can
+                - after logging in - edit their groups information. In the groups
+                information-popup there is a little edit-icon on the right hand
+                side of the contact-informations. That brings you to the edit-screen.
+                So <strong>you</strong> are in charge of your groups information</p>
+            </dd>
+        <dt>
+            Do we need an iCalendar-File?
+        </dt>
+        <dd>
+            <p>Short answer: No. You do not need one. But you should have one</p>
+            <p>
+                We use a provided iCalendar-File to retrieve your groups next meeting
+                so we can display that in your groups information popup. So everyone
+                interested in your group can see right from the start when and where
+                your next meeting will be. No digging for new users where to find
+                that information, it's right there.
+            </p><p>
+                As the API also provides the link to the iCalendar-file all sites using
+                it might also want to display your next event beneath your username.
+                This is already in progress on <a href="http://php.net/ug.php">php.net</a>.
+            </p><p>
+                When your groups does not have an iCalendar-File we are not able to
+                provide that information, but that's it.
+            </p><p>
+                So even if you are meeting on a regular basis (say every last thursday
+                of every second month) you should create an iCalendar-File with that
+                one recurring event to give people an idea of when you are meeting.
+            </p>
+        </dd>
     </dl>
 </section>
-
-<!--
-======
-php.ug
-======
-
-An international meeting-point for the PHP-Community.
-
--------
-Purpose
--------
-
-This Website provides a location for PHP usergroups worldwide to advertise
-their existence, their meetings and their contact-details.
-
-For that we include a map on the frontpage that displays every registered
-location worldwide. The User can then select the nearest UG and see the
-relevant informations like next meeting and contact-informations
-
-From their you can jump to their website immediately
-
-Also a shortlink is provided for every UG so their website can be reached
-using an UTL like http://php.ug/ffm for the Usergroup at Frankfurt/Main in
-Germany or http://php.ug/benelux for the UG in the Benelux-Countries.
-
-For that every Usergroup can register by providing a unique identifier
-(ffm or benelux), a website and some contact-informations (mainly email,
-but twitter, facebook or Chat are also possible) and a location where (or
-around where) the meetings are held.
-
-The provided email-address will then get the login information to change and
-maintain the provided data.
-
-All Usergroups will have to verify their existence at least once a year so we
-can archive inactive groups.
-
-The meeting schedule will be retrieved weekly from an iCalendar-File the
-usergroup should provide on their Website. That makes it easier to maintain
-a consistent Dataset of the schedules as the UG only needs to maintain their
-local calendar and this website will retrieve that information. If no URL to
-that calendar is given, then no meeting-schedule will be displayed.
-
-NO statistics will be provided.
-
------
-Costs
------
-
-The registering usergroups will not have to pay for this service!
-
-But - of course - donations to pay the bills are always welcome.
-
-Also help by coding the stuff behind is highly appreciated!
-
- -->
