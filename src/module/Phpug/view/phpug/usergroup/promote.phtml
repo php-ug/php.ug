@@ -6,20 +6,37 @@ $this->headTitle('Promote your UserGroup');
 
 $form->setAttribute('class', 'form-horizontal');
 if ($form->getMessages()) {
-    echo '<div class="alert alert-danger">There have been errors during form validation. Please fix them</div>';
+echo '
+<div class="alert alert-danger">There have been errors during form validation.
+    Please fix them
+</div>';
 }
 
 $contactsRow = $this->getHelperPluginManager()->getServiceLocator()->get('contactsRow');
 $contactsRow->setView($this);
 
 $this->plugin('formCollection')
-     ->setFieldsetHelper($contactsRow)
-     ->setWrapper('<ul id="contactCollection" class="form-inline">%1$s</ul>%3$s');
-?><div class="jumbotron">
-<h2>Tell the community about <strong>your</strong> Usergroup</h2><p>That way other
-PHP-Users can learn about your Usergroup.</p><p>But remember:<ul><li>All Information given
-here is publicly available.</li><li>Access to the
-groups informations as well as the meetings should be free<a href="<?php echo $this->url('ug/about'); ?>#access">*</a>.</li></ul> </p>
+->setFieldsetHelper($contactsRow)
+->setWrapper('
+<ul id="contactCollection" class="form-inline">%1$s</ul>%3$s');
+?>
+<div class="jumbotron">
+    <h2>Tell the community about <strong>your</strong> Usergroup</h2>
+
+    <p>That way other
+        PHP-Users can learn about your Usergroup.</p>
+
+    <p>But remember:
+    <ul>
+        <li>All Information given
+            here is publicly available.
+        </li>
+        <li>Access to the
+            groups informations as well as the meetings should be free<a
+                href="<?php echo $this->url('ug/about'); ?>#access">*</a>.
+        </li>
+    </ul>
+    </p>
 </div>
 
 <?php
