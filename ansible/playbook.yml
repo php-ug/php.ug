@@ -1,0 +1,23 @@
+---
+- hosts: all
+  sudo: true
+  vars:
+    doc_root: /vagrant/src/public
+    server_name: "{{ ansible_eth1.ipv4.address }}"
+    sys_packages: [ 'curl', 'vim', 'git' ]
+    php_packages: [ 'php5-curl', 'php5-cli', 'php5-mysqlnd' ]
+    mysqluser: phpuguser
+    mysqlpass: PyftovBadronCypNex
+  tasks:
+    - include: tasks/init.yml
+    - include: tasks/nginxphp.yml
+    - include: tasks/mysql.yml
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
+    - name: restart php5-fpm
+      service: name=php5-fpm state=restarted
+
+    - name: restart mysql-server
+      service: name=mysql-server state=restarted

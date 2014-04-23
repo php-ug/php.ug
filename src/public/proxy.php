@@ -44,7 +44,7 @@ $mimeMapping = array(
     'lib'   => 'auto',
 );
 
-$allowedBasePath = '/Volumes/Sites/Sites/php.ug';
+$allowedBasePath = __DIR__ . '/../../';
 $allowedPaths = array(
     'vendor/org_heigl/contact/public',
     'vendor/org_heigl/mailproxy/public',
@@ -93,7 +93,7 @@ if (! $realpath) {
 // Filter out files not in one of the allowed paths
 $allowed = false;
 foreach ($allowedPaths as $allowedPath) {
-    if (0 === strpos($realpath, $allowedBasePath . DIRECTORY_SEPARATOR . $allowedPath)) {
+    if (0 === strpos($realpath, realpath($allowedBasePath . DIRECTORY_SEPARATOR . $allowedPath))) {
         $allowed = true;
         break;
     }
