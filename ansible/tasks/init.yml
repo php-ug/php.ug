@@ -1,0 +1,19 @@
+---
+- name: init | Update apt
+  apt: update_cache=yes
+
+- name: init | Install Sys Packages
+  apt: pkg={{ item }} state=latest
+  with_items: sys_packages
+
+- name: init | make sure python-mysqldb is installed
+  apt: pkg=python-mysqldb state=latest
+
+- name: init | make sure python-software-properties is installed
+  apt: pkg=python-software-properties state=latest
+
+- name: init | Add ppa Repos
+  apt_repository: repo='ppa:ondrej/php5'
+
+- name: init | Update apt
+  apt: update_cache=yes

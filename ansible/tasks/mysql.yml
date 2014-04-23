@@ -1,0 +1,15 @@
+---
+- name: mysql | Install mysql
+  apt: pkg=mysql-server state=latest
+
+- name: mysql | create new Database
+  mysql_db: name=phpug state=present
+
+- name: mysql | Install dump
+  copy: src=files/mysql/phpug.sql.bz2 dest=/tmp
+
+- name: mysql | Install Database
+  mysql_db: name=phpug state=import target=/tmp/phpug.sql.bz2
+
+- name: mysql | create new Database-user
+  mysql_user: name={{ mysqluser }} password={{ mysqlpass }} priv=phpug.*:ALL state=present
