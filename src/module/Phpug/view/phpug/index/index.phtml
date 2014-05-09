@@ -4,7 +4,11 @@ $this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css');
 $this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css','text/css',
     array('conditional' => 'lte IE8',)
 );
+$this->headLink()->appendStylesheet('lib/phpug/leafletsearch/css/l.geosearch.css','text/css');
+
 $this->headScript()->prependFile('js/phpug/phpug.js');
+$this->headScript()->prependFile('lib/phpug/leafletsearch/js/l.geosearch.provider.openstreetmap.js');
+$this->headScript()->prependFile('lib/phpug/leafletsearch/js/l.control.geosearch.js');
 $this->headScript()->prependFile('lib/phpug/leaflet/leaflet.js');
 ?>
 <div id="map"></div>

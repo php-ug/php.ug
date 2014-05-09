@@ -56,6 +56,13 @@ var RedIcon = L.Icon.Default.extend({
 
 var redIcon = new RedIcon();
 
+
+new L.Control.GeoSearch({
+    provider: new L.GeoSearch.Provider.OpenStreetMap(),
+    position: 'topcenter',
+    showMarker: false
+}).addTo(map);
+
 var createSelector = function(data){
     for (i in data) {
         item = data[i];
