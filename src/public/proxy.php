@@ -44,7 +44,7 @@ $mimeMapping = array(
     'lib'   => 'auto',
 );
 
-$allowedBasePath = '/Volumes/Sites/Sites/php.ug';
+$allowedBasePath = realpath(__DIR__ . '/../..');
 $allowedPaths = array(
     'vendor/org_heigl/contact/public',
     'vendor/org_heigl/mailproxy/public',
