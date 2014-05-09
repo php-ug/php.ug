@@ -46,15 +46,11 @@ var map = L.map('map',{
     zoom: zoom,
     layers: baseTile
 });
+var oms = new OverlappingMarkerSpiderfier(map);
 
-
-var RedIcon = L.Icon.Default.extend({
-    options: {
-        iconUrl: 'img/phpug/marker-icon-orange.png'
-    }
-});
-
-var redIcon = new RedIcon();
+var lightIcon = L.Icon.Default;
+var darkIcon  = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
+var redIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
 
 
 new L.Control.GeoSearch({
@@ -101,7 +97,9 @@ var loadGroupData = function(id){
                         icon = {icon : redIcon};
                     }
                     $.extend(icon, geojsonMarkerOptions);
-                    return L.marker(latlng, icon)
+                    marker = L.marker(latlng, icon);
+                    oms.addMarker(marker);
+                    return marker;
                 },
                 onEachFeature: function (feature, pointsLayer) {
                     pointsLayer.on('click',openPopup);
@@ -120,10 +118,32 @@ var openPopup = function(marker, foo){
     });
 };
 
+var openEventPopup = function(marker, foo){
+    var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
+    latlng = new L.LatLng(
+        marker.target.feature.geometry.coordinates[1],
+        marker.target.feature.geometry.coordinates[0]
+    );
+    popup.setLatLng(latlng);
+    var content = '<div class="popup">'
+        + '<h4>'
+        + '<a href="%url%" target="_blank">'
+        + '%name%'
+        + '</a>'
+        + '</h4>'
+        + '<dl><dt>Start:</dt><dd>%start%</dd><dt>End:</dt><dd>%end%</dd></dl>';
+    content = content.replace('%url%', marker.target.feature.properties.url)
+           .replace('%name%', marker.target.feature.properties.name)
+        .replace('%start%', marker.target.feature.properties.start)
+        .replace('%end%', marker.target.feature.properties.end)
+    popup.setContent(content);
+    map.openPopup(popup);
+}
+
 var createPopup = function(data) {
     var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
     latlng = new L.LatLng(data.group.latitude,data.group.longitude);
-    popup.setLatLng(latlng);
+//    popup.setLatLng(latlng);
     var content = '<div class="popup">'
                 + '<h4>'
                 + '<a href="%url%" target="_blank">'
@@ -171,10 +191,24 @@ var createPopup = function(data) {
            .replace(/%name%/,data.group.name)
            .replace(/%shortname%/,data.group.shortname)
            .replace(/%contacts%/, contacts);
-    popup.setContent(content);
-    map.openPopup(popup, data.group.shortname);
+    oms.addListener('click', function(marker) {
+        popup.setContent(content);
+//        popup.setContent(marker.desc);
+        popup.setLatLng(marker.getLatLng());
+        console.log('foo');
+        map.openPopup(popup, data.group.shortname);
+        pushNextMeeting(popup, data.group.shortname);
+    });
+    oms.addListener('spiderfy', function(markers) {
+        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
+        map.closePopup();
+    });
+    oms.addListener('unspiderfy', function(markers) {
+        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new darkIcon());
+    });
 
-    pushNextMeeting(popup, data.group.shortname);
+    //map.openPopup(popup, data.group.shortname);
+
 };
 
 var pushNextMeeting = function(popup, id)
