@@ -52,7 +52,6 @@ var lightIcon = L.Icon.Default;
 var darkIcon  = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
 var redIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
 
-
 new L.Control.GeoSearch({
     provider: new L.GeoSearch.Provider.OpenStreetMap(),
     position: 'topcenter',
@@ -109,7 +108,7 @@ var loadGroupData = function(id){
                 onEachFeature: function (feature, pointsLayer) {
                     pointsLayer.on('click',openPopup);
                 }
-            }).addTo(map)
+            }).addTo(map);
         }
     })
 };
@@ -171,7 +170,6 @@ var openEventPopup = function(marker, foo){
 var createPopup = function(data) {
     var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
     latlng = new L.LatLng(data.group.latitude,data.group.longitude);
-//    popup.setLatLng(latlng);
     var content = '<div class="popup">'
                 + '<h4>'
                 + '<a href="%url%" target="_blank">'
@@ -221,7 +219,6 @@ var createPopup = function(data) {
            .replace(/%contacts%/, contacts);
     oms.addListener('click', function(marker) {
         popup.setContent(content);
-//        popup.setContent(marker.desc);
         popup.setLatLng(marker.getLatLng());
         console.log('foo');
         map.openPopup(popup, data.group.shortname);
@@ -234,9 +231,6 @@ var createPopup = function(data) {
     oms.addListener('unspiderfy', function(markers) {
         for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
     });
-
-    //map.openPopup(popup, data.group.shortname);
-
 };
 
 var pushNextMeeting = function(popup, id)
