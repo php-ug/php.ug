@@ -335,6 +335,10 @@ return array(
             'level'    => 100,
         )
     ),
+    'php.ug.event' => array(
+        'url' => 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100',
+        'cachefile' => __DIR__ . '/../../../../tmp/joind.in',
+    ),
     'phpug' => array(
         'entity' => array(
             'cache' => array(

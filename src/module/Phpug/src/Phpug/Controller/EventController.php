@@ -32,13 +32,9 @@
 
 namespace Phpug\Controller;
 
-use Phpug\Form\PromoteUsergroupForm;
-use Zend\Mvc\View\Http\ViewManager;
-use Zend\View\Helper\ViewModel;
-
 use Zend\Mvc\Controller\AbstractRestfulController;
-
-
+use Zend\View\Model\JsonModel;
+use Zend\Json\Json;
 /**
  * The Controller for de default actions
  *
@@ -54,49 +50,29 @@ use Zend\Mvc\Controller\AbstractRestfulController;
 class EventController extends AbstractRestfulController
 {
 
-    protected $config = null;
-
     public function getList()
     {
-        $response = $this->getResponse();
-        $adapter = $this->getAdapter();
-        $url = 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100';
 
-        $client = new \Zend\Http\Client();
-        $req = new \Zend\Http\Request();
-        $req->setUri($url)->setMethod('GET');
+        $config = $this->getServiceLocator()->get('config');
 
+        $url = $config['php.ug.event']['url'];
+        $file = $config['php.ug.event']['cachefile'];
 
-        $clientResponse = $client->dispatch($req);
+        if (! file_Exists($file) || filectime($file) < (time() - (60 * 60 * 24 ))) {
 
-        if (! $clientResponse->isSuccess()) {
-            throw new \UnexpectedValueException('Foo');
+            $fh = fopen($file, 'a');
+            $ch = curl_init($url);//Here is the file we are downloading, replace spaces with %20
+            curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+            curl_setopt($ch, CURLOPT_FILE, $fh); // write curl response to file
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_exec($ch); // get curl response
+            curl_close($ch);
+
+            fclose($fh);
         }
 
-        $content = json_decode($clientResponse->getContent());
+        $content = Json::decode(file_get_contents($file), Json::TYPE_ARRAY);
+        return new JsonModel($content);
 
-        $response->setContent($adapter->serialize($content));
-
-        return $response;
-
-    }
-
-    protected function getAdapter()
-    {
-        $format = $this->getEvent()->getRouteMatch()->getParam('format');
-        switch ($format) {
-            case 'sphp':
-                $contentType = 'text/plain';
-                $adapter = '\Zend\Serializer\Adapter\PhpSerialize';
-                break;
-            case 'json':
-            default:
-                $contentType = 'application/json';
-                $adapter = '\Zend\Serializer\Adapter\Json';
-                break;
-        }
-        $this->getResponse()->getHeaders()->addHeaderLine('Content-Type', $contentType);
-
-        return new $adapter;
     }
 }
