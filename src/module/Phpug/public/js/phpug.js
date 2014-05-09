@@ -65,6 +65,7 @@ var createSelector = function(data){
         item = data[i];
         $('#grouptype').append($('<option value="'+item.id+'">' + item.name + '</option>'));
     }
+    $('#grouptype').append($('<option value="events">Events (via joind.in)</option>'));
     $('#grouptype').bind('change',function(){
         var val = this.value;
         loadGroupData(val);
@@ -73,6 +74,10 @@ var createSelector = function(data){
 };
 
 var loadGroupData = function(id){
+    if (id == 'events') {
+        loadEventData()
+        return true;
+    }
     $.ajax({
         'type' : 'GET',
         'url'  : 'api/rest/listtype.json/' + id,
@@ -107,6 +112,29 @@ var loadGroupData = function(id){
             }).addTo(map)
         }
     })
+};
+
+var loadEventData = function(){
+    $.ajax({
+        'type' : 'GET',
+        'url'  : 'event',
+        'dataType' : 'json',
+        'success' : function(data){
+            data = transformEventsToGeoJson(data);
+            if ('undefined' != typeof pointsLayer) {
+                map.removeLayer(pointsLayer);
+            }
+            pointsLayer = L.geoJson(data, {
+                pointToLayer: function(feature, latlng){
+                    icon = {};
+                    return L.marker(latlng, icon);
+                },
+                onEachFeature: function(feature, pointsLayer) {
+                    pointsLayer.on('click', openEventPopup);
+                }
+            }).addTo(map);
+        }
+    });
 };
 
 var openPopup = function(marker, foo){
@@ -217,6 +245,32 @@ var pushNextMeeting = function(popup, id)
             this.popup.update();
         }
     })
+}
+
+var transformEventsToGeoJson = function(data)
+{
+    var jsonGeo = {
+        type: 'test',
+        features: []
+    };
+    for (i in data.events) {
+        var point = data.events[i];
+        var feature = {
+            'type' : 'Feature',
+            'geometry': {
+                type : 'Point',
+                coordinates : [point.longitude, point.latitude]
+            },
+            properties : {
+                name : point.name,
+                url  : point.website_uri,
+                start: new Date(point.start_date),
+                end  : new Date(point.end_date)
+            }
+        }
+        jsonGeo.features.push(feature);
+    }
+    return jsonGeo;
 }
 
 var transformToGeoJson = function(data)

@@ -215,6 +215,17 @@ return array(
                         ),
 					),					
 				),
+                'event' => array(
+                    'type' => 'Segment',
+                    'options' => array(
+                        'route' => '/event[.:format][/:id]',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller'    => 'EventController',
+                            'format'        => 'json',
+                        ),
+                    ),
+                ),
                 'subdomain' => array(
                     'type' => 'Hostname',
                     'options' => array(
@@ -269,6 +280,7 @@ return array(
 				'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
 				'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',	
                 'Phpug\Controller\UsergroupController' => 'Phpug\Controller\UsergroupController',
+                'Phpug\Controller\EventController' => '\Phpug\Controller\EventController',
 			    'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
 			    'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
