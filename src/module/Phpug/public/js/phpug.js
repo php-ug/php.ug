@@ -60,7 +60,8 @@ var redIcon = new RedIcon();
 new L.Control.GeoSearch({
     provider: new L.GeoSearch.Provider.OpenStreetMap(),
     position: 'topcenter',
-    showMarker: false
+    showMarker: false,
+    retainZoomLevel: true
 }).addTo(map);
 
 var createSelector = function(data){
