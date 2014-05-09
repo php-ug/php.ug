@@ -178,11 +178,11 @@ var createPopup = function(data) {
         pushNextMeeting(popup, data.group.shortname);
     });
     oms.addListener('spiderfy', function(markers) {
-        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
+        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new darkIcon());
         map.closePopup();
     });
     oms.addListener('unspiderfy', function(markers) {
-        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new darkIcon());
+        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
     });
 
     //map.openPopup(popup, data.group.shortname);
