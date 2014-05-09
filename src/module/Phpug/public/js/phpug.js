@@ -118,28 +118,6 @@ var openPopup = function(marker, foo){
     });
 };
 
-var openEventPopup = function(marker, foo){
-    var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
-    latlng = new L.LatLng(
-        marker.target.feature.geometry.coordinates[1],
-        marker.target.feature.geometry.coordinates[0]
-    );
-    popup.setLatLng(latlng);
-    var content = '<div class="popup">'
-        + '<h4>'
-        + '<a href="%url%" target="_blank">'
-        + '%name%'
-        + '</a>'
-        + '</h4>'
-        + '<dl><dt>Start:</dt><dd>%start%</dd><dt>End:</dt><dd>%end%</dd></dl>';
-    content = content.replace('%url%', marker.target.feature.properties.url)
-           .replace('%name%', marker.target.feature.properties.name)
-        .replace('%start%', marker.target.feature.properties.start)
-        .replace('%end%', marker.target.feature.properties.end)
-    popup.setContent(content);
-    map.openPopup(popup);
-}
-
 var createPopup = function(data) {
     var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
     latlng = new L.LatLng(data.group.latitude,data.group.longitude);
