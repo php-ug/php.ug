@@ -52,7 +52,6 @@ var lightIcon = L.Icon.Default;
 var darkIcon  = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
 var redIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
 
-
 new L.Control.GeoSearch({
     provider: new L.GeoSearch.Provider.OpenStreetMap(),
     position: 'topcenter',
@@ -65,6 +64,7 @@ var createSelector = function(data){
         item = data[i];
         $('#grouptype').append($('<option value="'+item.id+'">' + item.name + '</option>'));
     }
+    $('#grouptype').append($('<option value="events">Events (via joind.in)</option>'));
     $('#grouptype').bind('change',function(){
         var val = this.value;
         loadGroupData(val);
@@ -73,6 +73,10 @@ var createSelector = function(data){
 };
 
 var loadGroupData = function(id){
+    if (id == 'events') {
+        loadEventData()
+        return true;
+    }
     $.ajax({
         'type' : 'GET',
         'url'  : 'api/rest/listtype.json/' + id,
@@ -104,9 +108,32 @@ var loadGroupData = function(id){
                 onEachFeature: function (feature, pointsLayer) {
                     pointsLayer.on('click',openPopup);
                 }
-            }).addTo(map)
+            }).addTo(map);
         }
     })
+};
+
+var loadEventData = function(){
+    $.ajax({
+        'type' : 'GET',
+        'url'  : 'event',
+        'dataType' : 'json',
+        'success' : function(data){
+            data = transformEventsToGeoJson(data);
+            if ('undefined' != typeof pointsLayer) {
+                map.removeLayer(pointsLayer);
+            }
+            pointsLayer = L.geoJson(data, {
+                pointToLayer: function(feature, latlng){
+                    icon = {};
+                    return L.marker(latlng, icon);
+                },
+                onEachFeature: function(feature, pointsLayer) {
+                    pointsLayer.on('click', openEventPopup);
+                }
+            }).addTo(map);
+        }
+    });
 };
 
 var openPopup = function(marker, foo){
@@ -121,7 +148,6 @@ var openPopup = function(marker, foo){
 var createPopup = function(data) {
     var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
     latlng = new L.LatLng(data.group.latitude,data.group.longitude);
-//    popup.setLatLng(latlng);
     var content = '<div class="popup">'
                 + '<h4>'
                 + '<a href="%url%" target="_blank">'
@@ -171,7 +197,6 @@ var createPopup = function(data) {
            .replace(/%contacts%/, contacts);
     oms.addListener('click', function(marker) {
         popup.setContent(content);
-//        popup.setContent(marker.desc);
         popup.setLatLng(marker.getLatLng());
         console.log('foo');
         map.openPopup(popup, data.group.shortname);
@@ -184,9 +209,6 @@ var createPopup = function(data) {
     oms.addListener('unspiderfy', function(markers) {
         for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
     });
-
-    //map.openPopup(popup, data.group.shortname);
-
 };
 
 var pushNextMeeting = function(popup, id)
@@ -244,6 +266,63 @@ var transformToGeoJson = function(data)
     }
     return jsonGeo;
 }
+
+/*
+Event-Related stuff!
+ */
+var openEventPopup = function(marker, foo){
+    var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
+    latlng = new L.LatLng(
+        marker.target.feature.geometry.coordinates[1],
+        marker.target.feature.geometry.coordinates[0]
+    );
+    popup.setLatLng(latlng);
+    var content = '<div class="popup">'
+        + '<h4>'
+        + '<a href="%url%" target="_blank">'
+        + '%name%'
+        + '</a>'
+        + '</h4>'
+        + '<dl><dt>Start:</dt><dd>%start%</dd><dt>End:</dt><dd>%end%</dd></dl>';
+    content = content.replace('%url%', marker.target.feature.properties.url)
+        .replace('%name%', marker.target.feature.properties.name)
+        .replace('%start%', marker.target.feature.properties.start)
+        .replace('%end%', marker.target.feature.properties.end)
+    popup.setContent(content);
+    map.openPopup(popup);
+}
+
+var transformEventsToGeoJson = function(data)
+{
+    var jsonGeo = {
+        type: 'test',
+        features: []
+    };
+    for (i in data.events) {
+        var point = data.events[i];
+        console.log(point);
+        if (! point.longitude || isNaN(point.longitude) || ! point.latitude || isNaN(point.latitude)) {
+            console.log(point.longitude + '::' + point.latitude);
+            continue;
+        }
+        var feature = {
+            'type' : 'Feature',
+            'geometry': {
+                type : 'Point',
+                coordinates : [point.longitude, point.latitude]
+            },
+            properties : {
+                name : point.name,
+                url  : point.website_uri,
+                start: new Date(point.start_date),
+                end  : new Date(point.end_date)
+            }
+        }
+        jsonGeo.features.push(feature);
+    }
+    return jsonGeo;
+}
+
 
 $.ajax({
     type: 'GET',
