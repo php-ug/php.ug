@@ -39,6 +39,7 @@ use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Validator;
+use Phpug\Filter;
 
 class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -104,8 +105,8 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
             'name'    => 'location',
             'type' => '\OrgHeiglGeolocation\Form\Element\Geolocation',
             'options' => array(
-               'label'       => 'Location',
-               'description' => 'Tell us where you are located. Currently you have to provide the information like "50.1234,8.0815" for somewhere near Frankfurt/Main in Germany',
+               'label'       => 'Location (Lat/Lon)',
+               'description' => 'Tell us where you are located. Currently you have to provide the information in Latitude/Longitude like "50.1234,8.0815" for somewhere near Frankfurt/Main in Germany',
                'required'    => true,
             ),
         ));
@@ -261,6 +262,10 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                     ),
                     array('name' => 'Phpug\Validator\IsCalendarUrl'),
                 ),
+                'filters' => array(
+                    array('name' => 'Phpug\Filter\Webcal'),
+                ),
+
             ),
             'ugtype' => array(
                 'required' => true,

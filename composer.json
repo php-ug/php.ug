@@ -10,7 +10,7 @@
          "org_heigl/hybridauth" :        "dev-feature/multipleProviders",
          "org_heigl/geolocation" :       "dev-master",
          "sabre/vobject" :               "3.0.*",
-         "monolog/monolog" :             "1.7.*",
+         "monolog/monolog" :             "1.9.1",
          "willdurand/geocoder" :         ">=2.4.2"
      },
      "require-dev" : {
