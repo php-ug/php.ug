@@ -39,7 +39,7 @@ if($.cookie("map")){
 }
 
 var tileUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-var attrib = 'Map data &copy; 2012 OpenStreetMap contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; 2012 CloudMade';
+var attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>';
 var baseTile = [new L.TileLayer(tileUrl, {maxZoom: 18,attribution:attrib})];
 var map = L.map('map',{
     center: coord,
