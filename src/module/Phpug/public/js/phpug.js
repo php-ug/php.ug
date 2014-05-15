@@ -76,9 +76,12 @@ var createSelector = function(data){
     switch(window.location.hash) {
         case '#mentoring':
             loadGroupData('mentoring');
+            $('#grouptype').val('mentoring');
             break;
         case '#events':
+        case '#joindin':
             loadGroupData('events');
+            $('#grouptype').val('events');
             break;
         default:
             loadGroupData($('#grouptype')[0].value);
@@ -275,38 +278,27 @@ var loadEventData = function(){
             }
             pointsLayer = L.geoJson(data, {
                 pointToLayer: function(feature, latlng){
-                    icon = {};
-                    return L.marker(latlng, icon);
-                },
-                onEachFeature: function(feature, pointsLayer) {
-                    pointsLayer.on('click', openEventPopup);
+                    var options = {};
+                    marker = L.marker(latlng, options);
+                    oms.addMarker(marker);
+                    return marker;
                 }
             }).addTo(map);
+            var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
+
+            oms.addListener('click', function(marker){
+                popup.setContent(marker.feature.desc);
+                popup.setLatLng(marker.getLatLng());
+                map.openPopup(popup);
+            });
+            oms.addListener('spiderfy', function(markers) {
+                map.closePopup();
+            });
+            oms.addListener('unspiderfy', function(markers) {
+            });
         }
     });
 };
-
-var openEventPopup = function(marker, foo){
-    var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
-    latlng = new L.LatLng(
-        marker.target.feature.geometry.coordinates[1],
-        marker.target.feature.geometry.coordinates[0]
-    );
-    popup.setLatLng(latlng);
-    var content = '<div class="popup">'
-        + '<h4>'
-        + '<a href="%url%" target="_blank">'
-        + '%name%'
-        + '</a>'
-        + '</h4>'
-        + '<dl><dt>Start:</dt><dd>%start%</dd><dt>End:</dt><dd>%end%</dd></dl>';
-    content = content.replace('%url%', marker.target.feature.properties.url)
-        .replace('%name%', marker.target.feature.properties.name)
-        .replace('%start%', marker.target.feature.properties.start)
-        .replace('%end%', marker.target.feature.properties.end)
-    popup.setContent(content);
-    map.openPopup(popup);
-}
 
 var transformEventsToGeoJson = function(data)
 {
@@ -317,9 +309,19 @@ var transformEventsToGeoJson = function(data)
     for (i in data.events) {
         var point = data.events[i];
         if (! point.longitude || isNaN(point.longitude) || ! point.latitude || isNaN(point.latitude)) {
-            console.log(point.longitude + '::' + point.latitude);
             continue;
         }
+        var content = '<div class="popup">'
+            + '<h4>'
+            + '<a href="%url%" target="_blank">'
+            + '%name%'
+            + '</a>'
+            + '</h4>'
+            + '<dl><dt>Start:</dt><dd>%start%</dd><dt>End:</dt><dd>%end%</dd></dl>';
+        content = content.replace('%url%', point.website_uri)
+            .replace('%name%', point.name)
+            .replace('%start%', new Date(point.start_date))
+            .replace('%end%', new Date(point.end_date))
         var feature = {
             'type' : 'Feature',
             'geometry': {
@@ -331,7 +333,8 @@ var transformEventsToGeoJson = function(data)
                 url  : point.website_uri,
                 start: new Date(point.start_date),
                 end  : new Date(point.end_date)
-            }
+            },
+            desc : content
         }
         jsonGeo.features.push(feature);
     }
@@ -360,7 +363,7 @@ var loadMentoringData = function(){
                     marker = L.marker(latlng, markerOptions);
                     oms.addMarker(marker);
                     return marker;
-                },
+                }
             }).addTo(map);
 
             var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
