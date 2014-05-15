@@ -50,8 +50,8 @@ var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
 
 var lightIcon = L.Icon.Default;
 var darkIcon  = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
-var redIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
-var greenIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-desat.png'}});
+var redIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-red.png'}});
+var greenIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-green.png'}});
 var orangeIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
 var pointsLayer;
 
