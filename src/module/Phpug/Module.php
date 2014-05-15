@@ -33,8 +33,11 @@
 namespace Phpug;
 
 use Phpug\View\Strategy\UnauthorizedStrategy;
+use Zend\Console\Adapter\AdapterInterface;
 use Zend\Module\Manager;
 use Zend\Module\Consumer\AutoloaderProvider;
+use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\View\HelperPluginManager;
@@ -53,7 +56,7 @@ use Phpug\View\Strategy\JsonExceptionStrategy;
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class Module
+class Module implements ConsoleUsageProviderInterface
 {
     
     public function onBootstrap($e)
@@ -117,5 +120,15 @@ class Module
     					),
     			),
     	);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConsoleUsage(AdapterInterface $console)
+    {
+        return array(
+            'getmentoring' => 'Get a list of all users of PHP-Mentoring',
+        );
     }
 }
