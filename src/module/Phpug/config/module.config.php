@@ -226,6 +226,17 @@ return array(
                     ),
                 ),
             ),
+            'mentoring' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/mentoring[/:type]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Phpug\Controller',
+                        'controller'    => 'MentoringController',
+                        'action'        => 'getlist',
+                    ),
+                ),
+            ),
             'subdomain' => array(
                 'type' => 'Hostname',
                 'options' => array(
@@ -237,6 +248,22 @@ return array(
                 ),
             ),
         ),
+    ),
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'getmentoringjson' => array(
+                    'options' => array(
+                        'route' => 'getmentoring [--json|-j]',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller' => 'Mentoring',
+                            'action' => 'getmentoring'
+                        ),
+                    ),
+                ),
+            )
+        )
     ),
     'service_manager' => array(
         'factories' => array(
@@ -285,6 +312,8 @@ return array(
             'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
+            'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
+            'Phpug\Controller\Mentoring' => 'Phpug\Controller\MentoringController',
         ),
     ),
     'view_helpers'    => array(
@@ -338,6 +367,10 @@ return array(
     'php.ug.event' => array(
         'url' => 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100',
         'cachefile' => __DIR__ . '/../../../../tmp/joind.in',
+    ),
+    'php.ug.mentoring' => array(
+        'github_access_token' => '',
+        'file' => __DIR__ . '/../../../../tmp/mentoring.json'
     ),
     'phpug' => array(
         'entity' => array(

@@ -46,11 +46,14 @@ var map = L.map('map',{
     zoom: zoom,
     layers: baseTile
 });
-var oms = new OverlappingMarkerSpiderfier(map);
+var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
 
 var lightIcon = L.Icon.Default;
 var darkIcon  = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
 var redIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
+var greenIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-desat.png'}});
+var orangeIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
+var pointsLayer;
 
 new L.Control.GeoSearch({
     provider: new L.GeoSearch.Provider.OpenStreetMap(),
@@ -65,16 +68,30 @@ var createSelector = function(data){
         $('#grouptype').append($('<option value="'+item.id+'">' + item.name + '</option>'));
     }
     $('#grouptype').append($('<option value="events">Events (via joind.in)</option>'));
+    $('#grouptype').append($('<option value="mentoring">Mentoring (via phpmentoring.com)</option>'));
     $('#grouptype').bind('change',function(){
         var val = this.value;
         loadGroupData(val);
     });
-    loadGroupData($('#grouptype')[0].value);
+    switch(window.location.hash) {
+        case '#mentoring':
+            loadGroupData('mentoring');
+            break;
+        case '#events':
+            loadGroupData('events');
+            break;
+        default:
+            loadGroupData($('#grouptype')[0].value);
+    }
 };
 
 var loadGroupData = function(id){
     if (id == 'events') {
         loadEventData()
+        return true;
+    }
+    if (id == 'mentoring') {
+        loadMentoringData();
         return true;
     }
     $.ajax({
@@ -98,7 +115,7 @@ var loadGroupData = function(id){
                 pointToLayer: function (feature, latlng) {
                     icon = {};
                     if (! feature.properties.active) {
-                        icon = {icon : redIcon};
+                        icon = {icon : orangeIcon};
                     }
                     $.extend(icon, geojsonMarkerOptions);
                     marker = L.marker(latlng, icon);
@@ -111,29 +128,6 @@ var loadGroupData = function(id){
             }).addTo(map);
         }
     })
-};
-
-var loadEventData = function(){
-    $.ajax({
-        'type' : 'GET',
-        'url'  : 'event',
-        'dataType' : 'json',
-        'success' : function(data){
-            data = transformEventsToGeoJson(data);
-            if ('undefined' != typeof pointsLayer) {
-                map.removeLayer(pointsLayer);
-            }
-            pointsLayer = L.geoJson(data, {
-                pointToLayer: function(feature, latlng){
-                    icon = {};
-                    return L.marker(latlng, icon);
-                },
-                onEachFeature: function(feature, pointsLayer) {
-                    pointsLayer.on('click', openEventPopup);
-                }
-            }).addTo(map);
-        }
-    });
 };
 
 var openPopup = function(marker, foo){
@@ -198,7 +192,6 @@ var createPopup = function(data) {
     oms.addListener('click', function(marker) {
         popup.setContent(content);
         popup.setLatLng(marker.getLatLng());
-        console.log('foo');
         map.openPopup(popup, data.group.shortname);
         pushNextMeeting(popup, data.group.shortname);
     });
@@ -270,6 +263,29 @@ var transformToGeoJson = function(data)
 /*
 Event-Related stuff!
  */
+var loadEventData = function(){
+    $.ajax({
+        'type' : 'GET',
+        'url'  : 'event',
+        'dataType' : 'json',
+        'success' : function(data){
+            data = transformEventsToGeoJson(data);
+            if ('undefined' != typeof pointsLayer) {
+                map.removeLayer(pointsLayer);
+            }
+            pointsLayer = L.geoJson(data, {
+                pointToLayer: function(feature, latlng){
+                    icon = {};
+                    return L.marker(latlng, icon);
+                },
+                onEachFeature: function(feature, pointsLayer) {
+                    pointsLayer.on('click', openEventPopup);
+                }
+            }).addTo(map);
+        }
+    });
+};
+
 var openEventPopup = function(marker, foo){
     var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
     latlng = new L.LatLng(
@@ -300,7 +316,6 @@ var transformEventsToGeoJson = function(data)
     };
     for (i in data.events) {
         var point = data.events[i];
-        console.log(point);
         if (! point.longitude || isNaN(point.longitude) || ! point.latitude || isNaN(point.latitude)) {
             console.log(point.longitude + '::' + point.latitude);
             continue;
@@ -322,6 +337,142 @@ var transformEventsToGeoJson = function(data)
     }
     return jsonGeo;
 }
+
+/* Mentoring-related stuff */
+
+var loadMentoringData = function(){
+    $.ajax({
+        'type' : 'GET',
+        'url'  : 'mentoring',
+        'dataType' : 'json',
+        'success' : function(data){
+            data = transformMentoringToGeoJson(data);
+            if ('undefined' != typeof pointsLayer) {
+                map.removeLayer(pointsLayer);
+            }
+            var counter = 0;
+            pointsLayer = L.geoJson(data, {
+                pointToLayer: function(feature, latlng){
+                    markerOptions = {icon: new darkIcon()};
+                    if (feature.properties.typ == 'mentor') {
+                        markerOptions = {icon: new redIcon()};
+                    }
+                    marker = L.marker(latlng, markerOptions);
+                    oms.addMarker(marker);
+                    return marker;
+                },
+            }).addTo(map);
+
+            var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
+
+            oms.addListener('click', function(marker){
+                console.log(marker.feature.properties.name);
+                console.log(marker);
+                popup.setContent(marker.feature.desc);
+                popup.setLatLng(marker.getLatLng());
+                map.openPopup(popup);
+            });
+            oms.addListener('spiderfy', function(markers) {
+                //  for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new darkIcon());
+                map.closePopup();
+            });
+            oms.addListener('unspiderfy', function(markers) {
+                //    for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
+            });
+        }
+    });
+};
+
+var transformMentoringToGeoJson = function(data)
+{
+    var jsonGeo = {
+        type : 'mentoring',
+        features : []
+    };
+    var point, content;
+
+    for (i in data.apprentices) {
+        point = data.apprentices[i];
+        if (! point.lon || isNaN(point.lon) || ! point.lat || isNaN(point.lat)) {
+            continue;
+        }
+        url = 'https://github.com/phpmentoring/phpmentoring.github.com/wiki/Mentors-and-Apprentices#apprentices-currently-accepting-mentors';
+        content = '<div class="popup">'
+        + '<h4>'
+        + '<a href="%url%" target="_blank">'
+        + '%name%'
+        + '</a> '
+        + '<a href="%github%"><i class="fa fa-github"></i></a>'
+        + '</h4>'
+        + '<h5>%location% - Looking for mentorship</h5>'
+        + '<p>%description%</p>';
+        content = content.replace('%url%', url)
+            .replace('%name%', point.name)
+            .replace('%location%', point.location)
+            .replace('%github%', 'https://github.com/' + point.github)
+            .replace('%description%', point.description)
+            .replace('%type%', point.type);
+
+        var feature = {
+            'type' : 'Feature',
+            'geometry': {
+                type : 'Point',
+                coordinates : [point.lon, point.lat]
+            },
+            properties : {
+                typ  : point.type,
+                name : point.name,
+                desc : point.description,
+                url  : url,
+                github : 'https://github.com/' + point.github
+            },
+            desc : content
+        }
+        jsonGeo.features.push(feature);
+    }
+    for (i in data.mentors) {
+        point = data.mentors[i];
+        if (! point.lon || isNaN(point.lon) || ! point.lat || isNaN(point.lat)) {
+            continue;
+        }
+        url = 'https://github.com/phpmentoring/phpmentoring.github.com/wiki/Mentors-and-Apprentices#mentors-currently-accepting-an-apprentice';
+        content = '<div class="popup">'
+        + '<h4>'
+        + '<a href="%url%" target="_blank">'
+        + '%name%'
+        + '</a> '
+        + '<a href="%github%"><i class="fa fa-github"></i></a>'
+        + '</h4>'
+        + '<h5>%location% - accepting apprentices</h5>'
+        + '<p>%description%</p><p>%type%</p>';
+        content = content.replace('%url%', url)
+            .replace('%name%', point.name)
+            .replace('%location%', point.location)
+            .replace('%github%', 'https://github.com/' + point.github)
+            .replace('%description%', point.description)
+            .replace('%type%', point.type);
+
+        var feature = {
+            'type' : 'Feature',
+            'geometry': {
+                type : 'Point',
+                coordinates : [point.lon, point.lat]
+            },
+            properties : {
+                typ  : point.type,
+                name : point.name,
+                desc : point.description,
+                url  : '',
+                github : 'https://github.com/' + point.github
+            },
+            desc : content
+        }
+        jsonGeo.features.push(feature);
+    }
+
+    return jsonGeo;
+}
+
 
 
 $.ajax({
