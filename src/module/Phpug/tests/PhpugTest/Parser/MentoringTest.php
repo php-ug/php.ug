@@ -38,7 +38,8 @@ class MentoringTest extends \PHPUnit_Framework_TestCase
 {
     public function testParsing()
     {
-        $parser = new MentoringParser();
+        $this->markTestSkipped('Still to implement');
+        $parser = new MentoringParser(array(''));
         $parser->parse(__DIR__ . '/__files/mentoring.html');
 
     }

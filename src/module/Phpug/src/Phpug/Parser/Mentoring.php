@@ -58,6 +58,16 @@ class Mentoring
     protected $config;
 
     /**
+     * Create an instance of the class
+     *
+     * @param array $config
+     */
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
      * Parse the given file for apprentices and mentors.
      *
      * @param string $file Path to the File to parse.
@@ -112,7 +122,7 @@ class Mentoring
      *
      * @return array
      */
-    public function parseUser(\DOMElement $userNode)
+    protected function parseUser(\DOMElement $userNode)
     {
         $user = array(
             'name' => '',
@@ -169,7 +179,7 @@ class Mentoring
      *
      * @return array|mixed
      */
-    public function getUserInfoFromGithub($user)
+    protected function getUserInfoFromGithub($user)
     {
         $config = $this->getConfig();
 
@@ -201,7 +211,7 @@ class Mentoring
      *
      * @return array|bool
      */
-    public function getLAtLonForLocation($location)
+    protected function getLAtLonForLocation($location)
     {
         $ch = curl_init('http://nominatim.openstreetmap.org/search?format=json&q=' . urlencode($location));
         curl_setopt($ch, CURLOPT_TIMEOUT, 2);
@@ -216,20 +226,6 @@ class Mentoring
         }
 
         return array('lat' => $info[0]['lat'], 'lon' => $info[0]['lon']);
-    }
-
-    /**
-     * Set the configuration
-     *
-     * @param array $config
-     *
-     * @return self
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-
-        return $this;
     }
 
     /**

@@ -56,7 +56,7 @@ use Phpug\View\Strategy\JsonExceptionStrategy;
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class Module implements ConsoleUsageProviderInterface, ConsoleBannerProviderInterface
+class Module implements ConsoleUsageProviderInterface
 {
     
     public function onBootstrap($e)
@@ -128,14 +128,7 @@ class Module implements ConsoleUsageProviderInterface, ConsoleBannerProviderInte
     public function getConsoleUsage(AdapterInterface $console)
     {
         return array(
-            'getmentoring [--json|-j]' => 'Get a list of all users of PHP-Mentoring',
-            array('--json|-j', 'Return JSON-Format')
+            'getmentoring' => 'Get a list of all users of PHP-Mentoring',
         );
     }
-
-    public function getConsoleBanner(AdapterInterface $console)
-    {
-        return 'PHP-Mentoring integration into PHP.ug';
-    }
-
 }

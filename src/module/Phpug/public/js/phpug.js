@@ -320,8 +320,8 @@ var transformEventsToGeoJson = function(data)
             + '<dl><dt>Start:</dt><dd>%start%</dd><dt>End:</dt><dd>%end%</dd></dl>';
         content = content.replace('%url%', point.website_uri)
             .replace('%name%', point.name)
-            .replace('%start%', new Date(point.start_date))
-            .replace('%end%', new Date(point.end_date))
+            .replace('%start%', new Date(point.start_date).toUTCString())
+            .replace('%end%', new Date(point.end_date).toUTCString())
         var feature = {
             'type' : 'Feature',
             'geometry': {

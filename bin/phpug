@@ -30,10 +30,4 @@
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-chdir(dirname(__DIR__) . '/src');
-
-// Setup autoloading
-include 'init_autoloader.php';
-
-// Run the application!
-Zend\Mvc\Application::init(include 'config/application.config.php')->run();
+require __DIR__ . '/../src/public/index.php';
