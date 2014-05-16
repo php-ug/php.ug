@@ -356,7 +356,7 @@ var loadMentoringData = function(){
             var counter = 0;
             pointsLayer = L.geoJson(data, {
                 pointToLayer: function(feature, latlng){
-                    markerOptions = {icon: new darkIcon()};
+                    markerOptions = {icon: new greenIcon()};
                     if (feature.properties.typ == 'mentor') {
                         markerOptions = {icon: new redIcon()};
                     }
