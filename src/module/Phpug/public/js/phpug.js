@@ -118,9 +118,8 @@ var loadGroupData = function(id){
                 pointToLayer: function (feature, latlng) {
                     icon = {};
                     if (! feature.properties.active) {
-                        icon = {icon : orangeIcon};
+                        icon = {icon : new orangeIcon()};
                     }
-                    $.extend(icon, geojsonMarkerOptions);
                     marker = L.marker(latlng, icon);
                     oms.addMarker(marker);
                     return marker;
