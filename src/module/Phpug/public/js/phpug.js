@@ -124,87 +124,81 @@ var loadGroupData = function(id){
                     marker = L.marker(latlng, icon);
                     oms.addMarker(marker);
                     return marker;
-                },
-                onEachFeature: function (feature, pointsLayer) {
-                    pointsLayer.on('click',openPopup);
                 }
             }).addTo(map);
+            var popup = new L.Popup({offset : new L.Point(0, -20), minWidth : 150, maxWidth : 300});
+
+            oms.addListener('click', function(marker) {
+                var info = getContent(marker);
+                popup.setContent(info.desc);
+                popup.setLatLng(marker.getLatLng());
+                map.openPopup(popup, info.shortname);
+                pushNextMeeting(popup, info.shortname);
+            });
+            oms.addListener('spiderfy', function(markers) {
+                map.closePopup();
+            });
         }
     })
 };
 
-var openPopup = function(marker, foo){
-    $.ajax({
-        type: 'GET',
-        url: "/api/rest/usergroup.json/" + marker.target.feature.properties.id,
-        dataTpye: 'json',
-        success : createPopup
-    });
-};
+var getContent = function(marker){
 
-var createPopup = function(data) {
-    var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
-    latlng = new L.LatLng(data.group.latitude,data.group.longitude);
+    f = $.ajax({
+        type     : 'GET',
+        url      : "/api/rest/usergroup.json/" + marker.feature.properties.id,
+        dataTpye : 'json',
+        async    : false
+    });
+    data = f.responseJSON;
     var content = '<div class="popup">'
-                + '<h4>'
-                + '<a href="%url%" target="_blank">'
-                + '%name%'
-                + '</a>'
-                + '</h4>'
-                + '<h5>Next Event</h5>'
-                + '<div id="next_event_%shortname%" class="next_event">Getting next event...</div>'
-                + '<h5>Get in touch</h5>'
-                + '%contacts%'
-                + '</div>'
+            + '<h4>'
+            + '<a href="%url%" target="_blank">'
+            + '%name%'
+            + '</a>'
+            + '</h4>'
+            + '<h5>Next Event</h5>'
+            + '<div id="next_event_%shortname%" class="next_event">Getting next event...</div>'
+            + '<h5>Get in touch</h5>'
+            + '%contacts%'
+            + '</div>'
         ;
-                
+
     var contact = '<a href="%url%" title="%value%" target="_blank">'
-                + '<i class="fa-%faicon% fa"></i>'
-                + '</a>';
+        + '<i class="fa-%faicon% fa"></i>'
+        + '</a>';
     var contacts = [];
 
-
     if (data.group.icalendar_url) {
-        contacts.push(contact.replace(/%type%/,'icalendar').replace(/%url%/,data.group.icalendar_url).replace(/%value%/,'iCal-File').replace(/%faicon%/,'calendar'));
+        contacts.push(contact.replace(/%type%/, 'icalendar').replace(/%url%/, data.group.icalendar_url).replace(/%value%/, 'iCal-File').replace(/%faicon%/, 'calendar'));
     }
     icons = {
-        'twitter' : 'twitter',
-        'github' : 'github',
-        'mail'   : 'envelope',
-        'facebook' : 'facebook',
-        'meetup' : 'meetup',
+        'twitter'     : 'twitter',
+        'github'      : 'github',
+        'mail'        : 'envelope',
+        'facebook'    : 'facebook',
+        'meetup'      : 'meetup',
         'google-plus' : 'google-plus',
-        'bitbucket' : 'bitbucket'
+        'bitbucket'   : 'bitbucket'
     }
     for (i in data.contacts) {
         cont = data.contacts[i];
-        contacts.push(contact.replace(/%type%/,cont.type.toLowerCase()).replace(/%url%/,cont.url).replace(/%value%/,cont.name).replace(/%faicon%/,icons[cont.type.toLowerCase()]));
+        contacts.push(contact.replace(/%type%/, cont.type.toLowerCase()).replace(/%url%/, cont.url).replace(/%value%/, cont.name).replace(/%faicon%/, icons[cont.type.toLowerCase()]));
     }
     if (data.edit) {
-        var edit = '<a href="ug/edit/'+data.group.shortname +'" title="Edit"><i class="fa fa-edit"></i></a>';
+        var edit = '<a href="ug/edit/' + data.group.shortname + '" title="Edit"><i class="fa fa-edit"></i></a>';
         contacts.push(edit);
     }
     contacts = contacts.join('</li><li>');
     if (contacts) {
         contacts = '<ul><li>' + contacts + '</li></ul>';
     }
-    content = content.replace(/%url%/,data.group.url)
-           .replace(/%name%/,data.group.name)
-           .replace(/%shortname%/,data.group.shortname)
-           .replace(/%contacts%/, contacts);
-    oms.addListener('click', function(marker) {
-        popup.setContent(content);
-        popup.setLatLng(marker.getLatLng());
-        map.openPopup(popup, data.group.shortname);
-        pushNextMeeting(popup, data.group.shortname);
-    });
-    oms.addListener('spiderfy', function(markers) {
-        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new darkIcon());
-        map.closePopup();
-    });
-    oms.addListener('unspiderfy', function(markers) {
-        for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
-    });
+    content = content.replace(/%url%/, data.group.url)
+        .replace(/%name%/, data.group.name)
+        .replace(/%shortname%/, data.group.shortname)
+        .replace(/%contacts%/, contacts);
+
+    return {desc:content,shortname:data.group.shortname};
 };
 
 var pushNextMeeting = function(popup, id)
@@ -369,8 +363,6 @@ var loadMentoringData = function(){
             var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
 
             oms.addListener('click', function(marker){
-                console.log(marker.feature.properties.name);
-                console.log(marker);
                 popup.setContent(marker.feature.desc);
                 popup.setLatLng(marker.getLatLng());
                 map.openPopup(popup);
