@@ -300,6 +300,20 @@ class Usergroup
         return $this;
     }
 
+    /**
+     * Add a single groupcontact to the contagslist
+     *
+     * @param Groupcontact $contact
+     *
+     * @return self
+     */
+    public function addContact(Groupcontact $contact)
+    {
+        $this->contacts->add($contact);
+
+        return $this;
+    }
+
     public function removeContacts(ArrayCollection $contacts)
     {
         foreach ($contacts as $contact) {
@@ -462,5 +476,18 @@ class Usergroup
         return $this;
     }
 
+    /**
+     * Check whether this usergroup has any contacts
+     *
+     * @return bool
+     */
+    public function hasContacts()
+    {
+        if ($this->contacts->count() < 1) {
+            return false;
+        }
+
+        return true;
+    }
 
 }

@@ -32,6 +32,7 @@
 
 namespace Phpug\Controller;
 
+use Phpug\Entity\Groupcontact;
 use Phpug\Entity\Usergroup;
 use Phpug\Exception\UnauthenticatedException;
 use Phpug\Exception\UnauthorizedException;
@@ -111,6 +112,7 @@ class UsergroupController extends AbstractActionController
 
         $objectManager = $this->getEntityManager();
         $usergroup = new Usergroup();
+        $usergroup->addContact(new Groupcontact());
 
         $form->bind($usergroup);
         $form->setAttribute('action', $this->url()->fromRoute('ug/promote'));
@@ -177,6 +179,10 @@ class UsergroupController extends AbstractActionController
             ));
         }
         $usergroup = $usergroup[0];
+        /** @var \Phpug\Entity\Usergroup $usergroup */
+        if (! $usergroup->hasContacts()) {
+            $usergroup->addContact(new Groupcontact());
+        }
 
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
 
