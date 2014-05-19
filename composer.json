@@ -1,10 +1,10 @@
  {
      "minimum-stability": "dev",
      "require": {
-         "ext/curl"                    : "*",
-         "doctrine/doctrine-module"    : ">=0.8.0",
-         "doctrine/doctrine-orm-module": ">=0.8.0",
-         "zendframework/zendframework" :  "master",
+         "ext-curl"                    : "*",
+         "doctrine/doctrine-module"    : "0.8.*",
+         "doctrine/doctrine-orm-module": "0.8.*",
+         "zendframework/zendframework" : "2.3.1",
          "org_heigl/contact" :           "dev-master",
          "org_heigl/mailproxy" :         "dev-master",
          "org_heigl/hybridauth" :        "dev-feature/multipleProviders",

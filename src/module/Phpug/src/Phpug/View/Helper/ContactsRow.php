@@ -69,8 +69,6 @@ class ContactsRow extends AbstractHelper implements ServiceLocatorAwareInterface
 
     public function render(Element $element)
     {
-        $formElement = $this->getElementHelper();
-        $formElementErrors = new FormElementErrors();
         $output = sprintf(
             '<li>%1$s%2$s</li>',
             $this->renderElement($element->get('service')),
