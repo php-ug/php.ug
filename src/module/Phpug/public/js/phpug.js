@@ -301,8 +301,11 @@ var transformEventsToGeoJson = function(data)
     };
     for (i in data.events) {
         var point = data.events[i];
-        if (! point.longitude || isNaN(point.longitude) || ! point.latitude || isNaN(point.latitude)) {
-            continue;
+        if (! point.longitude || isNaN(point.longitude)) {
+            point.longitute = 0.0;
+        }
+        if (! point.latitude || isNaN(point.latitude)) {
+            point.latitude = 0.0;
         }
         var content = '<div class="popup">'
             + '<h4>'
