@@ -65,4 +65,4 @@ Used Modules currently are:
 
 This project is hosted on github at http://github.com/php-ug/php.ug
 
-And this is a [link](#link) to the bottom
+And this is a <a name="link"></a>link to the bottom
