@@ -78,6 +78,11 @@ class Service
     protected $contacts;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $cssclass;
+
+    /**
     * Magic getter to expose protected properties.
     *
     * @param string $property
