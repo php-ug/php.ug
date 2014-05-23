@@ -64,3 +64,5 @@ Used Modules currently are:
 * OrgHeiglContact
 
 This project is hosted on github at http://github.com/php-ug/php.ug
+
+And this is a [link](#link) to the bottom
