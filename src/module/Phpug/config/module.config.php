@@ -257,8 +257,18 @@ return array(
                         'route' => 'getmentoring [--json|-j]',
                         'defaults' => array(
                             '__NAMESPACE__' => 'Phpug\Controller',
-                            'controller' => 'Mentoring',
+                            'controller' => 'MentoringController',
                             'action' => 'getmentoring'
+                        ),
+                    ),
+                ),
+                'getjoindinjson' => array(
+                    'options' => array(
+                        'route' => 'getjoindin',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller'    => 'EventCacheController',
+                            'action'        => 'getJoindin'
                         ),
                     ),
                 ),
@@ -313,7 +323,7 @@ return array(
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
-            'Phpug\Controller\Mentoring' => 'Phpug\Controller\MentoringController',
+            'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
         ),
     ),
     'view_helpers'    => array(
