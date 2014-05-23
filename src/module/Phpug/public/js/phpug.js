@@ -68,7 +68,7 @@ var createSelector = function(data){
         $('#grouptype').append($('<option value="'+item.id+'">' + item.name + '</option>'));
     }
     $('#grouptype').append($('<option value="events">Events (via joind.in)</option>'));
-    $('#grouptype').append($('<option value="mentoring">Mentoring (via phpmentoring.com)</option>'));
+    $('#grouptype').append($('<option value="mentoring">Mentoring (via phpmentoring.org)</option>'));
     $('#grouptype').bind('change',function(){
         var val = this.value;
         loadGroupData(val);
