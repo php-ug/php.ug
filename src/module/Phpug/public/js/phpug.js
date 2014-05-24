@@ -169,7 +169,7 @@ var getContent = function(marker){
     var contacts = [];
 
     if (data.group.icalendar_url) {
-        contacts.push(contact.replace(/%type%/, 'icalendar').replace(/%url%/, data.group.icalendar_url).replace(/%value%/, 'iCal-File').replace(/%faicon%/, 'calendar'));
+        contacts.push(contact.replace(/%type%/, 'icalendar').replace(/%url%/, data.group.icalendar_url).replace(/%value%/, 'iCal-File').replace(/%cssClass%/, 'fa-calendar fa'));
     }
 
     for (i in data.contacts) {
