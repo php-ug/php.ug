@@ -106,6 +106,7 @@ class Groupcontact
         $return = get_object_vars($this);
         $return['url'] = $this->getUrl();
         $return['type'] = $this->service->name;
+        $return['cssClass'] = $this->service->cssclass;
         return $return;
     }
     

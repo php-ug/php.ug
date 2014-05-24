@@ -136,6 +136,10 @@ section > div#map {
     color: rgb(64,64,64);
 }
 
+.phpug-hashtag:before {
+    content: '#';
+}
+
 @media(max-width: 979px){
     .fork-on-github{
         display:none;
