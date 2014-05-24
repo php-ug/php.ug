@@ -111,7 +111,11 @@ class JsonExceptionStrategy extends ExceptionStrategy
                     $response = new HttpResponse();
                     $e->setResponse($response);
                 }
-                $response->setStatusCode(500);
+                if (method_exists($response, 'setStatusCode')) {
+                    $response->setStatusCode(500);
+                } else {
+                    $response->setContent($exception->getMEssage() . "\n");
+                }
                 break;
         }
     }

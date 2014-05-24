@@ -32,7 +32,7 @@
 
 namespace Phpug\Controller;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
 /**
@@ -47,18 +47,47 @@ use Zend\Json\Json;
  * @since     06.03.2012
  * @link      http://github.com/heiglandreas/php.ug
  */
-class EventController extends AbstractRestfulController
+class EventCacheController extends AbstractActionController
 {
 
-    public function getList()
+    public function getJoindinAction()
     {
-
         $config = $this->getServiceLocator()->get('config');
 
+        $url = $config['php.ug.event']['url'];
         $file = $config['php.ug.event']['cachefile'];
+        if (! realpath(dirname($file))) {
+            throw new \UnexpectedValueException(sprintf(
+                '"%s" does not exist',
+                dirname($file)
+            ));
+        }
+        if (! is_writeable(realpath(dirname($file)))) {
+            throw new \UnexpectedValueException(sprintf(
+                '"%s" is not writeable',
+                realpath(dirname($file))
+            ));
+        }
 
-        $content = Json::decode(file_get_contents($file), Json::TYPE_ARRAY);
-        return new JsonModel($content);
+        if (! is_writeable(realpath($file))) {
+            throw new \UnexpectedValueException(sprintf(
+                '"%s" is not writeable',
+                realpath($file  )
+            ));
+        }
+        $file = realpath($file);
+        echo sprintf('Fetching the joind.in data from "%s"' . "\n", $url);
+        $fh = fopen($file, 'w');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+        curl_setopt($ch, CURLOPT_FILE, $fh);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch); // get curl response
+        curl_close($ch);
 
+        fclose($fh);
+        echo sprintf('Wrote the joind.in-data to "%s"' . "\n", $file);
+
+        return false;
     }
 }
