@@ -181,7 +181,9 @@ class UsergroupController extends AbstractActionController
         $usergroup = $usergroup[0];
         /** @var \Phpug\Entity\Usergroup $usergroup */
         if (! $usergroup->hasContacts()) {
-            $usergroup->addContact(new Groupcontact());
+            $contact = new Groupcontact();
+            $contact->group = $usergroup;
+            $usergroup->addContact($contact);
         }
 
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
