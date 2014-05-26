@@ -47,6 +47,9 @@ var map = L.map('map',{
     layers: baseTile
 });
 var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
+oms.addListener('spiderfy', function(markers) {
+    map.closePopup();
+});
 
 var lightIcon = L.Icon.Default;
 var darkIcon  = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
@@ -126,16 +129,13 @@ var loadGroupData = function(id){
                 }
             }).addTo(map);
             var popup = new L.Popup({offset : new L.Point(0, -20), minWidth : 150, maxWidth : 300});
-
+            oms.clearListeners('click');
             oms.addListener('click', function(marker) {
                 var info = getContent(marker);
                 popup.setContent(info.desc);
                 popup.setLatLng(marker.getLatLng());
                 map.openPopup(popup, info.shortname);
                 pushNextMeeting(popup, info.shortname);
-            });
-            oms.addListener('spiderfy', function(markers) {
-                map.closePopup();
             });
         }
     })
@@ -174,7 +174,6 @@ var getContent = function(marker){
 
     for (i in data.contacts) {
         cont = data.contacts[i];
-        console.log(cont);
         contacts.push(contact.replace(/%type%/, cont.type.toLowerCase()).replace(/%url%/, cont.url).replace(/%value%/, cont.name).replace(/%cssClass%/, cont.cssClass));
     }
     if (data.edit) {
@@ -272,15 +271,11 @@ var loadEventData = function(){
             }).addTo(map);
             var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
 
+            oms.clearListeners('click');
             oms.addListener('click', function(marker){
                 popup.setContent(marker.feature.desc);
                 popup.setLatLng(marker.getLatLng());
                 map.openPopup(popup);
-            });
-            oms.addListener('spiderfy', function(markers) {
-                map.closePopup();
-            });
-            oms.addListener('unspiderfy', function(markers) {
             });
         }
     });
@@ -356,18 +351,11 @@ var loadMentoringData = function(){
             }).addTo(map);
 
             var popup = new L.Popup({offset:new L.Point(0, -20), minWidth : 150, maxWidth: 300});
-
+            oms.clearListeners('click');
             oms.addListener('click', function(marker){
                 popup.setContent(marker.feature.desc);
                 popup.setLatLng(marker.getLatLng());
                 map.openPopup(popup);
-            });
-            oms.addListener('spiderfy', function(markers) {
-                //  for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new darkIcon());
-                map.closePopup();
-            });
-            oms.addListener('unspiderfy', function(markers) {
-                //    for (var i = 0, len = markers.length; i < len; i ++) markers[i].setIcon(new lightIcon());
             });
         }
     });
