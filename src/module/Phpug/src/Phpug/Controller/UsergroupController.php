@@ -112,7 +112,9 @@ class UsergroupController extends AbstractActionController
 
         $objectManager = $this->getEntityManager();
         $usergroup = new Usergroup();
-        $usergroup->addContact(new Groupcontact());
+        $contact = new Groupcontact();
+        $contact->group = $usergroup;
+        $usergroup->addContact($contact);
 
         $form->bind($usergroup);
         $form->setAttribute('action', $this->url()->fromRoute('ug/promote'));
