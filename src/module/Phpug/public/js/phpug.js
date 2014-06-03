@@ -281,7 +281,7 @@ var transformToGeoJson = function(data)
             }
         };
         jsonGeo.features.push(feature);
-        if (center === point.shortname){
+        if (center && center === point.shortname){
             map.setView(new L.LatLng(point.latitude,point.longitude), 8);
         }
     }
@@ -362,7 +362,7 @@ var transformEventsToGeoJson = function(data)
         }
         jsonGeo.features.push(feature);
         var id = point.uri.split('/');
-        if (center === id[id.length-1]){
+        if (center && center === id[id.length-1]){
             map.setView(new L.LatLng(point.latitude,point.longitude), 8);
         }
     }
@@ -451,7 +451,7 @@ var transformMentoringToGeoJson = function(data)
             desc : content
         }
         jsonGeo.features.push(feature);
-        if (center.toLowerCase() === point.github.toLowerCase()){
+        if (center && center.toLowerCase() === point.github.toLowerCase()){
             map.setView(new L.LatLng(point.lat,point.lon), 8);
         }
 
