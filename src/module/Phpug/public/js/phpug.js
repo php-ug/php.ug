@@ -19,9 +19,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+function getQueryParameter(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+
+    return false;
+}
+
+getUriGeolocation = function(){
+    try {
+        var obj = {
+            lat : null,
+            lng : null,
+            zoom: 8
+        };
+        obj.lat = getQueryParameter('lat');
+        obj.lng = getQueryParameter('lng');
+        obj.zoom = getQueryParameter('zoom');
+        if (null=== obj.lat || null === obj.lng) return false;
+
+        return obj;
+    }catch(e){
+        return false;
+    }
+}
+
+var center = getQueryParameter('center');
 var coord = new L.LatLng(0,0);
 var zoom  = 2;
-if($.cookie("map")){
+var loc = getUriGeolocation();
+if(false !== loc) {
+    coord.lat = loc.lat;
+    coord.lng = loc.lng;
+    zoom      = loc.zoom;
+} else if($.cookie("map")){
     var mp = $.parseJSON($.cookie('map'));
     coord.lat = mp.lat;
     coord.lng = mp.lng;
@@ -244,6 +281,9 @@ var transformToGeoJson = function(data)
             }
         };
         jsonGeo.features.push(feature);
+        if (center === point.shortname){
+            map.setView(new L.LatLng(point.latitude,point.longitude), 8);
+        }
     }
     return jsonGeo;
 }
@@ -321,6 +361,10 @@ var transformEventsToGeoJson = function(data)
             desc : content
         }
         jsonGeo.features.push(feature);
+        var id = point.uri.split('/');
+        if (center === id[id.length-1]){
+            map.setView(new L.LatLng(point.latitude,point.longitude), 8);
+        }
     }
     return jsonGeo;
 }
@@ -407,6 +451,10 @@ var transformMentoringToGeoJson = function(data)
             desc : content
         }
         jsonGeo.features.push(feature);
+        if (center.toLowerCase() === point.github.toLowerCase()){
+            map.setView(new L.LatLng(point.lat,point.lon), 8);
+        }
+
     }
     for (i in data.mentors) {
         point = data.mentors[i];
@@ -451,16 +499,12 @@ var transformMentoringToGeoJson = function(data)
     return jsonGeo;
 }
 
-
-
 $.ajax({
     type: 'GET',
     url: "/api/rest/listtype.json",
     dataTpye: 'json',
     success : createSelector
 });
-
-
 
 window.onbeforeunload = function(e){
     $.cookie("map", JSON.stringify({lat:map.getCenter().lat, lng:map.getCenter().lng, zoom:map.getZoom()}));
