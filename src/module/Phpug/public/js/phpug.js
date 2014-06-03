@@ -43,7 +43,7 @@ getUriGeolocation = function(){
         obj.lng = getQueryParameter('lng');
         var mZoom = getQueryParameter('zoom');
         if (mZoom) obj.zoom = mZoom;
-        if (null=== obj.lat || null === obj.lng) return false;
+        if (!obj.lat || !obj.lng) return false;
 
         return obj;
     }catch(e){
