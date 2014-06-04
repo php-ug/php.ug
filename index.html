@@ -1,123 +1,43 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+---
+layout: default
+title: Home
+---
+{% comment %}
+            {% for post in site.posts %}
+            <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+            <p><small><strong>{{ post.date | date: "%B %e, %Y" }}</strong> . {{ post.category }} . <a href="{{ post.url }}"></a></small></p>
+            {% endfor %}
+{% endcomment %}
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+<div class="posts">
+    {% for post in paginator.posts %}
+    <div class="post">
+        <h1 class="post-title">
+            <a href="{{ post.url }}">
+                {{ post.title }}
+            </a>
+        </h1>
 
-    <title>Php.ug by php-ug</title>
-  </head>
+        <span class="post-date">{{ post.date | date_to_string }}</span>
 
-  <body>
-    <header>
-      <div class="inner">
-        <h1>Php.ug</h1>
-        <h2>A home for all PHP-Usergroups</h2>
-        <a href="https://github.com/php-ug/php.ug" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
-<a name="phpug" class="anchor" href="#phpug"><span class="octicon octicon-link"></span></a>php.ug</h1>
-
-<h2>
-<a name="an-international-meeting-point-for-the-php-community" class="anchor" href="#an-international-meeting-point-for-the-php-community"><span class="octicon octicon-link"></span></a>An international meeting-point for the PHP-Community.</h2>
-
-<h3>
-<a name="purpose" class="anchor" href="#purpose"><span class="octicon octicon-link"></span></a>Purpose</h3>
-
-<p>This Website provides a location for PHP usergroups worldwide to advertise 
-their existence, their meetings and their contact-details.</p>
-
-<p>For that we include a map on the frontpage that displays every registered 
-location worldwide. The User can then select the nearest UG and see the
-relevant informations like next meeting and contact-informations.</p>
-
-<p>From there you can jump to their website immediately.</p>
-
-<p>Also a shortlink is provided for every UG so their website can be reached
-using a URL like <a href="http://php.ug/ffm">http://php.ug/ffm</a> or <a href="http://ffm.php.ug">http://ffm.php.ug</a> for the Usergroup at 
-Frankfurt/Main in Germany or <a href="http://php.ug/benelux">http://php.ug/benelux</a> or <a href="http://benelux.php.ug">http://benelux.php.ug</a>
-for the UG in the Benelux-Countries.</p>
-
-<p>For that every Usergroup can register by providing a unique identifier 
-(ffm or benelux), a website and some contact-informations (mainly email, 
-but twitter, facebook or Chat are also possible) and a location where (or 
-around where) the meetings are held. Currently simply provide the informations
-via the contact-form on the website.</p>
-
-<p>You will be able to log in using any social plattform account associated with 
-your usergroup to edit entries of your usergroup. As long as this is not 
-implemented, please also use the contact-form.</p>
-
-<p>All Usergroups will have to verify their existence at least once a year so we
-can archive inactive groups.</p>
-
-<p>The meeting schedule will be retrieved on a regualr basis from an iCalendar-File 
-the usergroup can provide on their Website. That makes it easier to maintain
-a consistent Dataset of the schedules as the UG only needs to maintain their 
-local calendar and this website will retrieve that information. If no URL to
-that calendar is given, then no meeting-schedule will be displayed. <strong>This 
-feature is not yet implemented. Any volunteers are welcome!</strong></p>
-
-<p>NO statistics will be provided. </p>
-
-<h3>
-<a name="costs" class="anchor" href="#costs"><span class="octicon octicon-link"></span></a>Costs</h3>
-
-<p>The registering usergroups will not have to pay for this service! </p>
-
-<p>All costs are currently covered by the team-members. But - of course - donations
-to pay the bills are always welcome. For more information on donating either use
-the contact form or contact any one of the team by PM.</p>
-
-<p>Also help by coding the stuff behind is highly appreciated!</p>
-
-<h3>
-<a name="technical" class="anchor" href="#technical"><span class="octicon octicon-link"></span></a>Technical</h3>
-
-<p>This website will run with PHP (really?) Version 5.3+. I intend to build the
-app using the recent version of ZendFramework 2 which is (as far as I recall 
-from memory) ZF2.0.4. But other Ideas are welcome!</p>
-
-<p>Used Modules currently are:</p>
-
-<ul>
-<li>DoctrineORMModule</li>
-<li>DoctrineModule,</li>
-<li>OrgHeiglMailproxy and</li>
-<li>OrgHeiglContact</li>
-</ul><p>This project is hosted on github at <a href="http://github.com/php-ug/php.ug">http://github.com/php-ug/php.ug</a></p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/php-ug/php.ug/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/php-ug/php.ug/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/php-ug/php.ug"></a> is maintained by <a href="https://github.com/php-ug">php-ug</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+        {{ post.content | strip_html | truncatewords:50 }}
     </div>
+    {% endfor %}
+</div>
 
-  
-  </body>
-</html>
+<div class="pagination">
+    {% if paginator.next_page %}
+    <a class="pagination-item older" href="/page{{paginator.next_page}}">Older</a>
+    {% else %}
+    <span class="pagination-item older">Older</span>
+    {% endif %}
+    {% if paginator.previous_page %}
+    {% if paginator.page == 2 %}
+    <a class="pagination-item newer" href="/">Newer</a>
+    {% else %}
+    <a class="pagination-item newer" href="/page{{paginator.previous_page}}">Newer</a>
+    {% endif %}
+    {% else %}
+    <span class="pagination-item newer">Newer</span>
+    {% endif %}
+</div>

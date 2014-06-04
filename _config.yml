@@ -1,0 +1,29 @@
+markdown:    redcarpet
+highlighter: pygments
+
+permalink:   pretty
+
+title:       'PHP.ug-Blog'
+tagline:     'One home for one community'
+description: '<p>Ever wanted to know where the next group of PHP-Enthusiasts is near you?
+                          Have a look at the map at <a href="http://php.ug">PHP.ug</a> - The php.ug project aims to provide
+                          an up-to-date resource for finding PHP-Usergroups and other
+                          community-resources around the globe. See what and who is next to you.
+                      </p>
+                      <p>
+                          For that we maintain the list of active usergroups that you can
+                          also find on <a href="http://PHP.net/ug">php.net/ug</a>
+                      </p>'
+url:         http://php.ug
+
+paginate:    5
+baseurl:     /
+
+author:
+  name:      'Andreas Heigl'
+  url:       http://andreas.heigl.org
+  email:     andreas@heigl.org
+
+version:     1.0.0
+github:
+  repo:      https://github.com/php-ug/php.ug
