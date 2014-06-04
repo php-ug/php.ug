@@ -17,7 +17,7 @@ description: '<p>Ever wanted to know where the next group of PHP-Enthusiasts is 
 url:         http://php-ug.github.io/php.ug/
 
 paginate:    5
-baseurl:     /php.ug/
+baseurl:     /php.ug
 
 author:
   name:      'Andreas Heigl'
