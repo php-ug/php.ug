@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About
+title: About <small>this site</small>
 ---
 
 This site is maintained by

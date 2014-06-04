@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Archive
+title: <small>See the</small> Archive
 ---
 
 ## Blog Posts
