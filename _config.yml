@@ -14,7 +14,7 @@ description: '<p>Ever wanted to know where the next group of PHP-Enthusiasts is 
                           For that we maintain the list of active usergroups that you can
                           also find on <a href="http://PHP.net/ug">php.net/ug</a>
                       </p>'
-url:         http://php-ug.github.io/php.ug/
+url:         http://php-ug.github.io/
 
 paginate:    5
 baseurl:     /php.ug
