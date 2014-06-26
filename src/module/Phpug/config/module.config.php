@@ -375,7 +375,7 @@ return array(
         )
     ),
     'php.ug.event' => array(
-        'url' => 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100',
+        'url' => 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100&tags[]=php',
         'cachefile' => __DIR__ . '/../../../../tmp/joind.in',
     ),
     'php.ug.mentoring' => array(
