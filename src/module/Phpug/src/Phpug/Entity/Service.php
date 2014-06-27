@@ -109,6 +109,12 @@ class Service
      */
     public function toArray() {
         $array = get_object_vars($this);
+        foreach($array as $key => $item) {
+            if (is_object($item)) {
+                $array[$key] = $item->toArray();
+            }
+        }
+
         return $array;
     }
     

@@ -103,11 +103,17 @@ class Groupcontact
      * @return array
      */
     public function toArray() {
-        $return = get_object_vars($this);
-        $return['url'] = $this->getUrl();
-        $return['type'] = $this->service->name;
-        $return['cssClass'] = $this->service->cssclass;
-        return $return;
+        $array = get_object_vars($this);
+        foreach($array as $key => $item) {
+            if (is_object($item)) {
+                $array[$key] = $item->toArray();
+            }
+        }
+
+        $array['url'] = $this->getUrl();
+        $array['type'] = $this->service->name;
+        $array['cssClass'] = $this->service->cssclass;
+        return $array;
     }
     
     public function getUrl() 

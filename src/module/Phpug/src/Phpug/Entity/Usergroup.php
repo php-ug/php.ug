@@ -151,7 +151,33 @@ class Usergroup
      * @return array
      */
     public function toArray() {
-        return get_object_vars($this);
+        $return = array(
+            'id'            => $this->getId(),
+            'name'          => $this->getName(),
+            'shortname'     => $this->getShortname(),
+            'url'           => $this->getUrl(),
+            'icalendar_url' => $this->getIcalendar_url(),
+            'latitude'      => $this->getLatitude(),
+            'longitude'     => $this->getLongitude(),
+            'state'         => $this->getState(),
+            'contacts'      => array(),
+            'ugtype'        => array(
+                'id'          => $this->ugtype->getId(),
+                'name'        => $this->ugtype->getName(),
+                'description' => $this->ugtype->getDescription(),
+            ),
+        );
+
+        foreach ($this->contacts as $contact){
+            $return['contacts'][] = array(
+                'url'      => $contact->getUrl(),
+                'name'     => $contact->getName(),
+                'type'     => $contact->service->getName(),
+                'cssClass' => $contact->service->cssclass,
+            );
+        }
+
+        return $return;
     }
     
     public function __construct()
