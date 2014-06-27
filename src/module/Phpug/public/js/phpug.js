@@ -338,12 +338,19 @@ L.control.layers({
     'joind.in' : joindin,
     'PHP-Mentoring' : mentoring
 },{
-    'position' : 'bottomright'
+    'position' : 'bottomleft'
 }).addTo(map);
 
 var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
 oms.addListener('spiderfy', function(markers) {
     map.closePopup();
+});
+oms.clearListeners('click');
+oms.addListener('click', function(marker) {
+    var info = getContent(marker);
+    popup.setContent(info.desc);
+    popup.setLatLng(marker.getLatLng());
+    map.openPopup(popup, info.shortname);
 });
 
 
@@ -355,17 +362,6 @@ new L.Control.GeoSearch({
 }).addTo(map);
 
 
-//            oms.clearListeners('click');
-//            oms.addListener('click', function(marker) {
-//                var info = getContent(marker);
-//                popup.setContent(info.desc);
-//                popup.setLatLng(marker.getLatLng());
-//                map.openPopup(popup, info.shortname);
-//                pushNextMeeting(popup, info.shortname);
-//            });
-//        }
-//    })
-//};
 
 var pushNextMeeting = function(popup, id)
 {
