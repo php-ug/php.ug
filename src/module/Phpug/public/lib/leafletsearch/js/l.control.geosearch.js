@@ -70,13 +70,21 @@ L.Control.GeoSearch = L.Control.extend({
         resultslist.id = 'leaflet-control-geosearch-results';
         this._resultslist = resultslist;
 
+        var toggle = document.createElement('div');
+        toggle.id='leaflet-control-geosearch-toggle';
+        this._toggle = toggle;
+
         this._msgbox.appendChild(this._resultslist);
+        this._container.appendChild(this._toggle);
         this._container.appendChild(this._searchbox);
         this._container.appendChild(this._msgbox);
 
         L.DomEvent
           .addListener(this._container, 'click', L.DomEvent.stop)
-          .addListener(this._searchbox, 'keypress', this._onKeyUp, this);
+          .addListener(this._searchbox, 'keypress', this._onKeyUp, this)
+          .addListener(this._resultslist, 'click', this._onResultClick, this)
+          .addListener(this._toggle, 'click', this._onToggleClick, this)
+        ;
 
         L.DomEvent.disableClickPropagation(this._container);
 
@@ -168,7 +176,17 @@ L.Control.GeoSearch = L.Control.extend({
     },
 
     _processResults: function(results) {
-        if (results.length > 0) {
+        if (results.length == 1) {
+            this._map.fireEvent('geosearch_foundlocations', {Locations: results});
+            this._showLocation(results[0]);
+        }
+        else if (results.length > 1) {
+            list = [];
+            for(var i = 0; i < results.length; i++) {
+                list.push('<span class="geosearch-resultitem" data-lat="'+ results[i].Y + '" data-lng="' + results[i].X + '">' + results[i].Label + '</span>');
+            }
+            this._printError( list.join('</li><li>'), true);
+            this._toggle.innerHTML = '&#65514;'
             this._map.fireEvent('geosearch_foundlocations', {Locations: results});
             this._showLocation(results[0]);
         } else {
@@ -193,9 +211,11 @@ L.Control.GeoSearch = L.Control.extend({
         elem.innerHTML = '<li>' + message + '</li>';
         elem.style.display = 'block';
 
-        setTimeout(function () {
-            elem.style.display = 'none';
-        }, 3000);
+        if (arguments.length == 1) {
+            setTimeout(function () {
+                elem.style.display = 'none';
+            }, 3000);
+        }
     },
 
     _onKeyUp: function (e) {
@@ -208,6 +228,29 @@ L.Control.GeoSearch = L.Control.extend({
             this._map._container.focus();
         } else if (e.keyCode === enter) {
             this.geosearch(queryBox.value);
+        }
+    },
+
+    _onResultClick: function(e) {
+        if (! e.target.className.match(/geosearch-resultitem/)) {
+            return;
+        }
+
+        result = new L.GeoSearch.Result(
+            e.target.getAttribute('data-lng'),
+            e.target.getAttribute('data-lat'),
+            e.target.innerHTML
+        );
+        this._showLocation(result);
+    },
+
+    _onToggleClick: function(e){
+        if (this._msgbox.style.display == 'none') {
+            this._msgbox.style.display = 'block';
+            this._toggle.innerHTML = '&#65514;'
+        } else {
+            this._msgbox.style.display = 'none';
+            this._toggle.innerHTML = '&#65516;'
         }
     },
 

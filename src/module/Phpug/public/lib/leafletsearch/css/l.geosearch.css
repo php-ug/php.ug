@@ -36,3 +36,16 @@
 	border-radius: 4px;
 	border: none;
 }
+#leaflet-control-geosearch-toggle {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin: 7px;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0.3);
+    text-align: center;
+    font-size: 24px;
+    line-height: 20px;
+}
