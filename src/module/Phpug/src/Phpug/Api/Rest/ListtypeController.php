@@ -106,6 +106,7 @@ class ListtypeController extends AbstractRestfulController
                 continue;
             }
             if ($acl && $acl->isAllowed((string) $role, 'ug', 'edit')) {
+                $currentGroup['edit'] = true;
                 $content['groups'][] = $currentGroup;
                 continue;
             }
