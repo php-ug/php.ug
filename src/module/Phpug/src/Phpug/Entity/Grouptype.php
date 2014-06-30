@@ -145,7 +145,13 @@ class Grouptype
      * @return array
      */
     public function toArray() {
-        return get_object_vars($this);
+        return array(
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'id'          => $this->getId()
+        );
+
+        return $array;
     }
     
     public function __construct()
