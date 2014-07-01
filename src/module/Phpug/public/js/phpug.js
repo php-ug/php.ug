@@ -61,7 +61,7 @@ var contours = L.tileLayer('http://toolserver.org/~cmarqu/opentiles.com/cmarqu/t
 // Create a point-layer from the joind.in-API
 var joindin = L.layerJSON({
     // Get the stuff from this URL
-    url: "https://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100",
+    url: "https://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100&tags[]=php",
     // Add a json-callback to get around the same-origin-policy
     jsonpParam : 'callback',
     // Use the "latitude" and "longitude"-properties of the events as lat/lng
