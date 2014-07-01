@@ -2,6 +2,8 @@
 
 ## An international meeting-point for the PHP-Community.
 
+More information can be found in [our Blog](http://php-ug.github.io/php.ug/).
+
 ### Purpose
 
 This Website provides a location for PHP usergroups worldwide to advertise 
