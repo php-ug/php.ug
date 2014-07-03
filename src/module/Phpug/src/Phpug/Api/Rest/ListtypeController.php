@@ -87,6 +87,7 @@ class ListtypeController extends AbstractRestfulController
         if (1 < count($types)) {
             $content['error'] = 'more than one group with that ID available';
             $response->setContent($adapter->serialize($content));
+
             return $response;
         }
         
@@ -94,9 +95,17 @@ class ListtypeController extends AbstractRestfulController
         $content['list']   = $types[0]->toArray();
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
         $acl = $this->getServiceLocator()->get('acl');
+        $groupAssertion = $this->getServiceLocator()
+                               ->get('usersGroupAssertion')
+                               ->setUser($currentUser);
+
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
         foreach ($types[0]->getUsergroups() as $group) {
             $currentGroup = $group->toArray();
+            $groupAssertion->setGroup($group);
+            if ($acl->isAllowed($role, 'ug', 'edit')) {
+                $currentGroup['edit'] = true;
+            }
             $countryCache = $this->getServiceLocator()->get('Phpug\Cache\CountryCode');
             $countryCache->setUserGroup($group);
             unset($currentGroup['caches']);
@@ -106,7 +115,6 @@ class ListtypeController extends AbstractRestfulController
                 continue;
             }
             if ($acl && $acl->isAllowed((string) $role, 'ug', 'edit')) {
-                $currentGroup['edit'] = true;
                 $content['groups'][] = $currentGroup;
                 continue;
             }
