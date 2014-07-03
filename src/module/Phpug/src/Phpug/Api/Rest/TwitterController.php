@@ -73,6 +73,10 @@ class TwitterController extends AbstractRestfulController
             );
         }
 
+        usort($result, function($a, $b){
+            return strnatcasecmp($a['name'], $b['name']);
+        });
+
         $adapter = $this->getAdapter();
         $response = $this->getResponse();
         $response->setContent($adapter->serialize($result));
