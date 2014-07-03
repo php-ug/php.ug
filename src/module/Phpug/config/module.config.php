@@ -321,6 +321,7 @@ return array(
             'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
             'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
+            'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',

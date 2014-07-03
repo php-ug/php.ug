@@ -92,7 +92,6 @@ class UsergroupController extends AbstractRestfulController
         
         $content['error']    = null;
         $content['group']    = $types[0]->toArray(); 
-        $content['contacts'] = array();
 
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
 
@@ -104,13 +103,6 @@ class UsergroupController extends AbstractRestfulController
 
         $roleManager = $this->getServiceLocator()->get('roleManager');
         $roleManager->setUserToken($currentUser);
-
-        // FIXME: This has to be checked via an ACL!
-        foreach ($types[0]->getContacts() as $contact) {
-
-            $contactData = $contact->toArray();
-            $content['contacts'][] = $contactData;
-        }
 
         if ($acl->isAllowed($roleManager, 'ug', 'edit')) {
             $content['edit'] = true;
