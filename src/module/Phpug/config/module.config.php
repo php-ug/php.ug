@@ -295,6 +295,62 @@ return array(
             )
         )
     ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Home',
+                'route' => 'home',
+            ),
+            array(
+                'label' => 'Blog',
+                'uri'   => 'http://php-ug.github.io/php.ug/',
+            ),
+            array(
+                'label' => 'Tips & Tricks',
+                'route' => 'ug/tips',
+            ),
+            array(
+                'label'  => 'Features',
+                'route'  => 'features',
+                'action' => 'twitternicklist',
+                'pages' => array(
+                    array(
+                        'label'  => 'Twitter-List',
+                        'route'  => 'features',
+                        'action' => 'twitternicklist',
+                        'icon' => 'fa fa-twitter',
+                )),
+            ),
+            array(
+                'label' => 'Promote',
+                'route' => 'ug/promote',
+                'resource' => 'ug',
+                'privilege' => 'promote',
+            )
+        ),
+        'footer' => array(
+            array(
+                'label' => 'PHP.ug-Team',
+                'route' => 'ug/team',
+            ),
+            array(
+                'label' => 'Imprint',
+                'route' => 'ug/imprint',
+            ),
+            array(
+                'label' => 'Contact',
+                'route' => 'contact',
+            ),
+            array(
+                'label' => 'Legal',
+                'route' => 'ug/legal',
+            ),
+            array(
+                'label' => 'About',
+                'route' => 'ug/about',
+            ),
+        ),
+    ),
     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
@@ -368,6 +424,7 @@ return array(
             'index/index'    => __DIR__ . '/../view/phpug/index/index.phtml',
             'error/404'      => __DIR__ . '/../view/error/404.phtml',
             'error/index'    => __DIR__ . '/../view/error/index.phtml',
+            'partial/navigation' => __DIR__ . '/../view/partial/navigation.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
