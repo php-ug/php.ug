@@ -1,0 +1,55 @@
+.twitternick-list {
+    list-style-type: none;
+    padding-left:0;
+}
+.twitternick-list>li {
+    display:inline-block;
+    float: none;
+    vertical-align: top;
+    margin-top: 1em;
+}
+.twitternick-list>li h4 {
+    margin-bottom: 0;
+}
+.twitternick-list ul {
+    list-style-type: none;
+}
+.twitternick-icon {
+    float:left;
+    border-radius: 24px;
+    width:48px;
+    height:48px;
+    margin: 5px;
+}
+.twitternick-list>li:hover .twitternick-icon {
+    border-radius: 0px;
+}
+.twitternick-info {
+    /*   overflow: hidden;*/
+}
+.twitternick-grouplocationlink {
+    /*   float:right;*/
+    display: inline;
+}
+.twitternick-grouplist {
+    margin-left: 0;
+    padding-left: 0;
+    display: inline;
+}
+.twitternick-grouplist li {
+    display: inline;
+    white-space: nowrap;
+}
+.twitternick-grouplist li:after {
+    content: ',';
+    margin-left: -0.2em;
+    margin-right: 0.2em;
+}
+.twitternick-grouplist li:last-child:after {
+    content: '';
+}
+.twitternick-grouplist li:nth-last-child(2):after {
+    content: ' and ';
+    margin-left: 0em;
+    margin-right: 0.2em;
+}

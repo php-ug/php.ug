@@ -31,6 +31,7 @@
 
 namespace Phpug\Api\Rest;
 
+use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
 class TwitterController extends AbstractRestfulController
@@ -46,6 +47,8 @@ class TwitterController extends AbstractRestfulController
         $twitter = $this->getEntityManager()->getRepository('Phpug\Entity\Service')->findBy(array('name' => 'Twitter'));
         $twitters = $this->getEntityManager()->getRepository('Phpug\Entity\Groupcontact')->findBy(array('service' => $twitter[0]->id));
 
+        $twitterService = $this->getServiceLocator()->get('TwitterInfoService');
+
         $result = array();
         foreach ($twitters as $twitter) {
             $group = $twitter->getGroup();
@@ -55,6 +58,15 @@ class TwitterController extends AbstractRestfulController
             if (! $group instanceof \Phpug\Entity\Usergroup) {
                 continue;
             }
+            if (! isset($result[$twitter->getName()])) {
+                $result[$twitter->getName()] = array(
+                    'screen_name' => $twitter->getName(),
+                    'name'        => $twitterService->getInfoForUser('name', $twitter->getName()),
+                    'url'         => $twitter->getUrl(),
+                    'icon_url'    => $twitterService->getInfoForUser('profile_image_url_https', $twitter->getName()),
+                    'groups'      => array(),
+                );
+            }
             $groupMapUrl = $this->url()->fromRoute('home', array(), array('force_canonical' => true)) . '?center=' . $group->getShortName();
             $groupApiUrl = $this->url()->fromRoute(
                 'api/rest', array(
@@ -63,11 +75,9 @@ class TwitterController extends AbstractRestfulController
                 ),
                 array('force_canonical' => true)
             );
-            $result[] = array(
-                'name' => $twitter->getName(),
-                'url'  => $twitter->getUrl(),
-                'usergroup' => $group->getName(),
-                'usergroup_url' => $group->getUrl(),
+            $result[$twitter->getName()]['groups'][] = array(
+                'usergroup'           => $group->getName(),
+                'usergroup_url'       => $group->getUrl(),
                 'phpug_group_map_url' => $groupMapUrl,
                 'phpug_group_api_url' => $groupApiUrl,
             );
@@ -79,7 +89,7 @@ class TwitterController extends AbstractRestfulController
 
         $adapter = $this->getAdapter();
         $response = $this->getResponse();
-        $response->setContent($adapter->serialize($result));
+        $response->setContent($adapter->serialize(array_values($result)));
         return $response;
     }
 

@@ -237,6 +237,16 @@ return array(
                     ),
                 ),
             ),
+            'features' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/feature/:action',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Phpug\Controller',
+                        'controller' => 'FeatureController',
+                    ),
+                ),
+            ),
             'subdomain' => array(
                 'type' => 'Hostname',
                 'options' => array(
@@ -272,6 +282,16 @@ return array(
                         ),
                     ),
                 ),
+                'gettwitter' => array(
+                    'options' => array(
+                        'route' => 'gettwitter',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller'    => 'TwitterController',
+                            'action'        => 'getUgList',
+                        ),
+                    ),
+                ),
             )
         )
     ),
@@ -289,6 +309,7 @@ return array(
             'Phpug\Cache\CountryCode'     => 'Phpug\Service\CountryCodeCacheFactory',
             'Phpug\Entity\Cache'  => 'Phpug\Service\CacheFactory',
             'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
+            'TwitterInfoService'      => 'Phpug\Service\TwitterInfoFactory',
         ),
         'invokables' => array(
             'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
@@ -318,6 +339,7 @@ return array(
             'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',
             'Phpug\Controller\UsergroupController' => 'Phpug\Controller\UsergroupController',
             'Phpug\Controller\EventController' => '\Phpug\Controller\EventController',
+            'Phpug\controller\FeatureController' => '\Phpug\Controller\FeatureController',
             'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
             'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
@@ -325,6 +347,7 @@ return array(
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
+            'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
         ),
     ),
     'view_helpers'    => array(
