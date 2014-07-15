@@ -58,6 +58,9 @@ class TwitterController extends AbstractRestfulController
             if (! $group instanceof \Phpug\Entity\Usergroup) {
                 continue;
             }
+            if (! $group->getState() == $group::ACTIVE) {
+                continue;
+            }
             if (! isset($result[$twitter->getName()])) {
                 $result[$twitter->getName()] = array(
                     'screen_name' => $twitter->getName(),
