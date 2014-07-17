@@ -237,6 +237,16 @@ return array(
                     ),
                 ),
             ),
+            'features' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/feature/:action',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Phpug\Controller',
+                        'controller' => 'FeatureController',
+                    ),
+                ),
+            ),
             'subdomain' => array(
                 'type' => 'Hostname',
                 'options' => array(
@@ -272,8 +282,74 @@ return array(
                         ),
                     ),
                 ),
+                'gettwitter' => array(
+                    'options' => array(
+                        'route' => 'gettwitter',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller'    => 'TwitterController',
+                            'action'        => 'getUgList',
+                        ),
+                    ),
+                ),
             )
         )
+    ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Home',
+                'route' => 'home',
+            ),
+            array(
+                'label' => 'Blog',
+                'uri'   => 'http://php-ug.github.io/php.ug/',
+            ),
+            array(
+                'label' => 'Tips & Tricks',
+                'route' => 'ug/tips',
+            ),
+            array(
+                'label'  => 'Features',
+                'route'  => 'features',
+                'action' => 'twitternicklist',
+                'pages' => array(
+                    array(
+                        'label'  => 'Twitter-List',
+                        'route'  => 'features',
+                        'action' => 'twitternicklist',
+                        'icon' => 'fa fa-twitter',
+                )),
+            ),
+            array(
+                'label' => 'Promote',
+                'route' => 'ug/promote',
+                'resource' => 'ug',
+                'privilege' => 'promote',
+            )
+        ),
+        'footer' => array(
+            array(
+                'label' => 'PHP.ug-Team',
+                'route' => 'ug/team',
+            ),
+            array(
+                'label' => 'Imprint',
+                'route' => 'ug/imprint',
+            ),
+            array(
+                'label' => 'Contact',
+                'route' => 'contact',
+            ),
+            array(
+                'label' => 'Legal',
+                'route' => 'ug/legal',
+            ),
+            array(
+                'label' => 'About',
+                'route' => 'ug/about',
+            ),
+        ),
     ),
     'service_manager' => array(
         'factories' => array(
@@ -289,6 +365,7 @@ return array(
             'Phpug\Cache\CountryCode'     => 'Phpug\Service\CountryCodeCacheFactory',
             'Phpug\Entity\Cache'  => 'Phpug\Service\CacheFactory',
             'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
+            'TwitterInfoService'      => 'Phpug\Service\TwitterInfoFactory',
         ),
         'invokables' => array(
             'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
@@ -318,12 +395,15 @@ return array(
             'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',
             'Phpug\Controller\UsergroupController' => 'Phpug\Controller\UsergroupController',
             'Phpug\Controller\EventController' => '\Phpug\Controller\EventController',
+            'Phpug\controller\FeatureController' => '\Phpug\Controller\FeatureController',
             'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
             'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
+            'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
+            'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
         ),
     ),
     'view_helpers'    => array(
@@ -344,6 +424,7 @@ return array(
             'index/index'    => __DIR__ . '/../view/phpug/index/index.phtml',
             'error/404'      => __DIR__ . '/../view/error/404.phtml',
             'error/index'    => __DIR__ . '/../view/error/index.phtml',
+            'partial/navigation' => __DIR__ . '/../view/partial/navigation.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

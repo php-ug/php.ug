@@ -1,0 +1,44 @@
+<?php $this->headLink()->appendStylesheet($this->basePath . '/css/phpug/features.css'); ?>
+<div class="jumbotron">
+    <h3>
+        List of Twitter-Accounts
+    </h3>
+    <p>
+        These accounts are associated with at least one usergroup.
+    </p>
+</div>
+<ul class="twitternick-list">
+<?php foreach ($this->twitternicks as $nick) :?><li class="col-sm-3">
+   <a href="<?php echo $nick['url']; ?>" title="Open <?php echo $this->escapeHtml($nick['name']?$nick['name']:$nick['screen_name']) ?> twitter-page">
+
+    <div class="twitternick-icon" style="background-image:url(<?php echo $nick['icon_url']; ?>);">
+
+   </div>
+   </a>
+   <div class="twitternick-info">
+       <a href="<?php echo $nick['url']; ?>" title="Open <?php echo $this->escapeHtml($nick['name']?$nick['name']:$nick['screen_name']) ?> twitter-page">
+           <h4>
+           <?php echo $this->escapeHtml($nick['name']?$nick['name']:$nick['screen_name']) ?>
+           </h4>
+           <p>
+               @<?php echo $this->escapeHtml($nick['screen_name']); ?>
+           </p>
+       </a>
+       Associated with <?php echo (1==count($nick['groups']))?'Usergroup':'Usergroups'; ?>
+       <ul class="twitternick-grouplist">
+           <?php foreach ($nick['groups'] as $group): ?>
+               <li>
+                   <a href="<?php echo $group['usergroup_url']; ?>" title="Open the Website of this usergroup">
+                       <?php echo $this->escapeHtml($group['usergroup']); ?>
+                   </a>
+                   <div class="twitternick-grouplocationlink">
+                       <a href="<?php echo $group['phpug_group_map_url']; ?>" title="Open the map on this usergroups location">
+                           <i class="fa fa-globe"></i>
+                       </a>
+                   </div>
+               </li>
+           <?php endforeach; ?>
+       </ul>
+   </div>
+</li><?php endforeach; ?>
+</ul>

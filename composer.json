@@ -11,7 +11,8 @@
          "org_heigl/geolocation" :       "dev-master",
          "sabre/vobject" :               "3.0.*",
          "monolog/monolog" :             "1.9.1",
-         "willdurand/geocoder" :         ">=2.4.2"
+         "willdurand/geocoder" :         ">=2.4.2",
+         "zendframework/zendservice-twitter": "2.1.0"
      },
      "require-dev" : {
          "mockery/mockery": "dev-master",
