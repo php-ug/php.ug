@@ -26,18 +26,6 @@ $this->headScript()->prependFile($basePath . '/lib/bootstrap/js/bootstrap.min.js
 $this->headScript()->prependFile($basePath . '/js/jquery.cookie.js');
 $this->headScript()->prependFile($basePath . '/lib/jquery/jquery-migrate-1.2.1.min.js');
 $this->headScript()->prependFile($basePath . '/lib/jquery/jquery.js');
-$this->headScript()->appendScript('//<![CDATA[
-var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.heigl.org/" : "http://piwik.heigl.org/");
-document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
-</script><script type="text/javascript">
-try {
-    var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
-    piwikTracker.trackPageView();
-    piwikTracker.enableLinkTracking();
-} catch( err ) {}
-
-$(".navigation").contents().filter(function(){return this.nodeType === 3;}).remove();
-//]]>');
 echo $this->doctype();
 ?><html lang="en">
   <head>
