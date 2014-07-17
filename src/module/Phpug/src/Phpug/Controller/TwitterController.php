@@ -75,15 +75,21 @@ class TwitterController extends AbstractActionController
         $twitters = $this->getEntityManager()->getRepository('Phpug\Entity\Groupcontact')->findBy(array('service' => $twitter[0]->id));
 
         $result = array();
+        $i = 0;
         foreach ($twitters as $twitter) {
-            $result[] = $twitter->getName();
+            $result[floor($i++/100)][] = $twitter->getName();
         }
 
         $twitter = new Twitter($twitterConf);
 
-        $result = $twitter->usersLookup($result);
+        $count = count($result);
+        $info = array();
+        for ($i = 0; $i < $count; $i++) {
+            $result = $twitter->usersLookup($result[$i]);
+            $info = array_merge($info, Json::decode($result->getRawResponse(),Json::TYPE_ARRAY));
+        }
 
-        echo $result->getRawResponse();
+        echo Json::encode($info);
 
     }
 
