@@ -20,11 +20,12 @@
  * THE SOFTWARE.
  */
 // Defining some markers
-var lightIcon = L.Icon.Default;
-var darkIcon  = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
-var redIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-red.png'}});
-var greenIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-green.png'}});
-var orangeIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
+var lightIcon  = L.Icon.Default;
+var darkIcon   = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
+var redIcon    = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-red.png'}});
+var greenIcon  = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-green.png'}});
+var orangeIcon = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
+var grayIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-gray.png'}});
 
 var map = L.map('map');
 
@@ -167,8 +168,11 @@ var phpug = L.layerJSON({
     },
     buildIcon : function(data){
         console.log(data);
-        if (! data.state) {
+        if (data.state == 0) {
             return new darkIcon();
+        }
+        if (data.state == 2) {
+            return new grayIcon();
         }
         return new L.Icon.Default;
     },
