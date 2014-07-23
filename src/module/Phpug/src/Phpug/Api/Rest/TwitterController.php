@@ -31,6 +31,7 @@
 
 namespace Phpug\Api\Rest;
 
+use Phpug\Entity\Usergroup;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
@@ -55,10 +56,10 @@ class TwitterController extends AbstractRestfulController
             if (!$group) {
                 continue;
             }
-            if (! $group instanceof \Phpug\Entity\Usergroup) {
+            if (! $group instanceof Usergroup) {
                 continue;
             }
-            if (! $group->getState() == $group::ACTIVE) {
+            if ($group->getState() != Usergroup::ACTIVE) {
                 continue;
             }
             if (! isset($result[$twitter->getName()])) {
