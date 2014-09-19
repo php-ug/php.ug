@@ -8,12 +8,13 @@
          "org_heigl/contact" :                "dev-master",
          "org_heigl/mailproxy" :              "dev-master",
          "org_heigl/hybridauth" :             "dev-feature/multipleProviders",
-         "org_heigl/geolocation" :            "dev-master",
+         "org_heigl/geolocation" :            "1.0.*",
          "sabre/vobject" :                    "3.0.*",
          "monolog/monolog" :                  "1.9.1",
          "willdurand/geocoder" :              ">=2.4.2",
          "zendframework/zendservice-twitter": "2.1.0",
-         "org_heigl/piwik" :                  ">=1.0.0"
+         "org_heigl/piwik" :                  ">=1.0.0",
+         "rwoverdijk/assetmanager" :          "1.*"
      },
      "require-dev" : {
          "mockery/mockery": "dev-master",
