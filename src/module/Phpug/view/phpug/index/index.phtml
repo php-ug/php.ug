@@ -1,17 +1,17 @@
 <?php
 $this->headTitle('One home for one community');
-$this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css');
-$this->headLink()->appendStylesheet('lib/phpug/leaflet/leaflet.css','text/css',
+$this->headLink()->appendStylesheet('lib/leaflet/leaflet.css');
+$this->headLink()->appendStylesheet('lib/leaflet/leaflet.css','text/css',
     array('conditional' => 'lte IE8',)
 );
-$this->headLink()->appendStylesheet('lib/phpug/leafletsearch/css/l.geosearch.css');
+$this->headLink()->appendStylesheet('lib/leafletsearch/css/l.geosearch.css');
 
-$this->headScript()->prependFile('js/phpug/phpug.js');
-$this->headScript()->prependFile('lib/phpug/leafletsearch/js/l.geosearch.provider.openstreetmap.js');
-$this->headScript()->prependFile('lib/phpug/leafletsearch/js/l.control.geosearch.js');
-$this->headScript()->prependFile('lib/phpug/leaflet-layerjson/leaflet-layerjson.src.js');
-$this->headScript()->prependFile('lib/phpug/overlappingMarkerSpiderfier/oms.min.js');
-$this->headScript()->prependFile('lib/phpug/leaflet/leaflet.js');
+$this->headScript()->prependFile('js/phpug.js');
+$this->headScript()->prependFile('lib/leafletsearch/js/l.geosearch.provider.openstreetmap.js');
+$this->headScript()->prependFile('lib/leafletsearch/js/l.control.geosearch.js');
+$this->headScript()->prependFile('lib/leaflet-layerjson/leaflet-layerjson.src.js');
+$this->headScript()->prependFile('lib/overlappingMarkerSpiderfier/oms.min.js');
+$this->headScript()->prependFile('lib/leaflet/leaflet.js');
 ?>
 <div id="map"></div>
 <?php if(count($flash)) : ?>

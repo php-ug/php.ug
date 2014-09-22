@@ -1,8 +1,8 @@
-@import url(../../fonts/phpug/Sketch_Block_Bold/stylesheet.css);
-@import url(../../fonts/phpug/sketchy/stylesheet.css);
-@import url(../../fonts/phpug/TeXGyrePagella-Regular/stylesheet.css);
-@import url(../../fonts/phpug/Vinegar/stylesheet.css);
-@import url(../../fonts/phpug/angelina/stylesheet.css);
+@import url(../fonts/Sketch_Block_Bold/stylesheet.css);
+@import url(../fonts/sketchy/stylesheet.css);
+@import url(../fonts/TeXGyrePagella-Regular/stylesheet.css);
+@import url(../fonts/Vinegar/stylesheet.css);
+@import url(../fonts/angelina/stylesheet.css);
 
 div._1{
     background-image: -webkit-gradient(

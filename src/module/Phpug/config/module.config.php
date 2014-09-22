@@ -478,4 +478,15 @@ return array(
             ),
         ),
     ),
+    'asset_manager' => array(
+        'resolver_configs' => array(
+            'map' => array(
+                'css/phpug' => __DIR__ . '/../public/css',
+                'js/phpug' => __DIR__ . '/../public/js',
+            ),
+            'paths' => array(
+                __DIR__ . '/../public',
+            ),
+        ),
+    ),
 );
