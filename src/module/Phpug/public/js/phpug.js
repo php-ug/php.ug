@@ -21,11 +21,44 @@
  */
 // Defining some markers
 var lightIcon  = L.Icon.Default;
-var darkIcon   = L.Icon.Default.extend({options: {iconUrl: '/img/phpug/marker-desat.png'}});
-var redIcon    = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-red.png'}});
-var greenIcon  = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-green.png'}});
-var orangeIcon = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-icon-orange.png'}});
-var grayIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/phpug/marker-gray.png'}});
+var darkIcon   = L.Icon.Default.extend({options: {iconUrl: '/img/marker-desat.png'}});
+var redIcon    = L.Icon.Default.extend({options:{iconUrl: 'img/marker-icon-red.png'}});
+var greenIcon  = L.Icon.Default.extend({options:{iconUrl: 'img/marker-icon-green.png'}});
+var orangeIcon = L.Icon.Default.extend({options:{iconUrl: 'img/marker-icon-orange.png'}});
+var grayIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/marker-gray.png'}});
+var numberedIcon = L.Icon.extend({
+    options: {
+// EDIT THIS TO POINT TO THE FILE AT http://www.charliecroom.com/marker_hole.png (or your own marker)
+        iconUrl: 'img/marker-hole.png',
+        number: '',
+        shadowUrl: null,
+        iconSize: new L.Point(25, 41),
+        iconAnchor: new L.Point(13, 41),
+        popupAnchor: new L.Point(0, -33),
+        /*
+         iconAnchor: (Point)
+         popupAnchor: (Point)
+         */
+        className: 'leaflet-div-icon'
+    },
+
+    createIcon: function () {
+        var div = document.createElement('div');
+        var img = this._createImg(this.options['iconUrl']);
+        var numdiv = document.createElement('div');
+        numdiv.setAttribute ( "class", "number" );
+        numdiv.innerHTML = this.options['number'] || '';
+        div.appendChild ( img );
+        div.appendChild ( numdiv );
+        this._setIconStyles(div, 'icon');
+        return div;
+    },
+
+//you could change this to add a shadow like in the normal marker if you really wanted
+    createShadow: function () {
+        return null;
+    }
+});
 
 var map = L.map('map');
 
@@ -58,6 +91,58 @@ var shading = L.tileLayer('http://tiles.openpistemap.org/landshaded/{z}/{x}/{y}.
 var contours = L.tileLayer('http://toolserver.org/~cmarqu/opentiles.com/cmarqu/tiles_contours_8/{z}/{x}/{y}.png', {
     //  opacity: 0.6
 })
+
+var cfp = L.layerJSON({
+    url : 'https://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100&tags[]=php',
+    jsonpParam : 'callback',
+    propertyLoc : ['latitude', 'longitude'],
+    propertyTitle : 'name',
+    filterData : function(e){
+        now = new Date();
+        for (var i=0; i < e.events.length; i++) {
+            delete e.events[i].icon;
+            if (!e.events[i].cfp_end_date) {
+                delete e.events[i];
+                continue;
+            }
+            if (new Date(e.events[i].cfp_start_date) > now) {
+                delete e.events[i];
+                continue
+            }
+            if (new Date(e.events[i].cfp_end_date) < now) {
+                delete e.events[i];
+            }
+        }
+        return e.events;
+
+    },
+    buildPopup : function(e){
+        var content = '<div class="popup">'
+            + '<h4>'
+            + '<a href="%url%" target="_blank">'
+            + '%name%'
+            + '</a>'
+            + '</h4>'
+            + '<dl><dt>CfP-Start:</dt><dd>%start%</dd><dt>CfP-End:</dt><dd>%end%</dd></dl>';
+
+        if (center && center === e.shortname){
+            map.setView(new L.LatLng(e.latitude,e.longitude), 8);
+        }
+        return content.replace('%url%', e.cfp_url)
+            .replace('%name%', e.name)
+            .replace('%start%', new Date(e.cfp_start_date).toUTCString())
+            .replace('%end%', new Date(e.cfp_end_date).toUTCString())
+    },
+    buildIcon : function(e){
+        var diff = Math.abs(new Date(e.cfp_end_date).getTime() - new Date().getTime());
+        var days = Math.ceil(diff/(1000*3600*24));
+        return new numberedIcon({number:days});
+    },
+    onEachMarker : function(e, marker) {
+        oms.addMarker(marker);
+        return;
+    }
+});
 
 // Create a point-layer from the joind.in-API
 var joindin = L.layerJSON({
@@ -319,31 +404,36 @@ if(false !== loc) {
 map.setView(coord, zoom)
    .addLayer(openstreetmap);
 
-switch(window.location.hash) {
-    case '#mentoring':
-        map.addLayer(mentoring);
-        break;
-    case '#events':
-    case 'event':
-    case 'joindin':
-    case 'joind.in':
-        map.addLayer(joindin);
-        break;
-    default:
-        map.addLayer(phpug);
-        break;
-}
-
 L.control.layers({
     'OpenStreetMap' : openstreetmap,
     'OpenCycleMap'  : opencyclemap
 },{
     'PHP-Usergroups' : phpug,
     'joind.in' : joindin,
-    'PHP-Mentoring' : mentoring
+    'PHP-Mentoring' : mentoring,
+    'Call for Papers' : cfp
 },{
     'position' : 'bottomleft'
 }).addTo(map);
+
+switch(window.location.hash) {
+    case '#mentoring':
+        map.addLayer(mentoring);
+        break;
+    case '#events':
+    case '#event':
+    case '#joindin':
+    case '#joind.in':
+        map.addLayer(joindin);
+        break;
+    case '#cfp':
+        map.addLayer(cfp);
+        break;
+    default:
+        map.addLayer(phpug);
+        break;
+}
+
 
 var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
 oms.addListener('spiderfy', function(markers) {
