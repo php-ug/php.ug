@@ -29,7 +29,7 @@ var grayIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/marker-gray.png'}
 var numberedIcon = L.Icon.extend({
     options: {
 // EDIT THIS TO POINT TO THE FILE AT http://www.charliecroom.com/marker_hole.png (or your own marker)
-        iconUrl: 'img/marker-hole.png',
+        iconUrl: 'img/marker-green.png',
         number: '',
         shadowUrl: null,
         iconSize: new L.Point(25, 41),
