@@ -136,6 +136,21 @@ section > div#map {
     color: rgb(64,64,64);
 }
 
+.leaflet-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.leaflet-marker-icon .number{
+    position: relative;
+    top: -40px;
+    font-size: 16px;
+    width: 25px;
+    text-align: center;
+    color: rgb(96,96,96);
+    /*text-shadow: 0 0 3px darkgray;*/
+}
+
 .phpug-hashtag:before {
     content: '#';
 }
