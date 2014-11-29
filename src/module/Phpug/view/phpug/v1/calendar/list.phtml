@@ -1,0 +1,30 @@
+<?php $this->headLink()->appendStylesheet($this->basePath . '/css/phpugfeatures.css'); ?>
+<div class="jumbotron">
+    <h3>
+        List of Usergroup-Events
+    </h3>
+    <p>
+        The listed usergroups are organising these events:
+    </p>
+</div>
+<ul class="event-list" style="column-count: 3; list-style-type:none;">
+<?php
+$events = $this->calendar->getEvents(new DateInterval('P1Y'));
+foreach ($events as $event) : ?><li style="border:1px solid gray; border-radius: 1em;margin:1rem;padding: 1rem;">
+    <h4 style="border-radius: 1rem 1rem 0 0; background-color: gray; color: white;margin: -1rem -1rem 1rem -1rem; padding: 1rem">
+    <?php $url = $event->getUrl(); if ($url) { ?>
+        <a style="color:white;" href="<?php echo $url;?>">
+            <?php } ?>
+            <?php echo $event->getName(); ?>
+        <?php if ($url) : ?>
+        </a>
+        <?php endif; ?>
+    </h4>
+    <p class="daterange">
+        <?php echo $this->dateRangePrinter($event->getStartDate(), $event->getEndDate(), 'd.m.Y H:i', new DateTimezone('Europe/Berlin')); ?>
+    </p>
+    <p>
+        <?php echo $event->getDescription(); ?>
+    </p>
+</li><?php endforeach; ?>
+</ul>
