@@ -366,6 +366,9 @@ return array(
             'Phpug\Entity\Cache'  => 'Phpug\Service\CacheFactory',
             'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
             'TwitterInfoService'      => 'Phpug\Service\TwitterInfoFactory',
+            'ViewIcalendarRenderer' => 'Phpug\Mvc\Service\ViewIcalendarRendererFactory',
+            'ViewIcalendarStrategy' => 'Phpug\Mvc\Service\ViewIcalendarStrategyFactory',
+
         ),
         'invokables' => array(
             'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
@@ -401,6 +404,7 @@ return array(
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
             'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
+            'Phpug\Api\v1\Calendar' => 'Phpug\Api\v1\CalendarController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
             'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
@@ -431,6 +435,7 @@ return array(
         ),
         'strategies' => array(
             'ViewJsonStrategy',
+            'ViewIcalendarStrategy',
         ),
     ),
     'doctrine' => array(
