@@ -248,7 +248,8 @@ class UsergroupController extends AbstractActionController
         $message = $this->getServiceLocator()->get('Phpug\Service\UsergroupMessage');
         $message->setBody(sprintf(
             $message->getBody(),
-            $usergroup->getName()
+            $usergroup->getName(),
+            $usergroup->getShortname()
         ));
         $message->setSubject(sprintf(
             $message->getSubject(),
