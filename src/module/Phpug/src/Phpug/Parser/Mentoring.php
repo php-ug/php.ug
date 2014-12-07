@@ -86,10 +86,12 @@ class Mentoring
 
         $this->dom = new \DomDocument('1.0', 'UTF-8');
         $this->dom->strictErrorChecking = false;
+        libxml_use_internal_errors(true);
         $this->dom->loadHTML('<?xml encoding="UTF-8" ?>' . $content);
+        libxml_use_internal_errors(false);
 
         $xpathMentors = new \DOMXPath($this->dom);
-        $mentors = $xpathMentors->query('//a[@name="user-content-mentors-currently-accepting-an-apprentice"]/../following-sibling::ul[1]/li');
+        $mentors = $xpathMentors->query('//a[@id="user-content-mentors-currently-accepting-an-apprentice"]/../following-sibling::ul[1]/li');
 
         foreach ($mentors as $mentor) {
             $user = $this->parseUser($mentor);
@@ -101,7 +103,7 @@ class Mentoring
         }
 
         $xpathApprentices = new \DOMXPath($this->dom);
-        $apprentices = $xpathApprentices->query('//a[@name="user-content-apprentices-currently-accepting-mentors"]/../following-sibling::ul[1]/li');
+        $apprentices = $xpathApprentices->query('//a[@id="user-content-apprentices-currently-accepting-mentors"]/../following-sibling::ul[1]/li');
 
         foreach ($apprentices as $apprentice) {
             $user = $this->parseUser($apprentice);
