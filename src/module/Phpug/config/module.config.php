@@ -292,6 +292,16 @@ return array(
                         ),
                     ),
                 ),
+                'getcalendars' => array(
+                    'options' => array(
+                        'route' => 'getcalendars',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller'    => 'CalendarController',
+                            'action'        => 'getcalendars',
+                        ),
+                    ),
+                ),
             )
         )
     ),
@@ -401,6 +411,7 @@ return array(
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
             'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
+            'Phpug\Controller\CalendarController' => 'Phpug\Controller\CalendarController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
             'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
