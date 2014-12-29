@@ -319,7 +319,15 @@ return array(
                         'route'  => 'features',
                         'action' => 'twitternicklist',
                         'icon' => 'fa fa-twitter',
-                )),
+                    ),
+                    array(
+                        'label' => 'Calendar',
+                        'route' => 'api/v1',
+                        'action' => 'list',
+                        'controller' => 'calendar',
+                        'icon'       => 'fa fa-calendar',
+                    ),
+                ),
             ),
             array(
                 'label' => 'Promote',
