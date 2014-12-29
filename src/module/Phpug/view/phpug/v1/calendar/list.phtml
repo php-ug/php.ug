@@ -4,7 +4,14 @@
         List of Usergroup-Events
     </h3>
     <p>
-        The listed usergroups are organising these events:
+        The listed usergroups are organising the following events throughout the next year.
+    </p>
+    <p>
+        You can
+        <a href="<?php echo preg_replace('/^https?/', 'webcal', $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true))); ?>?format=ical">subscribe</a>
+        to this feed or
+        <a href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>?format=ical"">download</a>
+        it as iCalendar-File
     </p>
 </div>
 <ul class="event-list" style="column-count: 3; list-style-type:none;">
