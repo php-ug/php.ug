@@ -38,7 +38,7 @@ use Zend\Json\Json;
 class CalendarController extends AbstractActionController
 {
     private $acceptCriteria = array(
-        'Zend\View\Model\JsonModel' => array(
+        'Phpug\View\Model\IcalendarJsonModel' => array(
             'application/json',
         ),
         'Zend\View\Model\FeedModel' => array(

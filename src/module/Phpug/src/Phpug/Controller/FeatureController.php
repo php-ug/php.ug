@@ -80,8 +80,10 @@ class FeatureController extends AbstractActionController
         return array(
             'twitternicks' => Json::decode($body, Json::TYPE_ARRAY),
         );
-
     }
 
-
+    public function calendarAction()
+    {
+        return array();
+    }
 }

@@ -1,0 +1,49 @@
+<?php
+$this->headLink()->appendStylesheet($this->basePath . '/lib/fullcalendar/fullcalendar.css');
+$this->headLink()->appendStylesheet($this->basePath . '/lib/fullcalendar/fullcalendar.print.css', 'print');
+$this->headLink()->appendStylesheet($this->basePath . '/lib/jBox/jBox.css');
+
+$this->headScript()->prependScript("// <![CDATA[
+    $(document).ready(function() {
+
+		$('#calendar').fullCalendar({
+		    timezone: 'local',
+		    timeFormat: 'H:mm',
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			defaultDate: new Date(),
+			editable: false,
+			eventLimit: true,
+			events: {
+				url: '" . $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)) . "',
+				cache : true,
+				error: function() {
+					alert('Sorry, but the event-server seems to have a problem');
+				}
+
+			},
+			eventRender: function(event, element){
+			    new jBox('Tooltip', {
+			        title: event.title,
+                    content: event.description,
+                    maxWidth: 200,
+                    constructOnInit: true,
+                    trigger: 'mouseenter',
+                    attach: element,
+                });
+			},
+			loading: function(bool) {
+				$('#loading').toggle(bool);
+			}
+		});
+
+	});
+// ]]>");
+$this->headScript()->prependFile($this->basePath . '/lib/jBox/jBox.min.js');
+$this->headScript()->prependFile($this->basePath . '/lib/fullcalendar/fullcalendar.min.js');
+$this->headScript()->prependFile($this->basePath . '/lib/moment/moment.min.js');
+?>
+<div id='calendar'></div>

@@ -32,9 +32,9 @@
 namespace Phpug\View\Model;
 
 use Phpug\Wrapper\IcalendarDataWrapperInterface;
-use \Zend\View\Model\ViewModel;
+use \Zend\View\Model\JsonModel;
 
-class IcalendarJsonModel extends ViewModel
+class IcalendarJsonModel extends JsonModel
 {
     /**
      * XML probably won't need to be captured into a parent container by default.
@@ -70,11 +70,18 @@ class IcalendarJsonModel extends ViewModel
             return false;
         }
 
-        foreach ($variable->getEvents((new DateTime())->add(new \DateInterval('P1Y') as $event) {
-            //$events =
-            return $variable->serialize();
+        $events = array();
+
+        foreach ($variable->getEvents(new \DateInterval('P1Y')) as $event) {
+            $jsonEvent = array(
+                'title' => $event->getName(),
+                'start' => $event->getStartDate()->format('c'),
+                'end' => $event->getEndDate()->format('c'),
+                'description' => $event->getDescription(),
+            );
+            $events[] = $jsonEvent;
         }
 
-        return false;
+        return json_encode($events);
     }
 }
