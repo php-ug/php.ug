@@ -319,7 +319,21 @@ return array(
                         'route'  => 'features',
                         'action' => 'twitternicklist',
                         'icon' => 'fa fa-twitter',
-                )),
+                    ),
+                    array(
+                        'label' => 'Event-List',
+                        'route' => 'api/v1',
+                        'action' => 'list',
+                        'controller' => 'calendar',
+                        'icon'       => 'fa fa-list',
+                    ),
+                    array(
+                        'label'  => 'Event-Calendar',
+                        'route'  => 'features',
+                        'action' => 'calendar',
+                        'icon'   => 'fa fa-calendar',
+                    ),
+                ),
             ),
             array(
                 'label' => 'Promote',
@@ -366,10 +380,13 @@ return array(
             'Phpug\Entity\Cache'  => 'Phpug\Service\CacheFactory',
             'Phpug\Service\Logger'    => 'Phpug\Service\LoggerFactory',
             'TwitterInfoService'      => 'Phpug\Service\TwitterInfoFactory',
+            'ViewIcalendarRenderer' => 'Phpug\Mvc\Service\ViewIcalendarRendererFactory',
+            'ViewIcalendarStrategy' => 'Phpug\Mvc\Service\ViewIcalendarStrategyFactory',
+
         ),
         'invokables' => array(
-            'usersGroupAssertion' => 'Phpug\Acl\UsersGroupAssertion',
-            'contactsRow'   => 'Phpug\View\Helper\ContactsRow',
+            'usersGroupAssertion'   => 'Phpug\Acl\UsersGroupAssertion',
+            'contactsRow'           => 'Phpug\View\Helper\ContactsRow',
             'Phpug\Service\Message' => 'Zend\Mail\Message',
             'Zend\Mail\Transport' => 'Zend\Mail\Transport\File',
         ),
@@ -401,6 +418,7 @@ return array(
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
             'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
+            'Phpug\Api\v1\Calendar' => 'Phpug\Api\v1\CalendarController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
             'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
@@ -408,9 +426,10 @@ return array(
     ),
     'view_helpers'    => array(
         'invokables' => array(
-            'showForm'      => 'Phpug\View\Helper\ShowForm',
-            'tbElement'     => 'Phpug\View\Helper\TBElement',
-            'contactsRow'   => 'Phpug\View\Helper\ContactsRow',
+            'showForm'         => 'Phpug\View\Helper\ShowForm',
+            'tbElement'        => 'Phpug\View\Helper\TBElement',
+            'contactsRow'      => 'Phpug\View\Helper\ContactsRow',
+            'dateRangePrinter' => 'Phpug\View\Helper\DateRangePrinter',
         ),
     ),
     'view_manager' => array(
@@ -431,6 +450,7 @@ return array(
         ),
         'strategies' => array(
             'ViewJsonStrategy',
+            'ViewIcalendarStrategy',
         ),
     ),
     'doctrine' => array(
