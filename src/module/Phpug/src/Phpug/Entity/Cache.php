@@ -224,6 +224,18 @@ class Cache
     }
 
     /**
+     * Remove the usergroup from this entry
+     *
+     * @return self
+     */
+    public function removeGroup()
+    {
+        $this->usergroup = null;
+
+        return $this;
+    }
+
+    /**
      * Get the group
      *
      * @return Usergroup

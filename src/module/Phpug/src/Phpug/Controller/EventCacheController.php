@@ -32,6 +32,8 @@
 
 namespace Phpug\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use \DateTime;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
@@ -89,5 +91,60 @@ class EventCacheController extends AbstractActionController
         echo sprintf('Wrote the joind.in-data to "%s"' . "\n", $file);
 
         return false;
+    }
+
+    public function getUsergroupsAction()
+    {
+        $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+
+        $ugs = $em->getRepository('Phpug\Entity\Usergroup')->findAll();
+        //createQuery('u')->where('icalendar_url IS NOT NULL')->execute();
+
+        /** @var \Phpug\Entity\Usergroup $ug */
+        foreach ($ugs as $ug) {
+
+            $remove = new ArrayCollection();
+            $caches = $ug->getCaches();
+            /** @var \Phpug\Entity\Cache $cache */
+            foreach ($caches as $cache) {
+                if ($cache->getType() != 'event') {
+                    continue;
+                }
+                $remove->add($cache);
+                $em->remove($cache);
+            }
+            $ug->removeCaches($remove);
+            $iurl = $ug->getIcalendar_url();
+            if (! $iurl) {
+                $em->persist($ug);
+                $em->flush();
+                continue;
+            }
+
+            echo sprintf('Fetching calendar of group "%s"' . "\n", $ug->getName());
+
+
+            $add = new ArrayCollection();
+            $cal = new \Phpug\Entity\Cache();
+            $cal->setType('event');
+            $ch = curl_init($ug->getIcalendar_url());
+            curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            $cache = curl_exec($ch); // get curl response
+            $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+            curl_close($ch);
+            if ( false === strpos($contentType, 'text/calendar')) {
+                $em->persist($ug);
+                $em->flush();
+                continue;
+            }
+            $cal->setCache($cache);
+            $cal->setLastChangeDate(new DateTime());
+            $add->add($cal);
+            $ug->addCaches($add);
+            $em->persist($ug);
+            $em->flush();
+        }
     }
 }

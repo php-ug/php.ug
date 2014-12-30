@@ -495,7 +495,7 @@ class Usergroup
     public function removeCaches(ArrayCollection $caches)
     {
         foreach ($caches as $cache) {
-            $cache->setGroup(null);
+            $cache->removeGroup();
             $this->caches->removeElement($cache);
         }
 
