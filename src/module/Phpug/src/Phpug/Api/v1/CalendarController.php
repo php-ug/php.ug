@@ -65,6 +65,9 @@ class CalendarController extends AbstractActionController
         $result = $em->getRepository('Phpug\Entity\Cache')->findBy(array('type' => 'event'));
         $calendar = new VObject\Component\VCalendar();
         foreach ($result as $cal) {
+            if (! $cal->getGRoup()) {
+                continue;
+            }
             try {
                 $ical = VObject\Reader::read($cal->getCache());
                 foreach ($ical->children as $event) {
