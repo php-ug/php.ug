@@ -15,16 +15,70 @@ $this->headScript()->prependScript("// <![CDATA[
 				right: 'month,agendaWeek,agendaDay'
 			},
 			defaultDate: new Date(),
+			contentHeight: 'auto',
+			aspectRatio: 2,
 			editable: false,
 			eventLimit: true,
-			events: {
+			eventSources : [{
 				url: '" . $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)) . "',
 				cache : true,
 				error: function() {
 					alert('Sorry, but the event-server seems to have a problem');
-				}
-
-			},
+				},
+				color: 'darkblue',
+				textColor: 'white'
+			},{
+				events: function(start, end, timezone, mycallback) {
+					$.ajax({
+            			url: 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100&tags[]=php',
+            			jsonp: 'callback',
+            			dataType: 'jsonp',
+            			success: function(doc) {
+                			var events = [];
+                			for (i=0;i<doc.events.length; i++) {
+                				item = doc.events[i];
+                    			events.push({
+                        			title: item.name,
+                        			start: item.start_date,
+                        			end: item.end_date,
+                        			description: item.description,
+                        			url: item.website_uri
+			                    });
+            			    }
+                			mycallback(events);
+            			}
+        			});
+				},
+				color: 'lightblue',
+				textColor: 'black'
+			},{
+				events: function(start, end, timezone, mycallback) {
+					$.ajax({
+            			url: 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100&tags[]=php',
+            			jsonp: 'callback',
+            			dataType: 'jsonp',
+            			success: function(doc) {
+                			var events = [];
+                			for (i=0;i<doc.events.length; i++) {
+                				item = doc.events[i];
+                				if (!item.cfp_end_date) {
+                					continue;
+                				}
+                    			events.push({
+                        			title: '[CfP] ' + item.name,
+                        			start: item.cfp_start_date,
+                        			end: item.cfp_end_date,
+                        			description: item.description,
+                        			url: item.website_uri
+			                    });
+            			    }
+                			mycallback(events);
+            			}
+        			});
+				},
+				color: 'lightgreen',
+				textColor: 'black'
+			}],
 			eventRender: function(event, element){
 			    new jBox('Tooltip', {
 			        title: event.title,
