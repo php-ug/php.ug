@@ -292,7 +292,17 @@ return array(
                         ),
                     ),
                 ),
-            )
+                'getugcalendars' => array(
+                    'options' => array(
+                        'route' => 'getugcalendars',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller'    => 'EventCacheController',
+                            'action'        => 'getUsergroups',
+                        ),
+                    ),
+                ),
+            ),
         )
     ),
     'navigation' => array(

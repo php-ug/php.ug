@@ -131,6 +131,7 @@ class Module implements ConsoleUsageProviderInterface
             'getmentoring' => 'Get a list of all users of PHP-Mentoring',
             'getjoindin'   => 'Get a list of events from joind.in',
             'gettwitter'   => 'Get more information for twitter-nicks',
+            'getugcalendars' => 'Update the UG-Calendar Cache',
         );
     }
 }
