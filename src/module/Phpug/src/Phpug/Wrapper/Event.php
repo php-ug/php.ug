@@ -40,12 +40,21 @@ class Event
     public static function factory($item)
     {
         $event = new self();
-        $event->setName($item->SUMMARY->getValue())
-              ->setStartDAte($item->DTSTART->getDateTime())
-              ->setEndDate($item->DTEND->getDateTime())
-              ->setDescription($item->DESCRIPTION->getValue())
+        if ($item->SUMMARY) {
+            $event->setName($item->SUMMARY->getValue());
+        }
+        if ($item->DTSTART) {
+            $event->setStartDAte($item->DTSTART->getDateTime());
+        }
+
+        if ($item->DTEND) {
+            $event->setEndDate($item->DTEND->getDateTime());
+        }
+
+        if ($item->DESCRIPTION) {
+            $event->setDescription($item->DESCRIPTION->getValue());
+        }
               //->setUrl($item->URL->getValue())
-        ;
 
         return $event;
     }
