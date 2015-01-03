@@ -1,7 +1,7 @@
 <?php
-$this->headLink()->appendStylesheet($this->basePath . '/lib/fullcalendar/fullcalendar.css');
-$this->headLink()->appendStylesheet($this->basePath . '/lib/fullcalendar/fullcalendar.print.css', 'print');
-$this->headLink()->appendStylesheet($this->basePath . '/lib/jBox/jBox.css');
+$this->headLink()->appendStylesheet($this->basePath . '/lib/fullcalendar/dist/fullcalendar.min.css');
+$this->headLink()->appendStylesheet($this->basePath . '/lib/fullcalendar/dist/fullcalendar.print.css', 'print');
+$this->headLink()->appendStylesheet($this->basePath . '/lib/jbox/Source/jBox.css');
 
 $this->headScript()->prependScript("// <![CDATA[
     $(document).ready(function() {
@@ -96,8 +96,8 @@ $this->headScript()->prependScript("// <![CDATA[
 
 	});
 // ]]>");
-$this->headScript()->prependFile($this->basePath . '/lib/jBox/jBox.min.js');
-$this->headScript()->prependFile($this->basePath . '/lib/fullcalendar/fullcalendar.min.js');
-$this->headScript()->prependFile($this->basePath . '/lib/moment/moment.min.js');
+$this->headScript()->prependFile($this->basePath . '/lib/jbox/Source/jBox.min.js');
+$this->headScript()->prependFile($this->basePath . '/lib/fullcalendar/dist/fullcalendar.min.js');
+$this->headScript()->prependFile($this->basePath . '/lib/moment/min/moment-with-locales.min.js');
 ?>
 <div id='calendar'></div>
