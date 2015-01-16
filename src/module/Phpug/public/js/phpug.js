@@ -71,25 +71,10 @@ var openstreetmap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.p
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
     maxZoom: 18
 })
-// Creating a tile-layer for opencyclemap-Tiles
-var opencyclemap = L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-    maxZoom: 18
-})
-// Creating a tile-layer for hike&bike-Tiles
-var hiking = L.tileLayer('http://a.www.toolserver.org/tiles/hikebike/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-    maxZoom: 18
-})
-
-// Creating a tile-layer for shading-Tiles
-var shading = L.tileLayer('http://tiles.openpistemap.org/landshaded/{z}/{x}/{y}.png', {
-    opacity: 0.6
-})
-
-// Creating a tile-layer for contour-Tiles
-var contours = L.tileLayer('http://toolserver.org/~cmarqu/opentiles.com/cmarqu/tiles_contours_8/{z}/{x}/{y}.png', {
-    //  opacity: 0.6
+// Create a tile-server for Esri-Satellite images
+var esriSatellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '<a href="http://www.esri.com/">Esri</a>, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP and the GIS User Community',
+    maxZoom : 18
 })
 
 var cfp = L.layerJSON({
@@ -406,7 +391,7 @@ map.setView(coord, zoom)
 
 L.control.layers({
     'OpenStreetMap' : openstreetmap,
-    'OpenCycleMap'  : opencyclemap
+    'Satellite'  : esriSatellite
 },{
     'PHP-Usergroups' : phpug,
     'joind.in' : joindin,
@@ -433,7 +418,6 @@ switch(window.location.hash) {
         map.addLayer(phpug);
         break;
 }
-
 
 var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
 oms.addListener('spiderfy', function(markers) {
