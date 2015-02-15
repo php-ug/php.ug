@@ -1,0 +1,34 @@
+;; Propertyfile for phing
+;;
+;;
+; deploy.target
+deploy.target = server:port
+;
+; deploy.user
+deploy.user = user
+;
+; deployLocation
+deploy.location = /path
+;
+; deploy.post_deploy_script
+; the script will be called relative to the deploy.path
+deploy.post_deploy_script = deploy_post.sh
+;
+; deploy.local_folder
+deploy.local_folder = deploy2
+;
+;
+deploy.pre_deploy_script = deploy_pre.sh
+;
+; deploy.method
+; can be one of
+;   copy - Copy the stuff via scp to the server
+;   sync - Sync the stuff cia rsync to the server.
+deploy.method = copy
+;
+;
+deploy.path_to_rsync = /usr/bin/rsync
+;
+;
+deploy.identity_file = ~/.ssh/id_rsa
+

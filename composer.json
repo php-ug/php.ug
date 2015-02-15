@@ -18,7 +18,8 @@
      },
      "require-dev" : {
          "mockery/mockery": "dev-master",
-         "zendframework/zend-developer-tools" : "dev-master"
+         "zendframework/zend-developer-tools" : "dev-master",
+         "phing/phing" : "2.*"
      },
      "autoload" : {
          "psr-0" : {

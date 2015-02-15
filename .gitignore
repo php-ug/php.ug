@@ -8,3 +8,4 @@ src/config/autoload/*.local.php
 *.properties
 phpunit.xml
 src/public/lib
+build.property
