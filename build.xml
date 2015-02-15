@@ -70,20 +70,11 @@
     </target>
 
     <target name="createDeployFolder">
+        <echo>Creating Deployment-Folder</echo>
         <mkdir dir="${deploy.local_folder}" />
         <copy todir="${deploy.local_folder}">
-            <fileset dir=".">
-                <include name="LICENSE" />
-                <include name="README.md" />
-                <include name="src/**" />
-                <include name="vendor/**" />
-                <exclude name=".git"/>
-                <exclude name="doc" />
-                <exclude name="tests" />
-            </fileset>
+            <fileset dir="." excludesfile="deploy_exclude.property" includesfile="deploy_include.property" />
         </copy>
-        <!--mkdir dir="log" /-->
-        <!--mkdir dir="tmp" /-->
     </target>
 
     <target name="copyDeployFolderToServer">
