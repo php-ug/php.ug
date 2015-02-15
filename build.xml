@@ -139,7 +139,7 @@
         <delete dir="${deploy.local_folder}" includeemptydirs="true"/>
     </target>
 
-    <target name="deploy">
+    <target name="deploy" depends="update, updateAssets">
         <echo>Deploying application</echo>
         <phingcall inheritAll="true" target="createDeployFolder"/>
         <phingcall inheritAll="true" target="callPreDeployScriptOnServer"/>
