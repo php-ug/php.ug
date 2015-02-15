@@ -9,7 +9,7 @@ $this->headLink()->appendStylesheet($this->basePath() . '/css/phpug/phpugteam.cs
         <dt><?php echo $this->gravatar(trim($mail), array('img_size'=>'100'))?></dt>
         <dd>
             <h3><?php echo $person['name']; ?></h3>
-            <?php echo $this->mailto($mail, null, array('title' => 'Send Email to ' . $person['name']))?>
+            <?php echo $this->mailto($mail, '<i class="fa fa-envelope-o fa-2x"></i>', array('title' => 'Send Email to ' . $person['name']))?>
             <?php if ( isset($person['twitter']) ) :?>
             <a title="Go to the Twitter-account of <?php echo $person['name']; ?>" href="http://twitter.com/!#<?php echo $person['twitter']; ?>">
                 <i class="fa fa-twitter fa-2x"></i>
