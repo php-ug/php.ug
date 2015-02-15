@@ -36,6 +36,9 @@
 -->
 <project name="php.ug" default="build" basedir=".">
 
+    <property file="./build.property"/>
+    <property file="./build.property.dist"/>
+
     <target name="update">
         <echo message="Updating composer-binary"/>
         <exec command="composer self-update"/>
@@ -53,4 +56,96 @@
             </batchtest>
         </phpunit>
     </target>
+
+    <target name="build">
+
+    </target>
+
+    <target name="updatePhp">
+        <composer command="install"/>
+    </target>
+
+    <target name="updateAssets">
+        <exec command="bower install"/>
+    </target>
+
+    <target name="createDeployFolder">
+        <mkdir dir="${deploy.local_folder}" />
+        <copy todir="${deploy.local_folder}">
+            <fileset dir=".">
+                <include name="LICENSE" />
+                <include name="README.md" />
+                <include name="src/**" />
+                <include name="vendor/**" />
+                <exclude name=".git"/>
+                <exclude name="doc" />
+                <exclude name="tests" />
+            </fileset>
+        </copy>
+        <!--mkdir dir="log" /-->
+        <!--mkdir dir="tmp" /-->
+    </target>
+
+    <target name="copyDeployFolderToServer">
+        <echo>Copying files to target ${deploy.target}</echo>
+        <exec command="ssh -i ${deploy.identity_file} ${deploy.user}@${deploy.target} 'mkdir -p ${deploy.location}'" />
+        <exec dir="${deploy.local_folder}" command="scp -rv ./* $deploy.user@${deploy.target}:${deploy.location}" />
+    </target>
+
+    <target name="syncDeployFolderToServer">
+        <echo>Synching files to target ${deploy.target}</echo>
+        <exec command="ssh -i ${deploy.identity_file} ${deploy.user}@${deploy.target} 'mkdir -p ${deploy.location}'" />
+        <filesync destinationDir="${deploy.user}@${deploy.target}:${deploy.location}"
+                  rsyncPath="${deploy.path_to_rsync}"
+                  sourceDir="${deploy.local_folder}/."
+                  checksum="true"
+                  options="-e 'ssh -i ${deploy.identity_file}' -aKz"
+                />
+    </target>
+
+    <target name="callPostDeployScriptOnServer">
+        <echo>Calling post-deploy-script on target ${deploy.target}</echo>
+        <exec command="ssh -i ${deploy.identity_file} ${deploy.user}@${deploy.target} '${deploy.location}/${deploy.post_deploy_script}'"/>
+    </target>
+
+    <target name="callPreDeployScriptOnServer" >
+        <available property="deploy.pre_deploy_script_exists" file="${deploy.local_folder}/${deploy.pre_deploy_script}"/>
+        <if>
+            <isset property="deploy.pre_deploy_script_exists"/>
+            <then>
+                <echo>Calling pre-deploy-script on target ${deploy.target}</echo>
+                <loadfile property="deploy.pre_deploy_script_content" file="${deploy.local_folder}/${deploy.pre_deploy_script}"/>
+                <exec command="ssh  -i ${deploy.identity_file} ${deploy.user}@${deploy.target} '${deploy.pre_deploy_script_content}'"/>
+            </then>
+        </if>
+    </target>
+
+    <target name="deployFolderToServer">
+        <if>
+            <equals arg1="sync" arg2="${deploy.method}"/>
+            <then>
+                <phingcall inheritAll="true" target="syncDeployFolderToServer"/>
+            </then>
+            <elseif>
+                <equals arg1="copy" arg2="${deploy.method}"/>
+                <then>
+                    <phingcall target="copyDeployFolderToServer" inheritAll="true"/>
+                </then>
+            </elseif>
+        </if>
+    </target>
+
+    <target name="removeDeployFolder">
+        <delete dir="${deploy.local_folder}" includeemptydirs="true"/>
+    </target>
+
+    <target name="deploy" depends="update, updateAssets">
+        <echo>Deploying application</echo>
+        <phingcall inheritAll="true" target="createDeployFolder"/>
+        <phingcall inheritAll="true" target="callPreDeployScriptOnServer"/>
+        <phingcall inheritAll="true" target="deployFolderToServer"/>
+        <phingcall inheritAll="true" target="callPostDeployScriptOnServer"/>
+        <phingcall inheritAll="true" target="removeDeployFolder"/>
+    </target>
+
 </project>

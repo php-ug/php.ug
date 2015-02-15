@@ -7,3 +7,5 @@ src/config/autoload/*.local.php
 *.ini
 *.properties
 phpunit.xml
+src/public/lib
+build.property

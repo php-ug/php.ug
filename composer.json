@@ -2,23 +2,24 @@
      "minimum-stability": "dev",
      "require": {
          "ext-curl":                          "*",
-         "doctrine/doctrine-module":          "0.8.*",
-         "doctrine/doctrine-orm-module":      "0.8.*",
-         "zendframework/zendframework":       "2.3.1",
+         "doctrine/doctrine-module":          "~0.8@stable",
+         "doctrine/doctrine-orm-module":      "~0.8@stable",
+         "zendframework/zendframework":       "~2.3@stable",
          "org_heigl/contact" :                "dev-master",
-         "org_heigl/mailproxy" :              "dev-master",
+         "org_heigl/mailproxy" :              "~1.0@stable",
          "org_heigl/hybridauth" :             "dev-feature/multipleProviders",
-         "org_heigl/geolocation" :            "1.0.*",
-         "sabre/vobject" :                    "3.0.*",
-         "monolog/monolog" :                  "1.9.1",
-         "willdurand/geocoder" :              ">=2.4.2",
-         "zendframework/zendservice-twitter": "2.1.0",
-         "org_heigl/piwik" :                  ">=1.0.0",
-         "rwoverdijk/assetmanager" :          "1.*"
+         "org_heigl/geolocation" :            "~1.0@stable",
+         "sabre/vobject" :                    "~3.0@stable",
+         "monolog/monolog" :                  "~1.9@stable",
+         "willdurand/geocoder" :              "~2.4@stable",
+         "zendframework/zendservice-twitter": "~2.1@stable",
+         "org_heigl/piwik" :                  "~1.0@stable",
+         "rwoverdijk/assetmanager" :          "~1.4@stable"
      },
      "require-dev" : {
-         "mockery/mockery": "dev-master",
-         "zendframework/zend-developer-tools" : "dev-master"
+         "mockery/mockery": "~0.9",
+         "zendframework/zend-developer-tools" : "dev-master",
+         "phing/phing" : "~2.0"
      },
      "autoload" : {
          "psr-0" : {

@@ -1,5 +1,5 @@
 #team dt {clear: both; width:100px; height:100px; display:inline-block; margin: 10px;padding:0px;}
 #team dd {display:inline-block;height:100px;}
-#team .email {text-indent:-10000px;display:inline-block;width:32px;height:32px;background: transparent url(../../img/phpug/mail.png) center no-repeat;}
-#team .twitter {text-indent:-10000px;display:inline-block;width:32px;height:32px;background: transparent url(../../img/phpug/twitter.png) center no-repeat;}
-#team .googleplus {text-indent:-10000px;display:inline-block;width:32px;height:32px;background: transparent url(../../img/phpug/google+.png) center no-repeat;}
+#team .email {text-indent:-10000px;display:inline-block;width:32px;height:32px;background: transparent url(../img/mail.png) center no-repeat;}
+#team .twitter {text-indent:-10000px;display:inline-block;width:32px;height:32px;background: transparent url(../img/twitter.png) center no-repeat;}
+#team .googleplus {text-indent:-10000px;display:inline-block;width:32px;height:32px;background: transparent url(../img/google+.png) center no-repeat;}
