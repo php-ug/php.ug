@@ -107,11 +107,6 @@ class IndexController extends AbstractActionController
                     'google+' => '104738361153508561515',
                     'github'  => 'heiglandreas'
                 ),
-                'cn@dmr-solutions.com' => array(
-                    'name' => 'Christian Nielebock',
-                    'twitter' => 'ravetracer',
-                    'google+' => 'ravetracer',
-                ),
             ),
         );
     }
