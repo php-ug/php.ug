@@ -125,6 +125,7 @@ var cfp = L.layerJSON({
     },
     onEachMarker : function(e, marker) {
         oms.addMarker(marker);
+        marker.bindLabel(e.name, {opacity:0.9});
         return;
     }
 });
@@ -170,6 +171,7 @@ var joindin = L.layerJSON({
     },
     onEachMarker : function(e, marker) {
         oms.addMarker(marker);
+        marker.bindLabel(e.name, {opacity:0.9});
         return;
     }
 });
@@ -248,6 +250,7 @@ var phpug = L.layerJSON({
     },
     onEachMarker  : function(e, marker){
         oms.addMarker(marker);
+        marker.bindLabel(e.name, {opacity:0.9});
         return;
     }
 });
@@ -310,6 +313,7 @@ var mentoring = L.layerJSON({
     },
     onEachMarker : function(e,marker){
         oms.addMarker(marker);
+        marker.bindLabel(e.name, {opacity:0.9});
         return;
     },
     buildIcon : function(data, title){
