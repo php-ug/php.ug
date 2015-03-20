@@ -373,6 +373,21 @@ return array(
                 'label' => 'About',
                 'route' => 'ug/about',
             ),
+            array(
+                'label' => 'Slack',
+                'uri'   => 'https://phpug.slack.com',
+                'pages' => array(
+                    array(
+                        'label' => 'Usergroup-Team',
+                        'uri'   => 'https://phpug.slack.com',
+                    ),
+                    array(
+                        'label' => 'Get an Invitation',
+                        'uri'   => 'http://murmuring-forest-7062.herokuapp.com',
+                    )
+                ),
+            ),
+
         ),
     ),
     'service_manager' => array(
