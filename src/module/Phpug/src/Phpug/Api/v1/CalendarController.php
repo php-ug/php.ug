@@ -31,6 +31,7 @@
 
 namespace Phpug\Api\v1;
 
+use Phpug\ORM\Query\AST\Functions\DistanceFrom;
 use Zend\Mvc\Controller\AbstractActionController;
 use Sabre\VObject;
 use Zend\Json\Json;
@@ -64,10 +65,16 @@ class CalendarController extends AbstractActionController
         $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         $result = $em->getRepository('Phpug\Entity\Cache')->findBy(array('type' => 'event'));
         $calendar = new VObject\Component\VCalendar();
+        $affectedUGs = $this->findGroupsWithinRangeAndDistance();
         foreach ($result as $cal) {
             if (! $cal->getGRoup()) {
                 continue;
             }
+
+            if ($affectedUGs && ! in_array($cal->getGroup()->getShortname(), $affectedUGs)) {
+                continue;
+            }
+
             try {
                 $ical = VObject\Reader::read($cal->getCache());
                 foreach ($ical->children as $event) {
@@ -81,7 +88,7 @@ class CalendarController extends AbstractActionController
             } catch(\Exception $e){}
 
         }
-
+        
         $viewModel = $this->getViewModel();
 
         return $viewModel->setVariable('calendar', new \Phpug\Wrapper\SabreVCalendarWrapper($calendar));
@@ -113,5 +120,44 @@ class CalendarController extends AbstractActionController
         $headers->addHeaderLine('Accept', $this->acceptParameters[$accept]);
 
         return $this;
+    }
+
+    protected function findGroupsWithinRangeAndDistance()
+    {
+        $lat      = $this->params()->fromQuery('latitude', null);
+        $lon      = $this->params()->fromQuery('longitude', null);
+        $distance = $this->params()->fromQuery('distance', null);
+        $number   = $this->params()->fromQuery('count', null);
+
+        if (! $lat || ! $lon) {
+            return array();
+        }
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        DistanceFrom::setLatitudeField('latitude');
+        DistanceFrom::setLongitudeField('longitude');
+        DistanceFrom::setRadius(6367);
+        $em->getConfiguration()->addCustomNumericFunction('DISTANCEFROM', 'Phpug\ORM\Query\AST\Functions\DistanceFrom');
+
+        $qs = 'SELECT p, DISTANCEFROM(' . (float) $lat . ',' . (float) $lon . ') AS distance FROM \Phpug\Entity\Usergroup p WHERE p.state = 1 ';
+
+
+        if ($distance) {
+            $qs .= ' AND DISTANCEFROM(' . (float) $lat . ',' . (float) $lon . ') <= ' . (float) $distance;
+        }
+
+        $qs .= ' ORDER BY distance';
+
+        $query = $em->createQuery($qs);
+        if ($number) {
+            $query->setMaxResults($number);
+        }
+
+        $res = array();
+        foreach ($query->getResult() as $result) {
+            $res[] = $result[0]->getShortname();
+        }
+
+        return $res;
     }
 }
