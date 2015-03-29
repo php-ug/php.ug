@@ -444,6 +444,7 @@ return array(
             'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
             'Phpug\Api\v1\Calendar' => 'Phpug\Api\v1\CalendarController',
+            'Phpug\Api\v1\Location' => 'Phpug\Api\v1\LocationController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
             'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',

@@ -62,6 +62,7 @@ class SabreVCalendarWrapper implements IcalendarDataWrapperInterface
         $now  = new \DateTime();
         $then = (new \DateTime())->add($interval);
         $this->object->expand($now, $then);
+        $return = array();
         foreach ($this->object->children as $item) {
             if (! $item instanceof VEvent) {
                 continue;
