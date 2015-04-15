@@ -61,21 +61,29 @@ class SabreVCalendarWrapper implements IcalendarDataWrapperInterface
     {
         $now  = new \DateTime();
         $then = (new \DateTime())->add($interval);
-        $this->object->expand($now, $then);
         $return = array();
-        foreach ($this->object->children as $item) {
-            if (! $item instanceof VEvent) {
-                continue;
+        try {
+            $this->object->expand($now, $then);
+            foreach ($this->object->children as $item) {
+                if (! $item instanceof VEvent) {
+                    continue;
+                }
+                $return[] = Event::factory($item);
             }
-            $return[] = Event::factory($item);
+
+            usort($return, function ($a, $b) {
+                if ($a->getstartDate() < $b->getStartDate()) {
+                    return - 1;
+                }
+                if ($a->getstartDate() > $b->getStartDate()) {
+                    return 1;
+                }
+
+                return 0;
+            });
+        } catch (Exception $e) {
+            error_log($e->getMessage() . "\n" . $e->getTraceAsString());
         }
-
-        usort($return, function($a, $b){
-            if ($a->getstartDate() < $b->getStartDate()) return -1;
-            if ($a->getstartDate() > $b->getStartDate()) return 1;
-
-            return 0;
-        });
 
         return $return;
     }
