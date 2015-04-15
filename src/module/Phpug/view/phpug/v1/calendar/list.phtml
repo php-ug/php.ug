@@ -1,4 +1,38 @@
-<?php $this->headLink()->appendStylesheet($this->basePath . '/css/phpugfeatures.css'); ?>
+<?php
+$this->headLink()->appendStylesheet($this->basePath . '/css/phpugfeatures.css');
+$this->headLink()->appendStylesheet($this->basePath . '/orgheiglgeolocation/lib/leaflet-0.7.3/leaflet.css');
+$this->headScript()->appendFile($this->basePath . '/orgheiglgeolocation/lib/leaflet-0.7.3/leaflet.js');
+$this->headScript()->appendFile($this->basePath . '/lib/leaflet-search/dist/leaflet-search.min.js');
+$this->headScript()->appendFile($this->basePath . '/orgheiglgeolocation/js/orgHeiglGeolocation.js');
+
+$this->headScript()->appendScript("// <![CDATA[
+
+             $('.orgheiglgeolocation').orgHeiglGeolocation();
+
+            function outputUpdate(dist) {
+                document.querySelector('#distanceoutput').value = dist;
+            }
+
+            function populatelatlon(foo) {
+            }
+
+            $('#location').on('change', function(e){
+                var input = $(e.target);
+                var lll = input.val().match(/([-]?\d{1,2}(\.\d+)?)[^\d\.\-]+([-]?\d{1,3}(\.\d+)?)/);
+                if (! lll) {
+                    lll = [0,0,0,0,0];
+                }
+                $('#latitude').val(lll[1]);
+                $('#longitude').val(lll[3]);
+            });
+
+            function populate() {
+                document.querySelector('#location').value = 'foooo';
+            }
+
+         //  ]]>");
+
+?>
 <div class="jumbotron">
     <h3>
         List of Usergroup-Events
@@ -6,6 +40,32 @@
     <p>
         The listed usergroups are organising the following events throughout the next year.
     </p>
+    <form method="get" id="locationselector" action="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list')); ?>">
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input class="form-control orgheiglgeolocation" value="<?php echo $this->location; ?>" type="text" id="location" name="location"/>
+            <div id="location_wrapper">
+            <div class="map"></div>
+            </div>
+            <input type="hidden" value="<?php echo $this->latitude; ?>" name="latitude" id="latitude"/>
+            <input type="hidden" value="<?php echo $this->longitude; ?>" name="longitude" id="longitude"/>
+        </div>
+        <div class="form-group">
+            <label for="distance">
+                Display Events within <output style="display:inline" for="distance" id="distanceoutput"><?php echo $this->distance; ?></output> km distance
+            </label>
+            <input class="formcontrol" type="range" min="5" max="500" value="<?php echo $this->distance; ?>" name="distance" id="distance" oninput="outputUpdate(value)">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Search</button>
+            <a class="btn btn-default" href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>">
+                Show Events of <strong>all</strong> Usergroups
+            </a>
+        </div>
+        <script>
+
+        </script>
+    </form>
     <p>
         You can
         <a href="<?php echo preg_replace('/^https?/', 'webcal', $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true))); ?>?format=ical">subscribe</a>

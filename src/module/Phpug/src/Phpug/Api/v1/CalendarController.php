@@ -35,6 +35,7 @@ use Phpug\ORM\Query\AST\Functions\DistanceFrom;
 use Zend\Mvc\Controller\AbstractActionController;
 use Sabre\VObject;
 use Zend\Json\Json;
+use Zend\View\Model\ViewModel;
 
 class CalendarController extends AbstractActionController
 {
@@ -95,6 +96,12 @@ class CalendarController extends AbstractActionController
         }
         
         $viewModel = $this->getViewModel();
+        if ($viewModel instanceof ViewModel) {
+            $viewModel->setVariable('location', $this->params()->fromQuery('latitude', 0) . ' ' . $this->params()->fromQuery('longitude', 0));
+            $viewModel->setVariable('latitude', $this->params()->fromQuery('latitude', 0));
+            $viewModel->setVariable('longitude', $this->params()->fromQuery('longitude', 0));
+            $viewModel->setVariable('distance', $this->params()->fromQuery('distance', 100));
+        }
 
         return $viewModel->setVariable('calendar', new \Phpug\Wrapper\SabreVCalendarWrapper($calendar));
 
