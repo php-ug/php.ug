@@ -82,6 +82,11 @@ class CalendarController extends AbstractActionController
                         continue;
                     }
 
+                    $result = $event->validate(VObject\Node::REPAIR);
+                    if ($result) {
+                        error_log(print_r($result, true));
+                        continue;
+                    }
                     $event->SUMMARY = '[' . $cal->getGroup()->getName() . '] ' . $event->SUMMARY;
                     $calendar->add($event);
                 }
