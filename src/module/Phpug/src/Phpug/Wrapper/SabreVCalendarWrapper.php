@@ -81,7 +81,7 @@ class SabreVCalendarWrapper implements IcalendarDataWrapperInterface
 
                 return 0;
             });
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log($e->getMessage() . "\n" . $e->getTraceAsString());
         }
 
