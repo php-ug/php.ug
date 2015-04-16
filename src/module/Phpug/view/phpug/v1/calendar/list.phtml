@@ -30,6 +30,20 @@ $this->headScript()->appendScript("// <![CDATA[
                 document.querySelector('#location').value = 'foooo';
             }
 
+            $('.addSearch').each(function(item, value){
+                value.href = value.href + document.location.search.replace(/\?/, '&');
+            });
+
+            $('#showlimitentries').on('click', function(){
+                if ($('#locationselector').is(':visible')) {
+                    $('#locationselector').hide();
+                    $('#showlimitentries').text('Limit to usergroups around a location');
+                } else {
+                    $('#locationselector').show();
+                    $('#showlimitentries').text('Hide options');
+                }
+            });
+            $('#locationselector').hide();
          //  ]]>");
 
 ?>
@@ -40,6 +54,18 @@ $this->headScript()->appendScript("// <![CDATA[
     <p>
         The listed usergroups are organising the following events throughout the next year.
     </p>
+    <p>
+        You can
+        <a class="addSearch" href="<?php echo preg_replace('/^https?/', 'webcal', $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true))); ?>?format=ical">subscribe</a>
+        to this feed or
+        <a class="addSearch" href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>?format=ical">download</a>
+        it as iCalendar-File
+    </p>
+    <p>
+    <a id="showlimitentries" class="btn btn-default" href="#">Limit to usergroups around a location</a>
+        <a class="btn btn-default" href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>">
+            Show Events of <strong>all</strong> Usergroups
+        </a>
     <form method="get" id="locationselector" action="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list')); ?>">
         <div class="form-group">
             <label for="location">Location</label>
@@ -57,21 +83,9 @@ $this->headScript()->appendScript("// <![CDATA[
             <input class="formcontrol" type="range" min="5" max="500" value="<?php echo $this->distance; ?>" name="distance" id="distance" oninput="outputUpdate(value)">
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-default">Search</button>
-            <a class="btn btn-default" href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>">
-                Show Events of <strong>all</strong> Usergroups
-            </a>
+            <button type="submit" class="btn btn-default">Limit</button>
         </div>
-        <script>
-
-        </script>
     </form>
-    <p>
-        You can
-        <a href="<?php echo preg_replace('/^https?/', 'webcal', $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true))); ?>?format=ical">subscribe</a>
-        to this feed or
-        <a href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>?format=ical"">download</a>
-        it as iCalendar-File
     </p>
 </div>
 <ul class="event-list" style="column-count: 3; list-style-type:none;">
