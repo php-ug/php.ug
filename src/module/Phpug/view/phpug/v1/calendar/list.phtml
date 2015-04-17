@@ -1,4 +1,97 @@
-<?php $this->headLink()->appendStylesheet($this->basePath . '/css/phpugfeatures.css'); ?>
+<?php
+$this->headLink()->appendStylesheet($this->basePath . '/css/phpugfeatures.css');
+$this->headLink()->appendStylesheet($this->basePath . '/orgheiglgeolocation/lib/leaflet-0.7.3/leaflet.css');
+$this->headScript()->appendFile($this->basePath . '/orgheiglgeolocation/lib/leaflet-0.7.3/leaflet.js');
+$this->headScript()->appendFile($this->basePath . '/lib/leaflet-search/dist/leaflet-search.min.js');
+$this->headScript()->appendFile($this->basePath . '/orgheiglgeolocation/js/orgHeiglGeolocation.js');
+
+$this->headScript()->appendScript("// <![CDATA[
+
+             maps = $('.orgheiglgeolocation').orgHeiglGeolocation();
+             maps.each(function(i, map){
+                 if (! map.circle) {
+                    map['circle'] = L.circle(map.marker.getLatLng(), $('#distance').val() * 1000, {
+                        color: 'blue',
+                        fillColor: 'lightblue',
+                        fillOpacity: 0.2,
+                        weight: 1
+                    }).addTo(map.map);
+                }
+                map.marker.on('move',function(e){
+                    map.circle.setLatLng(e.latlng);
+                }.bind(map));
+             });
+
+            function outputUpdate(dist) {
+                document.querySelector('#distanceoutput').value = dist;
+                maps.each(function(i, map){
+                    if (! map.circle) {
+                        map['circle'] = L.circle(map.marker.getLatLng(), dist * 1000, {
+                            color: 'blue',
+                            fillColor: 'lightblue',
+                            fillOpacity: 0.2,
+                            weight: 1
+                        }).addTo(map.map);
+                    }
+                    map.circle.setRadius(dist * 1000);
+                }.bind(dist));
+            }
+
+            function populatelatlon(foo) {
+            }
+
+            $('#location').on('change', function(e){
+                var input = $(e.target);
+                var lll = input.val().match(/([-]?\d{1,2}(\.\d+)?)[^\d\.\-]+([-]?\d{1,3}(\.\d+)?)/);
+                if (! lll) {
+                    lll = [0,0,0,0,0];
+                }
+                $('#latitude').val(lll[1]);
+                $('#longitude').val(lll[3]);
+            });
+
+            function populate() {
+                document.querySelector('#location').value = 'foooo';
+            }
+
+            $('.addSearch').each(function(item, value){
+                value.href = value.href + document.location.search.replace(/\?/, '&');
+            });
+
+            $('#showlimitentries').on('click', function(){
+                if ($('#locationselector').is(':visible')) {
+                    $('#locationselector').hide();
+                    $('#showlimitentries').text('Limit to usergroups around a location');
+                } else {
+                    setLocation();
+                    $('#locationselector').show();
+                    $('#showlimitentries').text('Hide options');
+                }
+            });
+            $('#locationselector').hide();
+
+            var currentLocation = {'lat': " . $this->latitude . ", 'lng': " . $this->longitude . "};
+
+            function setLocation() {
+                if (JSON.stringify(currentLocation) != JSON.stringify({'lat': 0, 'lng': 0})) {
+                    return;
+                }
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        currentLocation = {'lat': position.coords.latitude, 'lng': position.coords.longitude};
+                        maps.each(function(i, map){
+                            var ll = {'lat':this.coords.latitude, 'lon':this.coords.longitude};
+                            map.map.panTo(ll);
+                            map.marker.setLatLng(ll);
+                        }.bind(position));
+                    }
+                );
+            }
+
+
+         //  ]]>");
+
+?>
 <div class="jumbotron">
     <h3>
         List of Usergroup-Events
@@ -8,10 +101,36 @@
     </p>
     <p>
         You can
-        <a href="<?php echo preg_replace('/^https?/', 'webcal', $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true))); ?>?format=ical">subscribe</a>
+        <a class="addSearch" href="<?php echo preg_replace('/^https?/', 'webcal', $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true))); ?>?format=ical">subscribe</a>
         to this feed or
-        <a href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>?format=ical"">download</a>
+        <a class="addSearch" href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>?format=ical">download</a>
         it as iCalendar-File
+    </p>
+    <p>
+    <a id="showlimitentries" class="btn btn-default" href="#">Limit to usergroups around a location</a>
+        <a class="btn btn-default" href="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list'), array('force_canonical' => true)); ?>">
+            Show Events of <strong>all</strong> Usergroups
+        </a>
+    <form method="get" id="locationselector" action="<?php echo $this->url('api/v1', array('controller' => 'calendar', 'action' => 'list')); ?>">
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input class="form-control orgheiglgeolocation" value="<?php echo $this->location; ?>" type="text" id="location" name="location"/>
+            <div id="location_wrapper">
+            <div class="map"></div>
+            </div>
+            <input type="hidden" value="<?php echo $this->latitude; ?>" name="latitude" id="latitude"/>
+            <input type="hidden" value="<?php echo $this->longitude; ?>" name="longitude" id="longitude"/>
+        </div>
+        <div class="form-group">
+            <label for="distance">
+                Display Events within <output style="display:inline" for="distance" id="distanceoutput"><?php echo $this->distance; ?></output> km distance
+            </label>
+            <input class="formcontrol" type="range" min="5" max="500" value="<?php echo $this->distance; ?>" name="distance" id="distance" oninput="outputUpdate(value)">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Limit</button>
+        </div>
+    </form>
     </p>
 </div>
 <ul class="event-list" style="column-count: 3; list-style-type:none;">
