@@ -61,11 +61,11 @@ class IcalendarJsonModel extends JsonModel
             $variables = \Zend\Stdlib\ArrayUtils::iteratorToArray($variables);
         }
 
-        if (count($variables) != 1) {
+        if (! isset($variables['calendar'])) {
             return false;
         }
 
-        $variable = current($variables);
+        $variable = $variables['calendar'];
         if (! $variable instanceof IcalendarDataWrapperInterface) {
             return false;
         }

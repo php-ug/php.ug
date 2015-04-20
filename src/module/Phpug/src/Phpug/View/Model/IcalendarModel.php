@@ -62,13 +62,15 @@ class IcalendarModel extends ViewModel
             $variables = \Zend\Stdlib\ArrayUtils::iteratorToArray($variables);
         }
 
-        if (count($variables) == 1) {
-            $variable = current($variables);
-            if ($variable instanceof IcalendarDataWrapperInterface) {
-                return $variable->serialize();
-            }
+        if (! isset($variables['calendar'])) {
+            return false;
         }
 
-        return false;
+        $variable = $variables['calendar'];
+        if (! $variable instanceof IcalendarDataWrapperInterface) {
+            return false;
+        }
+
+        return $variable->serialize();
     }
 }
