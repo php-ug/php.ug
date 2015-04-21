@@ -4,7 +4,15 @@ $this->headLink()->appendStylesheet($this->basePath . '/lib/fullcalendar/dist/fu
 $this->headLink()->appendStylesheet($this->basePath . '/lib/jbox/Source/jBox.css');
 
 $this->headScript()->prependScript("// <![CDATA[
+    var getContentsHeight = function(){
+        var win = parseInt($(window).height());
+        var mto = parseInt($('.content').css('marginTop'));
+        var mbo = parseInt($('.content').css('marginBottom'));
+
+        return (win - mto - mbo);
+    };
     $(document).ready(function() {
+
 
 		$('#calendar').fullCalendar({
 		    timezone: 'local',
@@ -15,8 +23,7 @@ $this->headScript()->prependScript("// <![CDATA[
 				right: 'month,agendaWeek,agendaDay'
 			},
 			defaultDate: new Date(),
-			contentHeight: 'auto',
-			aspectRatio: 1,
+			height: getContentsHeight(),
 			editable: false,
 			eventLimit: true,
 			eventSources : [{
@@ -94,6 +101,9 @@ $this->headScript()->prependScript("// <![CDATA[
 			}
 		});
 
+        $(window).on('resize', function(e){
+            $('#calendar').fullCalendar('option', 'height', getContentsHeight());
+        });
 	});
 // ]]>");
 $this->headScript()->prependFile($this->basePath . '/lib/jbox/Source/jBox.min.js');
