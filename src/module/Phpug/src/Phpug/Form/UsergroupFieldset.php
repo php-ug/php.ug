@@ -220,6 +220,7 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                     array(
                         'name' => $shortnameValidator,
                         'options' => array(
+                            'use_context' => true,
                             'object_repository' => $em->getRepository('Phpug\Entity\Usergroup'),
                             'object_manager' => $em,
                             'fields' => array('shortname'),
