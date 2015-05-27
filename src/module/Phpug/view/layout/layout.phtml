@@ -17,6 +17,14 @@ $this->headLink(array(
             'href' => $basePath . '/img/favicon.png',
         ));
 
+$this->headScript()->prependScript("
+$('a[href^=\"/#\"]').on('click', function(e){
+    window.location.reload(true);
+});
+$('a[href^=\"/#\"]').parent().parent().find('li').attr('class', '');
+var currentURL = window.location.pathname + window.location.hash;
+$('a[href=\"'+currentURL+'\"]').parent().attr('class', 'active');
+");
 // HTML5 shim, for IE6-8 support of HTML elements
 $this->headScript()->appendFile($basePath . '/lib/html5shiv/dist/html5shiv.min.js', 'text/javascript',
     array('conditional' => 'lt IE9',));
