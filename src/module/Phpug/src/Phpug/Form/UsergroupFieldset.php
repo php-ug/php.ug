@@ -234,7 +234,10 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 'required' => true,
                 'validators' => array(
                     array('name' => 'OrgHeiglGeolocation\Validator\IsGeolocation'),
-                )
+                ),
+                'filters' => array(
+                    array('name' => 'OrgHeiglGeolocation\Filter\Geolocation'),
+                ),
             ),
             'url' => array(
                 'required' => true,
