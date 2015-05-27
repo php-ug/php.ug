@@ -310,6 +310,28 @@ return array(
             array(
                 'label' => 'Home',
                 'route' => 'home',
+                'pages' => [
+                    array(
+                        'label' => 'Usergroups',
+                        'route' => 'home',
+                        'fragment' => '',
+                    ),
+                    array(
+                        'label' => 'Mentoring-PHP',
+                        'route' => 'home',
+                        'fragment' => 'mentoring',
+                    ),
+                    array(
+                        'label' => 'Events',
+                        'route' => 'home',
+                        'fragment' => 'events',
+                    ),
+                    array(
+                        'label' => 'Call for Papers',
+                        'route' => 'home',
+                        'fragment' => 'cfp',
+                    )
+                ],
             ),
             array(
                 'label' => 'Blog',
