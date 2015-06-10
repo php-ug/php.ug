@@ -56,6 +56,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property double $longitude
  * @property int    $ugtype
  * @property int    $state
+ * @property string $adminMail
  */
 class Usergroup
 {
@@ -126,6 +127,11 @@ class Usergroup
     protected $inputFilter;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $adminMail;
+
+    /**
     * Magic getter to expose protected properties.
     *
     * @param string $property
@@ -160,6 +166,7 @@ class Usergroup
             'latitude'      => $this->getLatitude(),
             'longitude'     => $this->getLongitude(),
             'state'         => $this->getState(),
+            'adminMail'     => $this->getAdminMail(),
             'contacts'      => array(),
             'ugtype'        => array(
                 'id'          => $this->ugtype->getId(),
@@ -514,6 +521,30 @@ class Usergroup
         }
 
         return true;
+    }
+
+    /**
+     * Set an administrative contact
+     *
+     * @param string $contact
+     *
+     * @return self
+     */
+    public function setAdminMail($contact)
+    {
+        $this->adminMail = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get the administrative contact
+     *
+     * @return string
+     */
+    public function getAdminMail()
+    {
+        return $this->adminMail;
     }
 
 }
