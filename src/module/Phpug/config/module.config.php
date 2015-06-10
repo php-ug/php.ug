@@ -368,10 +368,10 @@ return array(
                 ),
             ),
             array(
-                'label' => 'Promote',
+                'label' => 'Include your Usergroup',
                 'route' => 'ug/promote',
-                'resource' => 'ug',
-                'privilege' => 'promote',
+//                'resource' => 'ug',
+//                'privilege' => 'promote',
             )
         ),
         'footer' => array(
