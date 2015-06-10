@@ -150,8 +150,11 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
         $this->add(array(
             'type' => 'Zend\Form\Element\Email',
             'name' => 'adminMail',
+            'attributes' => array(
+                'placeholder' => 'admin@example.org',
+            ),
             'options' => array(
-                'label' => 'Admin-Contact',
+                'label' => 'Admin-Email',
                 'label_attributes' => array(
                     'class' => 'control-label',
                 ),
