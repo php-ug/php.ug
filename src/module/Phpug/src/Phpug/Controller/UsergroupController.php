@@ -122,6 +122,13 @@ class UsergroupController extends AbstractActionController
             $form->get('userGroupFieldset')->remove('state');
         }
 
+        if ($currentUser->isAuthenticated()) {
+            $collection = $form->get('userGroupFieldset')->get('contacts');
+            $fieldSets  = $collection->getFieldsets();
+            $fieldSets[0]->get('service')->setValue(1);
+            $fieldSets[0]->get('name')->setValue($currentUser->getName());
+        }
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             // Handle form sending
