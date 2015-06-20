@@ -85,26 +85,10 @@ class UsergroupController extends AbstractActionController
     public function promoteAction()
     {
         $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
-        if (! $currentUser->isAuthenticated()) {
-            throw new UnauthenticatedException(
-                'You have to log in to promote a new usergroup.',
-                0,
-                null,
-                'You are not logged in'
-            );
-        }
 
         $acl = $this->getServiceLocator()->get('acl');
 
         $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
-        if (! $acl->isAllowed((string) $role, 'ug', 'promote')) {
-            throw new UnauthorizedException(
-                'Your account has not the necessary rights to promote a new usergroup. If you feel like that is an error please contact us!',
-                0,
-                null,
-                'You are not authorized to do that'
-            );
-        }
 
         $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
         $form->get('userGroupFieldset')->remove('id');
@@ -120,6 +104,13 @@ class UsergroupController extends AbstractActionController
         $form->setAttribute('action', $this->url()->fromRoute('ug/promote'));
         if (! $acl->isAllowed((string) $role, 'ug', 'validate')) {
             $form->get('userGroupFieldset')->remove('state');
+        }
+
+        if ($currentUser->isAuthenticated()) {
+            $collection = $form->get('userGroupFieldset')->get('contacts');
+            $fieldSets  = $collection->getFieldsets();
+            $fieldSets[0]->get('service')->setValue(1);
+            $fieldSets[0]->get('name')->setValue($currentUser->getName());
         }
 
         $request = $this->getRequest();

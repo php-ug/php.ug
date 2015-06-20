@@ -148,6 +148,21 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
         ));
 
         $this->add(array(
+            'type' => 'Zend\Form\Element\Email',
+            'name' => 'adminMail',
+            'attributes' => array(
+                'placeholder' => 'admin@example.org',
+            ),
+            'options' => array(
+                'label' => 'Admin-Email',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
+                'description' => 'How can the PHP.ug-admins contact you in case there are any questions? This address will NOT be publicly displayed, it\'s just for administrative purposes!',
+            ),
+        ));
+
+        $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'state',
             'options' => array(
@@ -274,9 +289,15 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
             'ugtype' => array(
                 'required' => true,
             ),
-//            'state' => array(
-//                'required' => true,
-//            ),
+            'adminMail' => array(
+                'required' => true,
+                'validators' => [array(
+                    'name' => 'EmailAddress',
+                    'options' => array(
+                        'hostnameValidator' => new Validator\Hostname(),
+                    ),
+                )],
+            ),
         );
     }
 
