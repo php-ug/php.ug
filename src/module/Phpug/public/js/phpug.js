@@ -258,7 +258,7 @@ var phpug = L.layerJSON({
 var mentoring = L.layerJSON({
     url : 'mentoring',
     propertyLoc : ['lat', 'lon'],
-    propretyTitle : 'name',
+    propertyTitle : 'name',
     buildPopup : function(data){
         url = 'https://github.com/phpmentoring/phpmentoring.github.com/wiki/Mentors-and-Apprentices';
         hash_mentor = '#mentors-currently-accepting-an-apprentice';
