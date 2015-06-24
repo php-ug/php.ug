@@ -94,7 +94,7 @@ class Cache implements CacheInterface
         $config = $this->serviceManager->get('config');
         $cacheLifeTime = $config['phpug']['entity']['cache'][$this->type]['cacheLifeTime'];
         $cacheLifeTime = new \DateInterval($cacheLifeTime);
-        if ($myCache->getLastChangeDate()->add($cacheLifeTime) < new \DateTime()) {
+        if ($myCache->getLastChangeDate()->add($cacheLifeTime) < new \DateTime() || trim($myCache->getCache()) == '') {
             $myCache->setCache($this->populator->populate($this->usergroup, $this->serviceManager));
             $myCache = $this->makePersistent($myCache);
 
