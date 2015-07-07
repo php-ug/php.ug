@@ -166,7 +166,6 @@ class Usergroup
             'latitude'      => $this->getLatitude(),
             'longitude'     => $this->getLongitude(),
             'state'         => $this->getState(),
-            'adminMail'     => $this->getAdminMail(),
             'contacts'      => array(),
             'ugtype'        => array(
                 'id'          => $this->ugtype->getId(),
