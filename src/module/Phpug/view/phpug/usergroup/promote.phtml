@@ -3,6 +3,9 @@
 $form->prepare();
 
 $this->headTitle('Include your UserGroup');
+$this->headScript()->prependFile('/lib/chosen/chosen.jquery.min.js');
+$this->headLink()->appendStylesheet('/lib/chosen/chosen.min.css');
+
 
 $form->setAttribute('class', 'form-horizontal');
 if ($form->getMessages()) {
@@ -82,4 +85,6 @@ $this->headScript()->appendScript("
         $(e.target).popover('hide');
     });
     $('[data-toggle=tooltip]').tooltip({container:'body'});
+
+    $('select[multiple=multiple]').chosen();
 ");
