@@ -189,6 +189,13 @@ class Usergroup
             );
         }
 
+        foreach ($this->tags as $tag) {
+            $return['tags'][] = array(
+                'name' => $tag->getTagname(),
+                'description' => $tag->getDescription(),
+            );
+        }
+
         return $return;
     }
     

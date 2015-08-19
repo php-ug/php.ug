@@ -189,15 +189,31 @@ var phpug = L.layerJSON({
                 + '</h4>'
                 + '<h5>Next Event</h5>'
                 + '<div id="next_event_%shortname%" class="next_event">Getting next event...</div>'
+                + '%interests%'
                 + '<h5>Get in touch</h5>'
                 + '%contacts%'
                 + '</div>'
             ;
 
+        var interest = '<li class="label label-primary">%interest%</li>';
+        var interests = [];
+
         var contact = '<a href="%url%" title="%value%" target="_blank">'
             + '<i class="%cssClass%"></i>'
             + '</a>';
         var contacts = [];
+
+        for (i in data.tags){
+            interests.push(
+                interest.replace(/%interest%/, data.tags[i].name)
+            );
+        }
+        interestString = '';
+        if (interests.length > 0) {
+            interestString = '<h5 style="margin-bottom:0;">Interests</h5><ul>'
+                + interests.join("\n")
+                + '</ul>';
+        }
 
         if (data.icalendar_url) {
             contacts.push(
@@ -228,7 +244,9 @@ var phpug = L.layerJSON({
         content = content.replace(/%url%/, data.url)
             .replace(/%name%/, data.name)
             .replace(/%shortname%/, data.shortname)
-            .replace(/%contacts%/, contacts);
+            .replace(/%contacts%/, contacts)
+            .replace(/%interests%/, interestString)
+        ;
 
         if (center && center === data.shortname){
             map.setView(new L.LatLng(data.latitude,data.longitude), 8);
