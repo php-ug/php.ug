@@ -6,7 +6,24 @@ $this->headLink()->appendStylesheet('lib/leaflet/dist/leaflet.css','text/css',
 );
 $this->headLink()->appendStylesheet('lib/leaflet-search/dist/leaflet-search.min.css');
 $this->headLink()->appendStylesheet('lib/Leaflet.label/dist/leaflet.label.css');
+$this->headLink()->appendStylesheet('lib/chosen/chosen.min.css');
 
+$this->headScript()->prependScript("
+    $('#ugtags').chosen();
+
+    $('#ugtags').on('change', function(e){
+        removeAllUgFilters();
+        tags = $(e.target).val();
+        if (tags) {
+        for(var i = 0; i<tags.length; i++) {
+            addUgFilter(tags[i]);
+        }
+}
+        applyFilters();
+
+    });
+");
+$this->headScript()->prependFile('lib/chosen/chosen.jquery.min.js');
 $this->headScript()->prependFile('js/phpug/phpug.js');
 //$this->headScript()->prependFile('lib/leaflet-search/dist/leaflet-searchl.geosearch.provider.openstreetmap.js');
 $this->headScript()->prependFile('lib/Leaflet.label/dist/leaflet.label.js');
@@ -16,6 +33,14 @@ $this->headScript()->prependFile('lib/overlapping_marker_spiderfier-leaflet/dist
 $this->headScript()->prependFile('lib/leaflet/dist/leaflet.js');
 ?>
 <div id="map"></div>
+<form id="custom-control-php" style="position:absolute;width:80%;">
+    <div class="form-group">
+        <select class="form-control" multiple="multiple" size="5" id="ugtags"><?php foreach ($tags as $tag) : ?>
+        <option><?php echo $tag->getTagName(); ?></option>
+        <?php endforeach; ?>
+        </select>
+    </div>
+</form>
 <?php if(count($flash)) : ?>
 <div class="alert alert-success alert-dismissable" style="position:absolute; list-style-type: none">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
