@@ -9,18 +9,15 @@ $this->headLink()->appendStylesheet('lib/Leaflet.label/dist/leaflet.label.css');
 $this->headLink()->appendStylesheet('lib/chosen/chosen.min.css');
 
 $this->headScript()->prependScript("
-    $('#ugtags').chosen();
-
     $('#ugtags').on('change', function(e){
         removeAllUgFilters();
         tags = $(e.target).val();
         if (tags) {
-        for(var i = 0; i<tags.length; i++) {
-            addUgFilter(tags[i]);
-        }
-}
+            for(var i = 0; i<tags.length; i++) {
+                addUgFilter(tags[i]);
+            }
+        };
         applyFilters();
-
     });
 ");
 $this->headScript()->prependFile('lib/chosen/chosen.jquery.min.js');
@@ -33,9 +30,9 @@ $this->headScript()->prependFile('lib/overlapping_marker_spiderfier-leaflet/dist
 $this->headScript()->prependFile('lib/leaflet/dist/leaflet.js');
 ?>
 <div id="map"></div>
-<form id="custom-control-php" style="position:absolute;width:80%;">
-    <div class="form-group">
-        <select class="form-control" multiple="multiple" size="5" id="ugtags"><?php foreach ($tags as $tag) : ?>
+<form id="custom-control-php">
+    <div class="form-group col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3" style="display:none";>
+        <select class="form-control" multiple="multiple" size="5" id="ugtags" placeholder="Add tags to filter..."><?php foreach ($tags as $tag) : ?>
         <option><?php echo $tag->getTagName(); ?></option>
         <?php endforeach; ?>
         </select>

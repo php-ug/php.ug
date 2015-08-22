@@ -283,6 +283,18 @@ var phpug = L.layerJSON({
 // which then would reload the Markers...
 phpug._onMove = function(){}
 
+phpug.on('layeradd', function(){
+        $('#custom-control-php > div').show();
+        $('#ugtags').chosen({
+            'placeholder_text_multiple' : 'Add tags to filter ...'
+        });
+});
+
+phpug.on('layerremove', function(){
+    $('#custom-control-php > div').hide();
+});
+
+
 var currentFilters = [];
 
 addUgFilter = function(name){
@@ -301,10 +313,13 @@ removeAllUgFilters = function(){
 }
 
 applyFilters = function() {
-    phpug.clearLayers();
     for(var i = 0; i < ugmarkers.length; i++) {
         if(matchesFilters(ugmarkers[i])) {
-            phpug.addLayer(ugmarkers[i]);
+            ugmarkers[i].setOpacity(1);
+            $(ugmarkers[i]._icon).show();
+        } else {
+            ugmarkers[i].setOpacity(0);
+            $(ugmarkers[i]._icon).hide();
         }
     }
 }
