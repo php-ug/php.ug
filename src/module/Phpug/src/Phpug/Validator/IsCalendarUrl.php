@@ -53,7 +53,7 @@ class IsCalendarUrl extends AbstractValidator
     protected function getHeaders($url)
     {
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, "php.ug-website-checker");
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_exec($ch);
