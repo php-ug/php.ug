@@ -148,6 +148,30 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
         ));
 
         $this->add(array(
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'name' => 'tags',
+            'attributes' => array(
+                'multiple' => true,
+            ),
+            'options' => array(
+                'label' => 'Tags',
+                'label_attributes' => array(
+                    'class' => 'control-label'
+                ),
+                'description' => 'What is of interest to your usergroup',
+                'object_manager' => $em,
+                'target_class' => 'Phpug\Entity\Tag',
+                'property' => 'tagname',
+                'is_method' => true,
+                'find_method' => array(
+                    'name' => 'findAll',
+                    'params' => array(),
+                ),
+            ),
+
+        ));
+
+        $this->add(array(
             'type' => 'Zend\Form\Element\Email',
             'name' => 'adminMail',
             'attributes' => array(

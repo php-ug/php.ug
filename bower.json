@@ -29,6 +29,7 @@
     "jbox": "~0.3.2",
     "html5shiv": "~3.7.2",
     "jquery-cookie": "~1.4.1",
-    "Leaflet.label": "~0.2.1"
+    "Leaflet.label": "~0.2.1",
+    "chosen": "~1.4.2"
   }
 }

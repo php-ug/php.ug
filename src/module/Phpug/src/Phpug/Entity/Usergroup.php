@@ -132,6 +132,12 @@ class Usergroup
     protected $adminMail;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="usergroups")
+     * @ORM\JoinTable(name="usergroups_tags")
+     */
+    protected $tags;
+
+    /**
     * Magic getter to expose protected properties.
     *
     * @param string $property
@@ -183,6 +189,13 @@ class Usergroup
             );
         }
 
+        foreach ($this->tags as $tag) {
+            $return['tags'][] = array(
+                'name' => $tag->getTagname(),
+                'description' => $tag->getDescription(),
+            );
+        }
+
         return $return;
     }
     
@@ -190,6 +203,7 @@ class Usergroup
     {
         $this->contacts = new ArrayCollection();
         $this->caches   = new ArrayCollection();
+        $this->tags     = new ArrayCollection();
     }
 
     /**
@@ -545,5 +559,78 @@ class Usergroup
     {
         return $this->adminMail;
     }
+
+    /**
+     * Add a tag
+     *
+     * @param Tag $tag
+     *
+     * @return self
+     */
+    public function addTag(Tag $tag)
+    {
+        $tag->addGroup($this);
+        $this->tags->add($tag);
+
+        return $this;
+    }
+
+    /**
+     * Remove a tag
+     *
+     * @param Tag $tag
+     *
+     * @return self
+     */
+    public function removeTag(Tag $tag)
+    {
+        $tag->removeGroup($this);
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    /**
+     * Get a list of all Tags
+     *
+     * @return Tag[]
+     */
+    public function getTags()
+    {
+        return $this->tags->toArray();
+    }
+
+    /**
+     * Set the given tags
+     *
+     * @param ArrayCollection $tags
+     *
+     * @return self
+     */
+    public function addTags(ArrayCollection $tags)
+    {
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a set of tags
+     * 
+     * @param ArrayCollection $tags
+     *
+     * @return self
+     */
+    public function removeTags(ArrayCollection $tags)
+    {
+        foreach ($tags as $tag) {
+            $this->removeTag($tags);
+        }
+
+        return $this;
+    }
+
 
 }
