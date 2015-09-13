@@ -176,7 +176,11 @@ var joindin = L.layerJSON({
     }
 });
 
+var rawData;
+var ugmarkers = [];
+
 var phpug = L.layerJSON({
+    caching       : false,
     url           : "api/rest/listtype.json/1",
     propertyLoc   : ['latitude', 'longitude'],
     propertyTitle : 'name',
@@ -254,11 +258,12 @@ var phpug = L.layerJSON({
         return content;
     },
     filterData : function(e){
-        return e.groups;
+        rawData = e.groups;
+       // applyFilters();
+        return rawData;
     },
     buildIcon : function(data){
-        console.log(data);
-        if (data.state == 0) {
+            if (data.state == 0) {
             return new darkIcon();
         }
         if (data.state == 2) {
@@ -269,9 +274,74 @@ var phpug = L.layerJSON({
     onEachMarker  : function(e, marker){
         oms.addMarker(marker);
         marker.bindLabel(e.name, {opacity:0.9});
+        ugmarkers.push(marker);
         return;
     }
 });
+
+// Overwrite layerjsons _onMove-function which then would call the update-function
+// which then would reload the Markers...
+phpug._onMove = function(){}
+
+phpug.on('layeradd', function(){
+        $('#custom-control-php > div').show();
+        $('#ugtags').chosen({
+            'placeholder_text_multiple' : 'Add tags to filter ...'
+        });
+});
+
+phpug.on('layerremove', function(){
+    $('#custom-control-php > div').hide();
+});
+
+
+var currentFilters = [];
+
+addUgFilter = function(name){
+    currentFilters.push(name);
+}
+
+removeUgFilter = function(name){
+    var index = currentFilters.indexOf(name);
+    if (index > -1) {
+        currentFilters.splice(index, 1);
+    }
+}
+
+removeAllUgFilters = function(){
+    currentFilters = [];
+}
+
+applyFilters = function() {
+    for(var i = 0; i < ugmarkers.length; i++) {
+        if(matchesFilters(ugmarkers[i])) {
+            ugmarkers[i].setOpacity(1);
+            $(ugmarkers[i]._icon).show();
+        } else {
+            ugmarkers[i].setOpacity(0);
+            $(ugmarkers[i]._icon).hide();
+        }
+    }
+}
+
+matchesFilters = function(marker)
+{
+    if (currentFilters.length == 0) {
+        return true;
+    }
+    if (typeof marker.options.tags == 'undefined') {
+        return false;
+    }
+    for(var i = 0; i < currentFilters.length; i++) {
+        items = $.grep(marker.options.tags, function(e){
+            return e.name == currentFilters[i];
+        });
+        if(items.length == 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 var mentoring = L.layerJSON({
     url : 'mentoring',
@@ -465,7 +535,6 @@ map.addControl( new L.Control.Search({
     minLength: 2,
     zoom:10
 }) );
-
 
 var pushNextMeeting = function(popup, id)
 {

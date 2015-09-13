@@ -173,6 +173,7 @@ class Usergroup
             'longitude'     => $this->getLongitude(),
             'state'         => $this->getState(),
             'contacts'      => array(),
+            'tags'          => array(),
             'ugtype'        => array(
                 'id'          => $this->ugtype->getId(),
                 'name'        => $this->ugtype->getName(),
@@ -193,6 +194,13 @@ class Usergroup
             $return['tags'][] = array(
                 'name' => $tag->getTagname(),
                 'description' => $tag->getDescription(),
+            );
+        }
+
+        if (! $return['tags']) {
+            $return['tags'][] = array(
+                'name' => 'PHP',
+                'description' => '',
             );
         }
 

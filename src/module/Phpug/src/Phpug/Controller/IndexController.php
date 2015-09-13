@@ -77,9 +77,12 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+        $result = $this->getEntityManager()->getRepository('Phpug\Entity\Tag')->findAll();
+
         return array(
             'flash' => $this->flashMessenger()->getSuccessMessages(),
             'acl' => $this->getServiceLocator()->get('acl'),
+            'tags' => $result,
         );
     }
 
