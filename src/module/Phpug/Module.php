@@ -129,6 +129,7 @@ class Module implements ConsoleUsageProviderInterface
     {
         return array(
             'getmentoring' => 'Get a list of all users of PHP-Mentoring',
+            'getmentoringapp' => 'Get a list of all users of the PHP-Mentoring-App',
             'getjoindin'   => 'Get a list of events from joind.in',
             'gettwitter'   => 'Get more information for twitter-nicks',
             'getugcalendars' => 'Update the UG-Calendar Cache',

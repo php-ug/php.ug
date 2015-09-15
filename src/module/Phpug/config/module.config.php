@@ -227,13 +227,26 @@ return array(
                 ),
             ),
             'mentoring' => array(
-                'type' => 'Segment',
+                'type' => 'Literal',
                 'options' => array(
-                    'route' => '/mentoring[/:type]',
+                    'route' => '/mentoring',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Phpug\Controller',
                         'controller'    => 'MentoringController',
                         'action'        => 'getlist',
+                    ),
+                ),
+                'child_routes' => array(
+                    'app' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/app',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Phpug\Controller',
+                                'controller' => 'MentoringAppController',
+                                'action' => 'getList',
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -268,6 +281,16 @@ return array(
                         'defaults' => array(
                             '__NAMESPACE__' => 'Phpug\Controller',
                             'controller' => 'MentoringController',
+                            'action' => 'getmentoring'
+                        ),
+                    ),
+                ),
+                'getmentoringappjson' => array(
+                    'options' => array(
+                        'route' => 'getmentoringapp [--json|-j]',
+                        'defaults' => array(
+                            '__NAMESPACE__' => 'Phpug\Controller',
+                            'controller' => 'MentoringAppController',
                             'action' => 'getmentoring'
                         ),
                     ),
@@ -468,6 +491,7 @@ return array(
             'Phpug\Api\v1\Calendar' => 'Phpug\Api\v1\CalendarController',
             'Phpug\Api\v1\Location' => 'Phpug\Api\v1\LocationController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
+            'Phpug\Controller\MentoringAppController' => 'Phpug\Controller\MentoringAppController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
             'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
         ),
@@ -529,7 +553,11 @@ return array(
     ),
     'php.ug.mentoring' => array(
         'github_access_token' => '',
-        'file' => __DIR__ . '/../../../../tmp/mentoring.json'
+        'file' => realpath(__DIR__ . '/../../../../tmp/mentoring.json'),
+    ),
+    'php.ug.mentoringapp' => array(
+        'github_access_token' => '',
+        'file' => realpath(__DIR__ . '/../../../../tmp/mentoringapp.json'),
     ),
     'phpug' => array(
         'entity' => array(

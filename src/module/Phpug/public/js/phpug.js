@@ -412,6 +412,72 @@ var mentoring = L.layerJSON({
     }
 });
 
+var mentoringapp = L.layerJSON({
+    url: "mentoring/app",
+    propertyLoc : ['lat', 'lon'],
+    propertyTitle : 'name',
+    buildPopup : function(data){
+        url = 'http://app.phpmentoring.org/profile/';
+        content = '<div class="popup">'
+            + '<h4>'
+            + '<a href="%url%" target="_blank">'
+            + '%name%'
+            + '</a> '
+            + '<a href="%github%"><i class="fa fa-github"></i></a>'
+            + '</h4>'
+            + '<h5>%location% - Looking for %looking%</h5>'
+            + '<p>%description%</p>';
+
+        if (center && center.toLowerCase() === data.github.toLowerCase()){
+            map.setView(new L.LatLng(data.lat,data.lon), 8);
+        }
+        var looking = 'apprentices';
+        if (data.type == 'apprentice') {
+            looking = 'mentorship';
+        }
+        if (data.type == 'both') {
+            looking = 'mentorship and apprentices';
+        }
+        return content.replace('%url%', url + data.id)
+            .replace('%name%', data.name)
+            .replace('%location%', data.location)
+            .replace('%github%', 'https://github.com/' + data.github)
+            .replace('%description%', data.description)
+            .replace('%looking%', looking)
+            .replace('%type%', data.type);
+    },
+    filterData : function(e){
+        items = [];
+        for(var i in e) {
+            if(e[i].lat == NaN) {
+                e[i].lat = "0";
+            }
+            if(e[i].lon == NaN) {
+                e[i].lon = "0";
+            }
+            e[i].lat = e[i].lat.toString();
+            e[i].lon = e[i].lon.toString();
+            items.push(e[i]);
+        }
+
+        return items;
+    },
+    onEachMarker : function(e,marker){
+        oms.addMarker(marker);
+        marker.bindLabel(e.name, {opacity:0.9});
+        return;
+    },
+    buildIcon : function(data, title){
+        if (data.type == 'mentor') {
+            return new redIcon;
+        }
+        if (data.type == 'both') {
+            return new grayIcon;
+        }
+        return new greenIcon;
+    }
+});
+
 map.on('popupopen', function(p){
     var shortname = p.popup.getContent().match(/"next_event_([^"]+)"/)[1];
     if (! shortname){
@@ -488,6 +554,7 @@ L.control.layers({
     'PHP-Usergroups' : phpug,
     'joind.in' : joindin,
     'PHP-Mentoring' : mentoring,
+    'PHP-Mentoring (App)': mentoringapp,
     'Call for Papers' : cfp
 },{
     'position' : 'bottomleft'
@@ -496,6 +563,9 @@ L.control.layers({
 switch(window.location.hash) {
     case '#mentoring':
         map.addLayer(mentoring);
+        break;
+    case '#mentoringapp':
+        map.addLayer(mentoringapp);
         break;
     case '#events':
     case '#event':
