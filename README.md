@@ -4,6 +4,8 @@
 
 More information can be found in [our Blog](http://php-ug.github.io/php.ug/).
 
+Contact us via [our Slack-Channel](https://phpug.slack.com/messages/php_ug-website/). (invitations via http://murmuring-forest-7062.herokuapp.com/)
+
 ### Purpose
 
 This Website provides a location for PHP usergroups worldwide to advertise 
