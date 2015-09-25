@@ -24,6 +24,7 @@ var lightIcon  = L.Icon.Default;
 var darkIcon   = L.Icon.Default.extend({options: {iconUrl: '/img/marker-desat.png'}});
 var redIcon    = L.Icon.Default.extend({options:{iconUrl: 'img/marker-icon-red.png'}});
 var greenIcon  = L.Icon.Default.extend({options:{iconUrl: 'img/marker-icon-green.png'}});
+var greenRedIcon = L.Icon.Default.extend({options:{iconUrl: 'img/marker-icon-green-red.png'}});
 var orangeIcon = L.Icon.Default.extend({options:{iconUrl: 'img/marker-icon-orange.png'}});
 var grayIcon   = L.Icon.Default.extend({options:{iconUrl: 'img/marker-gray.png'}});
 var numberedIcon = L.Icon.extend({
@@ -472,7 +473,7 @@ var mentoringapp = L.layerJSON({
             return new redIcon;
         }
         if (data.type == 'both') {
-            return new grayIcon;
+            return new greenRedIcon;
         }
         return new greenIcon;
     }

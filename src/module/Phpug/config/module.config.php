@@ -227,7 +227,7 @@ return array(
                 ),
             ),
             'mentoring' => array(
-                'type' => 'Literal',
+                'type' => 'Segment',
                 'options' => array(
                     'route' => '/mentoring',
                     'defaults' => array(
@@ -553,11 +553,11 @@ return array(
     ),
     'php.ug.mentoring' => array(
         'github_access_token' => '',
-        'file' => realpath(__DIR__ . '/../../../../tmp/mentoring.json'),
+        'file' => realpath(__DIR__ . '/../../../../tmp/') . '/mentoring.json',
     ),
     'php.ug.mentoringapp' => array(
         'github_access_token' => '',
-        'file' => realpath(__DIR__ . '/../../../../tmp/mentoringapp.json'),
+        'file' => realpath(__DIR__ . '/../../../../tmp') . '/mentoringapp.json',
     ),
     'phpug' => array(
         'entity' => array(
