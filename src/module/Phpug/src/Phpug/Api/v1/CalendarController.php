@@ -68,7 +68,7 @@ class CalendarController extends AbstractActionController
         $calendar = new VObject\Component\VCalendar();
         $affectedUGs = $this->findGroupsWithinRangeAndDistance();
         foreach ($result as $cal) {
-            if (! $cal->getGRoup()) {
+            if (! $cal->getGroup()) {
                 continue;
             }
 
@@ -78,7 +78,7 @@ class CalendarController extends AbstractActionController
 
             try {
                 $ical = VObject\Reader::read($cal->getCache());
-                foreach ($ical->children as $event) {
+                foreach ($ical->children() as $event) {
                     if (!$event instanceof VObject\Component\VEvent) {
                         continue;
                     }
