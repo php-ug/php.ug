@@ -53,7 +53,7 @@ class GeocoderFactory implements  FactoryInterface
     {
         $locale = 'en';
         $geocoder = new \Geocoder\Geocoder();
-        $adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
+        $adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter(null, null, 'PHP.ug country-locator - info@php.ug');
 
         $geocoder->registerProviders(array(
             new \Geocoder\Provider\NominatimProvider(
