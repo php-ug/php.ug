@@ -33,6 +33,7 @@ namespace Phpug\Cache;
 
 use Phpug\Entity\Usergroup;
 use Phpug\Entity\Cache as CacheEntity;
+use DateTime;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class Cache implements CacheInterface
@@ -95,7 +96,11 @@ class Cache implements CacheInterface
         $cacheLifeTime = $config['phpug']['entity']['cache'][$this->type]['cacheLifeTime'];
         $cacheLifeTime = new \DateInterval($cacheLifeTime);
         if ($myCache->getLastChangeDate()->add($cacheLifeTime) < new \DateTime() || trim($myCache->getCache()) == '') {
-            $myCache->setCache($this->populator->populate($this->usergroup, $this->serviceManager));
+            $value = $this->populator->populate($this->usergroup, $this->serviceManager);
+            if ($value) {
+                $myCache->setCache($value);
+            }
+            $myCache->setLastChangeDate(new DateTime());
             $myCache = $this->makePersistent($myCache);
 
         }
