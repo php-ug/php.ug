@@ -52,39 +52,47 @@ class TwitterController extends AbstractRestfulController
 
         $result = array();
         foreach ($twitters as $twitter) {
-            $group = $twitter->getGroup();
-            if (!$group) {
-                continue;
-            }
-            if (! $group instanceof Usergroup) {
-                continue;
-            }
-            if ($group->getState() != Usergroup::ACTIVE) {
-                continue;
-            }
-            if (! isset($result[$twitter->getName()])) {
-                $result[$twitter->getName()] = array(
-                    'screen_name' => $twitter->getName(),
-                    'name'        => $twitterService->getInfoForUser('name', $twitter->getName()),
-                    'url'         => $twitter->getUrl(),
-                    'icon_url'    => $twitterService->getInfoForUser('profile_image_url_https', $twitter->getName()),
-                    'groups'      => array(),
-                );
-            }
-            $groupMapUrl = $this->url()->fromRoute('home', array(), array('force_canonical' => true)) . '?center=' . $group->getShortName();
-            $groupApiUrl = $this->url()->fromRoute(
-                'api/rest', array(
+            try {
+                $group = $twitter->getGroup();
+                if (! $group) {
+                    continue;
+                }
+                if (! $group instanceof Usergroup) {
+                    continue;
+                }
+                if ($group->getState() != Usergroup::ACTIVE) {
+                    continue;
+                }
+                if (! isset($result[$twitter->getName()])) {
+                    $result[$twitter->getName()] = array(
+                        'screen_name' => $twitter->getName(),
+                        'name'        => $twitterService->getInfoForUser('name',
+                            $twitter->getName()),
+                        'url'         => $twitter->getUrl(),
+                        'icon_url'    => $twitterService->getInfoForUser('profile_image_url_https',
+                            $twitter->getName()),
+                        'groups'      => array(),
+                    );
+                }
+                $groupMapUrl                             = $this->url()->fromRoute('home',
+                        array(),
+                        array('force_canonical' => true)) . '?center=' . $group->getShortName();
+                $groupApiUrl                             = $this->url()->fromRoute(
+                    'api/rest', array(
                     'controller' => 'Usergroup',
-                    'id' => $group->getId(),
+                    'id'         => $group->getId(),
                 ),
-                array('force_canonical' => true)
-            );
-            $result[$twitter->getName()]['groups'][] = array(
-                'usergroup'           => $group->getName(),
-                'usergroup_url'       => $group->getUrl(),
-                'phpug_group_map_url' => $groupMapUrl,
-                'phpug_group_api_url' => $groupApiUrl,
-            );
+                    array('force_canonical' => true)
+                );
+                $result[$twitter->getName()]['groups'][] = array(
+                    'usergroup'           => $group->getName(),
+                    'usergroup_url'       => $group->getUrl(),
+                    'phpug_group_map_url' => $groupMapUrl,
+                    'phpug_group_api_url' => $groupApiUrl,
+                );
+            } catch (\Exception $e) {
+                
+            }
         }
 
         usort($result, function($a, $b){
