@@ -85,8 +85,8 @@ class TwitterController extends AbstractActionController
         $count = count($result);
         $info = array();
         for ($i = 0; $i < $count; $i++) {
-            $result = $twitter->usersLookup($result[$i]);
-            $info = array_merge($info, Json::decode($result->getRawResponse(),Json::TYPE_ARRAY));
+            $res = $twitter->usersLookup($result[$i]);
+            $info = array_merge($info, Json::decode($res->getRawResponse(),Json::TYPE_ARRAY));
         }
 
         echo Json::encode($info);
