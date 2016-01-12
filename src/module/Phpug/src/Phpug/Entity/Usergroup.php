@@ -283,6 +283,16 @@ class Usergroup
     }
 
     /**
+     * @param mixed $icalendar_url
+     */
+    public function setIcalendarUrl($icalendar_url)
+    {
+        $this->icalendar_url = $icalendar_url;
+
+        return $this;
+    }
+
+    /**
      * @param mixed $id
      */
     public function setId($id)
@@ -479,6 +489,16 @@ class Usergroup
      * @return string
      */
     public function getIcalendar_url()
+    {
+        return $this->icalendar_url;
+    }
+
+    /**
+     * Get the iCalendar-URL of this entity
+     *
+     * @return string
+     */
+    public function getIcalendarUrl()
     {
         return $this->icalendar_url;
     }
