@@ -35,14 +35,13 @@ implemented, please also use the contact-form.
 All Usergroups will have to verify their existence at least once a year so we
 can archive inactive groups.
 
-The meeting schedule will be retrieved on a regualr basis from an iCalendar-File 
+The meeting schedule will be retrieved on a regular basis from an iCalendar-File 
 the usergroup can provide on their Website. That makes it easier to maintain
 a consistent Dataset of the schedules as the UG only needs to maintain their 
 local calendar and this website will retrieve that information. If no URL to
-that calendar is given, then no meeting-schedule will be displayed. **This 
-feature is not yet implemented. Any volunteers are welcome!**
+that calendar is given, then no meeting-schedule will be displayed.
 
-NO statistics will be provided. 
+**No** statistics will be provided. 
 
 ### Costs
 
