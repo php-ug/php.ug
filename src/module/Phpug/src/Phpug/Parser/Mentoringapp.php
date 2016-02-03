@@ -116,7 +116,7 @@ class Mentoringapp
         $user['name'] = $entry->name;
         echo sprintf('parsing user %1$s' . "\n", $user['name']);
         $user['githubUid'] = $entry->githubUid;
-        $user['description'] = $entry->profile_markdown;
+        $user['description'] = $entry->profileMarkdown;
         if ($entry->isMentee && $entry->isMentor) {
             $user['type'] = 'both';
         } else if ($entry->isMentee) {
@@ -139,6 +139,7 @@ class Mentoringapp
             try {
                 $user['github'] = $this->getUserInfoFromGithubId($user['githubUid']);
             } catch (\Exception $e) {
+                var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
                 return $user;
             }
         }
@@ -191,6 +192,7 @@ class Mentoringapp
         try {
             return Json::decode($info, Json::TYPE_ARRAY);
         }catch(Exception $e) {
+            var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
             return array('location' => '');
         }
     }
@@ -244,7 +246,12 @@ class Mentoringapp
         $info = curl_exec($ch); // get curl response
         curl_close($ch);
 
-        $info = Json::decode($info, Json::TYPE_ARRAY);
+        try {
+            $info = Json::decode($info, Json::TYPE_ARRAY);
+        } catch(\Exception $e) {
+            var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
+            return false;
+        }
         if (! $info) {
             return false;
         }
