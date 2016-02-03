@@ -39,14 +39,8 @@ use Zend\Json\Json;
  *
  * @package Phpug\Parser
  */
-class Mentoring
+class Mentoringapp
 {
-
-    /**
-     * @var DOMObject $dom
-     */
-    protected $dom;
-
     /**
      * @var string $githubPath
      */
@@ -74,57 +68,7 @@ class Mentoring
      *
      * @return array
      */
-    public function parse($file)
-    {
-        $return = array('mentors' => array(), 'apprentices' => array());
-
-        $content = file_Get_contents($file);
-        $content = str_Replace('<local-time', '<span tag="local-time"', $content);
-        $content = str_Replace('</local-time', '</span', $content);
-        $content = str_Replace('<time', '<span tag="time"', $content);
-        $content = str_Replace('</time', '</span', $content);
-
-        $this->dom = new \DomDocument('1.0', 'UTF-8');
-        $this->dom->strictErrorChecking = false;
-        libxml_use_internal_errors(true);
-        $this->dom->loadHTML('<?xml encoding="UTF-8" ?>' . $content);
-        libxml_use_internal_errors(false);
-
-        $xpathMentors = new \DOMXPath($this->dom);
-        $mentors = $xpathMentors->query('//a[@id="user-content-mentors-currently-accepting-an-apprentice"]/../following-sibling::ul[1]/li');
-
-        foreach ($mentors as $mentor) {
-            $user = $this->parseUser($mentor);
-            if (! $user) {
-                continue;
-            }
-            $user['type'] = 'mentor';
-            $return['mentors'][] = $user;
-        }
-
-        $xpathApprentices = new \DOMXPath($this->dom);
-        $apprentices = $xpathApprentices->query('//a[@id="user-content-apprentices-currently-accepting-mentors"]/../following-sibling::ul[1]/li');
-
-        foreach ($apprentices as $apprentice) {
-            $user = $this->parseUser($apprentice);
-            if (! $user) {
-                continue;
-            }
-            $user['type'] = 'apprentice';
-            $return['apprentices'][] = $user;
-        }
-
-        return $return;
-    }
-
-    /**
-     * Parse the JSON-String from app.phpmentoring.org/api/v0/mentors
-     *
-     * @param string $uri the uri to parse
-     *
-     * @return array
-     */
-    public function parseMentoringAPIEndpoint($uri)
+    public function parse($uri)
     {
         $return = [];
 
@@ -135,7 +79,8 @@ class Mentoring
             if ($entry->isEnabled != 1) {
                 continue;
             }
-            $return[] = $this->parseMentoringApiEntry($entry);
+            $values = $this->parseMentoringApiEntry($entry);
+            $return[$values['name']] = $values;
         }
 
         return $return;
@@ -171,7 +116,7 @@ class Mentoring
         $user['name'] = $entry->name;
         echo sprintf('parsing user %1$s' . "\n", $user['name']);
         $user['githubUid'] = $entry->githubUid;
-        $user['description'] = $entry->profile_markdown;
+        $user['description'] = $entry->profileMarkdown;
         if ($entry->isMentee && $entry->isMentor) {
             $user['type'] = 'both';
         } else if ($entry->isMentee) {
@@ -190,66 +135,21 @@ class Mentoring
 
         $user['thumbnail'] = $entry->imageUrl;
 
-        $userInfo = $this->getUserInfoFromGithubId($user['githubUid']);
+        if (! $user['github']) {
+            try {
+                $user['github'] = $this->getUserInfoFromGithubId($user['githubUid']);
+            } catch (\Exception $e) {
+                var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
+                return $user;
+            }
+        }
 
-        if (! isset($userInfo['location'])) {
+        if (! $user['github']) {
             return $user;
-            // Return when no location can be retrieved.
         }
-
-        $user['location'] = $userInfo['location'];
-
-        $geo = $this->getLatLonForLocation($user['location']);
-        if ($geo) {
-            $user['lat'] = $geo['lat'];
-            $user['lon'] = $geo['lon'];
-        }
-
-        return $user;
-    }
-
-
-    /**
-     * Parse the DOMElement for the actual user-information
-     *
-     * @param \DOMElement $userNode
-     *
-     * @return array
-     */
-    protected function parseUser(\DOMElement $userNode)
-    {
-        $user = array(
-            'name' => '',
-            'github' => '',
-            'lat' => 0,
-            'lon' => 0,
-            'description' => '',
-            'type' => '',
-        );
-
-        if ($userNode->getElementsByTagName('del')->length != 0) {
-            return false;
-        }
-
-        $text = $userNode->firstChild->textContent;
-        if (! preg_match('/([^\(]+)\(.*\)(.*)/', $text, $results)) {
-            return false;
-        }
-        $user['name'] = trim($results[1]);
-        $user['description'] = trim($results[2]);
-
-        echo sprintf('parsing user %1$s' . "\n", $user['name']);
-
-        $githubPath = new \DOMXPath($this->dom);
-        $githubs = $githubPath->query('.//a[contains(@href,"github.com")]', $userNode);
-        if ($githubs->length == 0) {
-            return false;
-        }
-
-        $user['github'] = $githubs->item(0)->getAttribute('href');
-        $user['github'] = substr($user['github'], strrpos($user['github'], '/')+1);
 
         $userInfo = $this->getUserInfoFromGithub($user['github']);
+
         if (! isset($userInfo['location'])) {
             return $user;
             // Return when no location can be retrieved.
@@ -292,6 +192,7 @@ class Mentoring
         try {
             return Json::decode($info, Json::TYPE_ARRAY);
         }catch(Exception $e) {
+            var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
             return array('location' => '');
         }
     }
@@ -301,6 +202,7 @@ class Mentoring
      *
      * @param int $githubId
      *
+     * @throws \Exception
      * @return array|mixed
      */
     public function getUserInfoFromGithubId($githubId)
@@ -318,14 +220,12 @@ class Mentoring
         $info = curl_exec($ch); // get curl response
         curl_close($ch);
 
-        try {
-            $info = Json::decode($info, Json::TYPE_ARRAY);
-            $username = $info[0]['login'];
+        $info = Json::decode($info, Json::TYPE_ARRAY);
 
-            return $this->getUserInfoFromGithub($username);
-        } catch (\Exception $e) {
-            return array('location' => '');
+        if (! isset($info[0])) {
+            throw new \Exception('Transport Error occured');
         }
+        return $info[0]['login'];
     }
 
     /**
@@ -346,7 +246,12 @@ class Mentoring
         $info = curl_exec($ch); // get curl response
         curl_close($ch);
 
-        $info = Json::decode($info, Json::TYPE_ARRAY);
+        try {
+            $info = Json::decode($info, Json::TYPE_ARRAY);
+        } catch(\Exception $e) {
+            var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
+            return false;
+        }
         if (! $info) {
             return false;
         }
