@@ -31,16 +31,30 @@
 
 namespace PhpugTest\Parser;
 
-use Phpug\Parser\Mentoring as MentoringParser;
+use Phpug\Parser\Mentoringapp as MentoringParser;
 
-
-class MentoringTest extends \PHPUnit_Framework_TestCase
+class MentoringAppTest extends \PHPUnit_Framework_TestCase
 {
-    public function testParsing()
+    public function testParsingJsonEndpoint()
     {
-        $this->markTestSkipped('Still to implement');
         $parser = new MentoringParser(array(''));
-        $parser->parse(__DIR__ . '/__files/mentoring.html');
+        $entries = $parser->parse(__DIR__ . '/__files/mentors.json');
+        $expected = array(
+            'name' => 'Tristan Bailey',
+            'github' => '',
+            'lat' => 0,
+            'lon' => 0,
+            'description' => '<p>I have been developing websites for 13+ years and worked though companies to Senior Dev. Middle/Backend developer and full stack team lead (PHP, MySQL, [Laravel, Slim, Joomla, EE, WP, Magento], DevOps, Agile). Moved to Freelance Developer about 4 years ago, and work with agencies and clients, on medium to large travel and eCommerce sites. When writing fresh projects I use Laravel or SlimPHP but often work on existing systems and integrations.'. "\n" . 'Happy to mentor others about php, full stack development, working with teams, coding, freelance work, DevOps, analytics, strategy etc</p>',
+            'type' => 'mentor',
+            'tags' => array (
+                'mentor' => ['PHP', 'full-stack', 'freelancing', 'behat', 'mysql', 'legacy', 'analytics'],
+                'apprentice' => [''],
+            ),
+            'thumbnail' => 'https://avatars0.githubusercontent.com/u/200137',
+            'id' => 6,
+            'githubUid' => '200137',
+        );
+        $this->assertEquals($expected, $entries[0]);
     }
 }
  
