@@ -253,7 +253,7 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min'      => 2,
-                            'max'      => 10,
+                            'max'      => 25,
                         ),
                     ),
                     array(
