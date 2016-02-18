@@ -92,7 +92,13 @@ class UsergroupController extends AbstractActionController
             ));
         }
         foreach ($ical->VEVENT as $event) {
-            if (null === $nextEvent || $nextEvent->DTSTART->getDateTime() > $event->DTSTART->getDateTime()) {
+            if ($event->DTSTART->getDateTime() < $now) {
+                continue;
+            }
+            if (null === $nextEvent) {
+                $nextEvent = $event;
+            }
+            if ($nextEvent->DTSTART->getDateTime() <  $event->DTSTART->getDateTime()) {
                 $nextEvent = $event;
             }
         }
