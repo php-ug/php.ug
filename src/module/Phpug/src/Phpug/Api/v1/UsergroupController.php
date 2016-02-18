@@ -98,7 +98,7 @@ class UsergroupController extends AbstractActionController
             if (null === $nextEvent) {
                 $nextEvent = $event;
             }
-            if ($nextEvent->DTSTART->getDateTime() <  $event->DTSTART->getDateTime()) {
+            if ($nextEvent->DTSTART->getDateTime() >  $event->DTSTART->getDateTime()) {
                 $nextEvent = $event;
             }
         }
