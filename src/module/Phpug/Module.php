@@ -100,6 +100,9 @@ class Module implements ConsoleUsageProviderInterface
                         // Get an instance of the proxy helper
                         $navigation = $pm->get('Zend\View\Helper\Navigation');
 
+                        // Set the serviceLocator
+                        $navigation->setServiceLocator($pm->getServiceLocator());
+
                         // Store ACL and role in the proxy helper:
                         $navigation->setAcl($acl)
                             ->setRole((string) $role);
