@@ -344,75 +344,6 @@ matchesFilters = function(marker)
     return true;
 }
 
-var mentoring = L.layerJSON({
-    url : 'mentoring',
-    propertyLoc : ['lat', 'lon'],
-    propertyTitle : 'name',
-    buildPopup : function(data){
-        url = 'https://github.com/phpmentoring/phpmentoring.github.com/wiki/Mentors-and-Apprentices';
-        hash_mentor = '#mentors-currently-accepting-an-apprentice';
-        hash_apprentice = '#apprentices-currently-accepting-mentors';
-        content = '<div class="popup">'
-        + '<h4>'
-        + '<a href="%url%" target="_blank">'
-        + '%name%'
-        + '</a> '
-        + '<a href="%github%"><i class="fa fa-github"></i></a>'
-        + '</h4>'
-        + '<h5>%location% - Looking for %looking%</h5>'
-        + '<p>%description%</p>';
-
-        if (center && center.toLowerCase() === data.github.toLowerCase()){
-            map.setView(new L.LatLng(data.lat,data.lon), 8);
-        }
-        return content.replace('%url%', url + (data.type=='mentor'?hash_mentor:hash_apprentice))
-            .replace('%name%', data.name)
-            .replace('%location%', data.location)
-            .replace('%github%', 'https://github.com/' + data.github)
-            .replace('%description%', data.description)
-            .replace('%looking%', data.type=='mentor'?'apprentices':'mentorship')
-            .replace('%type%', data.type);
-    },
-    filterData : function(e){
-        items = [];
-        for(var i = 0; i< e.apprentices.length; i++) {
-            if(e.apprentices[i].lat == NaN) {
-                e.apprentices[i].lat = "0";
-            }
-            if(e.apprentices[i].lon == NaN) {
-                e.apprentices[i].lon = "0";
-            }
-            e.apprentices[i].lat = e.apprentices[i].lat.toString();
-            e.apprentices[i].lon = e.apprentices[i].lon.toString();
-            items.push(e.apprentices[i]);
-        }
-        for(var i = 0; i< e.mentors.length; i++) {
-            if(e.mentors[i].lat == NaN) {
-                e.mentors[i].lat = "0";
-            }
-            if(e.mentors[i].lon == NaN) {
-                e.mentors[i].lon = "0";
-            }
-            e.mentors[i].lat = e.mentors[i].lat.toString();
-            e.mentors[i].lon = e.mentors[i].lon.toString();
-            items.push(e.mentors[i]);
-        }
-
-        return items;
-    },
-    onEachMarker : function(e,marker){
-        oms.addMarker(marker);
-        marker.bindLabel(e.name, {opacity:0.9});
-        return;
-    },
-    buildIcon : function(data, title){
-        if (data.type == 'mentor') {
-            return new redIcon;
-        }
-        return new greenIcon;
-    }
-});
-
 var mentoringapp = L.layerJSON({
     url: "mentoring/app",
     propertyLoc : ['lat', 'lon'],
@@ -554,8 +485,7 @@ L.control.layers({
 },{
     'PHP-Usergroups' : phpug,
     'joind.in' : joindin,
-    'PHP-Mentoring' : mentoring,
-    'PHP-Mentoring (App)': mentoringapp,
+    'PHP-Mentoring': mentoringapp,
     'Call for Papers' : cfp
 },{
     'position' : 'bottomleft'
@@ -563,8 +493,6 @@ L.control.layers({
 
 switch(window.location.hash) {
     case '#mentoring':
-        map.addLayer(mentoring);
-        break;
     case '#mentoringapp':
         map.addLayer(mentoringapp);
         break;
