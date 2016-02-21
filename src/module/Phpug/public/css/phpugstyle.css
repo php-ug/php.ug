@@ -209,4 +209,8 @@ section > div#map {
     content: "\e900";
 }
 
+.icon-joindin-logo:before {
+    content: "\e901";
+}
+
 /* END Icomoon */
