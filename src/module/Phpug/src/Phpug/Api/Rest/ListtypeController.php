@@ -120,6 +120,10 @@ class ListtypeController extends AbstractRestfulController
             }
         }
         $response->setContent($adapter->serialize($content));
+        $response->getHeaders()
+            ->addHeaderLine('Access-Control-Allow-Origin','*')
+            ->addHeaderLine('Access-Control-Allow-Methods','POST PUT DELETE GET');
+
         return $response;   
     } 
     
