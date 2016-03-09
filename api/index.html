@@ -1,0 +1,507 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Reference</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #f8f8f2;
+  background-color: #272822;
+}
+.highlight .err {
+  color: #151515;
+  background-color: #ac4142;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
+  color: #505050;
+}
+.highlight .cp {
+  color: #f4bf75;
+}
+.highlight .nt {
+  color: #f4bf75;
+}
+.highlight .o, .highlight .ow {
+  color: #d0d0d0;
+}
+.highlight .p, .highlight .pi {
+  color: #d0d0d0;
+}
+.highlight .gi {
+  color: #90a959;
+}
+.highlight .gd {
+  color: #ac4142;
+}
+.highlight .gh {
+  color: #6a9fb5;
+  background-color: #151515;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #aa759f;
+}
+.highlight .kc {
+  color: #d28445;
+}
+.highlight .kt {
+  color: #d28445;
+}
+.highlight .kd {
+  color: #d28445;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #90a959;
+}
+.highlight .sr {
+  color: #75b5aa;
+}
+.highlight .si {
+  color: #8f5536;
+}
+.highlight .se {
+  color: #8f5536;
+}
+.highlight .nn {
+  color: #f4bf75;
+}
+.highlight .nc {
+  color: #f4bf75;
+}
+.highlight .no {
+  color: #f4bf75;
+}
+.highlight .na {
+  color: #6a9fb5;
+}
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
+  color: #90a959;
+}
+.highlight .ss {
+  color: #90a959;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;php&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="php">php</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="welcome">Welcome</h1>
+
+<p>Welcome to the API available on <a href="https://php.ug">php.ug</a>!</p>
+
+<p>You can use this API to access Usergroup-Informations for currently active
+usergroups</p>
+
+<p>We currently have examples for language bindings in PHP but you can consume this API
+with any language you like. You can view code examples in the dark area to the right,
+and you can switch the programming language of the examples with the tabs in the top right.</p>
+
+<p>This API documentation was created with <a href="https://github.com/tripit/slate">Slate</a>.</p>
+
+<h1 id="authentication">Authentication</h1>
+
+<blockquote>
+<p>Currently there&rsquo;s no authentication. Just consume the API on a fair base and
+we&rsquo;ll all get along finely.</p>
+</blockquote>
+
+<h1 id="return-types">Return-Types</h1>
+
+<p>This API returns JSON by default, but you can also get serialized PHP-Data when you
+add <code class="prettyprint">.sphp</code> to the endpoint. So to get a serialized array of listtypes
+you would call the following:</p>
+
+<p><code class="prettyprint">GET https://php.ug/api/rest/listtype.sphp</code></p>
+
+<h1 id="usergroup-types">Usergroup-Types</h1>
+
+<h2 id="get-a-list-of-usergroup-types">Get a list of usergroup-Types</h2>
+<pre class="highlight php"><code>$client = new GuzzleHttp\Client();
+$result = $client-&gt;request('GET', 'https://php.ug/api/rest/listtype');
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves all Usergroup-Types available. The API is already setup
+to serve more than PHP-Usergroups, but currently there are only PHP-Usergroups
+available.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://php.ug/api/rest/listtype</code></p>
+
+<h2 id="get-a-specific-usergroup-type">Get a specific Usergroup-Type</h2>
+<pre class="highlight php"><code>$client = new GuzzleHttp\Client();
+$result = $client-&gt;request('GET', 'https://php.ug/api/rest/listtype/<span class="nt">&lt;ID&gt;</span>');
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"contacts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"cssClass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fa-twitter fa"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"phpugffm"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Twitter"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://twitter.com/phpugffm"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nt">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"icalendar_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.phpugffm.de/?ical=1"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">50.11395</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.67922</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Frankfurt"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"shortname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffm"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"tags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"obviously"</span><span class="p">,</span><span class="w">
+                    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nt">"ugtype"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://phpugffm.de"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"list"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves a specific Listtype. This includes a list of all usergroups.</p>
+
+<p>Note: This will change in the near future!</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://php.ug/api/rest/listtype/&lt;ID&gt;</code></p>
+
+<h1 id="usergroups">Usergroups</h1>
+
+<h2 id="get-details-of-a-certain-usergroup">Get details of a certain usergroup</h2>
+<pre class="highlight php"><code>$client = new GuzzleHttp\Client();
+$result = $client-&gt;request('GET', 'https://php.ug/api/rest/usergroup/<span class="nt">&lt;ID&gt;</span>');
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"contacts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"cssClass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fa-twitter fa"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"phpugffm"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Twitter"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://twitter.com/phpugffm"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nt">"icalendar_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.phpugffm.de/?ical=1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">50.11395</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.67922</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Frankfurt"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"shortname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ffm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"state"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"tags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"obviously"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nt">"ugtype"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHP-Usergroups"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://phpugffm.de"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves the details of one specific usergroup. The parameter ID
+has to be the numeric id of the usergroup</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://php.ug/api/rest/usergroup/&lt;ID&gt;</code></p>
+
+<h1 id="additional-usergroup-informations">Additional Usergroup-Informations</h1>
+
+<h2 id="get-the-next-event-of-a-usergroup">Get the next event of a usergroup</h2>
+<pre class="highlight php"><code>$client = new GuzzleHttp\Client();
+$result = $client-&gt;request('GET', 'https://php.ug/api/v1/usergroup/nextEvent/<span class="nt">&lt;SHORTNAME&gt;</span>');
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thu, 24 Mar 2016 20:30:00 +0000"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sitewards GmbH"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thu, 24 Mar 2016 18:00:00 +0000"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"summary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PHPUGFFM II / 2016 - Sitewards GmbH - 24 Mrz 16 19:00"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.phpugffm.de/veranstaltungen-2/phpugffm-ii-2016/"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves the next event that a ausergroup scheduled in their
+calendar. As we can only grab those events, when the usergroup provides a link
+to their event-calendar, not all usergroups will return information on that
+endpoint!</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://php.ug/api/v1/usergroup/nextEvent/&lt;SHORTNAME&gt;</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>SHORTNAME</td>
+<td>The shortname of a Usergroup</td>
+</tr>
+</tbody></table>
+
+<h1 id="location-based-information">Location-based information</h1>
+
+<h2 id="groups-next-to-a-location">Groups next to a location</h2>
+<pre class="highlight php"><code>$client = new GuzzleHttp\Client();
+$result = $client-&gt;request('GET', 'https://php.ug/api/v1/location/nextGroups?latitude=50.0<span class="ni">&amp;longitude=8.0&amp;distance=20');</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"currentLocation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="s2">"50.0"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.0"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"contacts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"phpugrhh"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"service"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Twitter"</span><span class="p">,</span><span class="w">
+                        </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://twitter.com/phpugrhh"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="nt">"distance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9.62303526009361"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"icalendar_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">49.9999</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.26944</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rheinhessen"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"shortname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mainz"</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://phpug-rheinhessen.de/"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Get a list of usergroups depending on a geolocation. This returns a list of
+groups within a radius of <code class="prettyprint">distance</code> around the geolocation defined by
+<code class="prettyprint">latitude</code> and <code class="prettyprint">longitude</code>. you can also retrieve the next <code class="prettyprint">count</code>
+usergroups around the geolocation.</p>
+
+<p>When you specify both <code class="prettyprint">distance</code> and <code class="prettyprint">count</code> the first that will apply
+limits the number of returned groups.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://php.ug/api/v1/location/nextGroups</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Reqired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>latitude</td>
+<td>*</td>
+<td>The latitude of the center</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>*</td>
+<td>The longitude of the center</td>
+</tr>
+<tr>
+<td>distance</td>
+<td></td>
+<td>The distance around the center in which to look. The distance has to be given in kilometers!</td>
+</tr>
+<tr>
+<td>count</td>
+<td></td>
+<td>The number of usergroups to return.</td>
+</tr>
+</tbody></table>
+
+<h1 id="calendar-informations">Calendar Informations</h1>
+
+<h2 id="get-events-of-groups">Get Events of groups</h2>
+<pre class="highlight php"><code>$client = new GuzzleHttp\Client();
+$result = $client-&gt;request('GET', 'https://php.ug/api/v1/calendar/list');
+</code></pre>
+
+<blockquote>
+<p>The above Command returns JSON as follows</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here might be a description of the event"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-01-21T20:30:00+00:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-01-21T18:00:00+00:00"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[Frankfurt] PHPUGFFM I / 2016 -  - 21 Jan 16 19:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<pre class="highlight php"><code>$client = new GuzzleHttp\Client();
+$result = $client-&gt;request('GET', 'https://php.ug/api/v1/calendar/list', [
+    'header' =&gt; ['Accept' =&gt; 'text/calendar']
+]);
+</code></pre>
+
+<blockquote>
+<p>The above Command returns an iCalendar-File as follows</p>
+</blockquote>
+<pre class="highlight plaintext"><code>BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sabre//Sabre VObject 4.0.3//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:321eecbc-4ad1-4c08-9d65-f993b5749afc
+DTSTART:20160121T180000Z
+DTEND:20160121T203000Z
+DTSTAMP:20151020T193220Z
+LOCATION:
+URL;VALUE=URI:http://www.phpugffm.de/veranstaltungen-2/phpugffm-i-2016/
+SUMMARY:[Frankfurt] PHPUGFFM I / 2016 -  - 21 Jan 16 19:00
+END:VEVENT
+END:VCALENDAR
+</code></pre>
+
+<p>Gets all the known events that are listed in the groups calendars. The groups are
+selected like described in <a href="#groups-next-to-a-location">Groups next to a location</a>.</p>
+
+<p>When no location is provided a list of <strong>all</strong> calendar-entries is returned!</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://php.ug/api/v1/calendar/list</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Reqired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>latitude</td>
+<td></td>
+<td>The latitude of the center</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td></td>
+<td>The longitude of the center</td>
+</tr>
+<tr>
+<td>distance</td>
+<td></td>
+<td>The distance around the center in which to look. The distance has to be given in kilometers!</td>
+</tr>
+<tr>
+<td>count</td>
+<td></td>
+<td>The number of usergroups to return.</td>
+</tr>
+</tbody></table>
+
+          <h1 id="errors">Errors</h1>
+
+<p>The php.ug-API currently does not use Error-codes</p>
+
+<p>The returned result always contains a field <code class="prettyprint">error</code> with either content
+<code class="prettyprint">NULL</code> or a string with an error-message.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
