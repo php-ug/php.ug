@@ -1,4 +1,4 @@
-markdown:    redcarpet
+markdown: kramdown
 highlighter: pygments
 
 permalink:   pretty
