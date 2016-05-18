@@ -1,4 +1,7 @@
  {
+     "name" : "php_ug/website",
+     "description" : "The website showing all PHP-Usergroups on the worldmap",
+     "license" : "MIT",
      "minimum-stability": "stable",
      "require": {
          "ext-curl":                          "*",
@@ -10,7 +13,6 @@
          "org_heigl/hybridauth" :             "dev-feature/multipleProviders@dev",
          "hybridauth/hybridauth" :            "@dev",
          "org_heigl/geolocation" :            "~1.0",
-         "components/jquery" :                "@dev",
          "sabre/vobject" :                    "~4.0@dev",
          "monolog/monolog" :                  "~1.9",
          "willdurand/geocoder" :              "~2.4",
@@ -25,7 +27,11 @@
      },
      "autoload" : {
          "psr-0" : {
-             "Phpug\\" : "src/module/Phpug/src",
+             "Phpug\\" : "src/module/Phpug/src"
+         }
+     },
+     "autoload-dev" : {
+         "psr-0" : {
              "PhpugTest\\" : "src/module/Phpug/tests"
          }
      }
