@@ -58,17 +58,17 @@ class DateRangePrinter extends AbstractHelper
      */
     public function __invoke($start, $end, $format = null, \DateTimeZone $timezone = null, $separator = ' - ')
     {
-        if (null !== $timezone) {
-            $start->setTimezone($timezone);
-            $end->setTimezone($timezone);
-        }
-
         if (! $start instanceof \DateTimeInterface) {
             return '';
         }
 
         if (! $end instanceof \DateTimeInterface) {
             return '';
+        }
+
+        if (null !== $timezone) {
+            $start->setTimezone($timezone);
+            $end->setTimezone($timezone);
         }
 
         if (null !== $format) {
