@@ -73,6 +73,12 @@ class IcalendarJsonModel extends JsonModel
         $events = array();
 
         foreach ($variable->getEvents(new \DateInterval('P1Y')) as $event) {
+            if (! $event->getSTartDate() instanceof \DateTimeInterface) {
+                continue;
+            }
+            if (! $event->getEndDate() instanceof \DateTimeInterface) {
+                continue;
+            }
             $jsonEvent = array(
                 'title' => $event->getName(),
                 'start' => $event->getStartDate()->format('c'),
