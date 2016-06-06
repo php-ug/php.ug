@@ -132,7 +132,7 @@ class IndexController extends AbstractActionController
         $result = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
         if ( ! $result ) {
             if ( ! $base ) {
-                $this->redirect()->toRoute('home');
+                $this->redirect()->toRoute('noSubdomain');
                 return false;
             }
             $this->redirect()->toUrl('http://' . $base);

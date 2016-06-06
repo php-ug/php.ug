@@ -59,6 +59,17 @@ return array(
                     ),
                 ),
             ),
+            'noSubdomain' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => 'http://php.ug',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Phpug\Controller',
+                        'controller' => 'IndexController',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'api' => array(
                 'may_terminate' => false,
                 'type'          => 'Segment',
