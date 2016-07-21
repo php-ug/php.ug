@@ -75,7 +75,7 @@ class IcalendarState implements UsergroupHealthPluginInterface
                     $events[] = $event;
                 }
             }
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             echo $e->getMessage();
             return false;
         }

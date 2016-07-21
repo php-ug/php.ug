@@ -27,11 +27,11 @@
 
 namespace UgHealth\Service;
 
+use GuzzleHttp\Client;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZendService\Twitter\Twitter;
 
-class TwitterHelperService implements FactoryInterface
+class GuzzleHelperService implements FactoryInterface
 {
 
     /**
@@ -43,29 +43,6 @@ class TwitterHelperService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config = $serviceLocator->get('config');
-        if ($config instanceof Traversable) {
-            $config = ArrayUtils::iteratorToArray($config);
-        }
-
-        $options = array(
-            'access_token'        => array(
-                'token'  => $config['twitter']['access_token'],
-                'secret' => $config['twitter']['access_token_secret'],
-            ),
-            'oauth_options'       => array(
-                'consumerKey'    => $config['twitter']['consumer_key'],
-                'consumerSecret' => $config['twitter']['consumer_key_secret'],
-            ),
-            'http_client_options' => array(
-                'adapter'     => 'Zend\Http\Client\Adapter\Curl',
-                'curloptions' => array(
-                    //           CURLOPT_SSL_VERIFYHOST => false,
-                    //           CURLOPT_SSL_VERIFYPEER => false,
-                ),
-            ),
-        );
-
-        return new Twitter($options);
+        return new Client();
     }
 }

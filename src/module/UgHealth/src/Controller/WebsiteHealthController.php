@@ -27,21 +27,21 @@
 namespace UgHealth\Controller;
 
 use Doctrine\ORM\EntityManager;
-use UgHealth\TwitterStatus;
+use UgHealth\WebsiteStatus;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Console\Request as ConsoleRequest;
 
-class TwitterHealthController extends AbstractActionController
+class WebsiteHealthController extends AbstractActionController
 {
     protected $entityManager;
 
-    protected $twitter;
+    protected $website;
 
-    public function __construct(EntityManager $entityManager, TwitterStatus $twitter)
+    public function __construct(EntityManager $entityManager, WebsiteStatus $website)
     {
         $this->entityManager = $entityManager;
-        $this->twitter = $twitter;
+        $this->website = $website;
     }
 
     public function indexAction()
@@ -49,7 +49,7 @@ class TwitterHealthController extends AbstractActionController
         return new ViewModel(); // display standard index page
     }
 
-    public function twitterAction()
+    public function websiteAction()
     {
         $request = $this->getRequest();
 
@@ -76,7 +76,7 @@ class TwitterHealthController extends AbstractActionController
             ));
         }
 
-        $checkResult = $this->twitter->check($em[0]);
+        $checkResult = $this->website->check($em[0]);
         echo $checkResult;
         return true;
     }

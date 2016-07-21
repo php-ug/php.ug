@@ -45,6 +45,20 @@ class TwitterStatus implements UsergroupHealthPluginInterface
         ];
     }
 
+    /**
+     * Check how active the group is on twitter.
+     *
+     * This will return one of the following COnstants:
+     *
+     * * self::STALE - When the last tweet sent was a year ago
+     * * self::RESTING - When the last tweet sent was half a year ago
+     * * self::ACTIVE - When the last tweet sent was 3 months ago
+     * * self::BUSY - When the last tweet sent was within the last three months
+     *
+     * @param Usergroup $usergroup
+     *
+     * @return int
+     */
     public function check(Usergroup $usergroup)
     {
         $now = new \DateTime();
@@ -58,7 +72,6 @@ class TwitterStatus implements UsergroupHealthPluginInterface
         $endResponse = self::UNKNOWN;
         /** @var Groupcontact $contact */
         foreach ($usergroup->getContacts() as $contact) {
-
             if ($contact->getServiceName() !== 'Twitter') {
                 continue;
             }
@@ -94,10 +107,9 @@ class TwitterStatus implements UsergroupHealthPluginInterface
             throw new \UnexpectedValueException(sprintf(
                 "Problem retrieving informations for \"%s\" from twitter. They had this to say: \n%s\n",
                 $contact->getName(),
-                implode("\n", array_map (function($item) {
-                        return $item->message;
-                    }, $response->getErrors()
-                )))
+                implode("\n", array_map(function ($item) {
+                    return $item->message;
+                }, $response->getErrors())))
             );
         }
 

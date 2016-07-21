@@ -43,13 +43,23 @@ return array(
     'console' => [
         'router' => [
             'routes' => [
-                'uergroup-healthcheck-twitter' => [
+                'usergroup-healthcheck-twitter' => [
                     'options' => [
                         'route' => 'checkhealth:twitter <usergroup>',
                         'defaults' => [
                             '__NAMESPACE__' => 'UgHealth\Controller',
                             'controller' => 'TwitterHealthController',
                             'action' => 'twitter',
+                        ]
+                    ]
+                ],
+                'usergroup-healthcheck-website' => [
+                    'options' => [
+                        'route' => 'checkhealth:website <usergroup>',
+                        'defaults' => [
+                            '__NAMESPACE__' => 'UgHealth\Controller',
+                            'controller' => 'WebsiteHealthController',
+                            'action' => 'website',
                         ]
                     ]
                 ]
@@ -59,11 +69,13 @@ return array(
     'controllers' => array(
         'factories' => array(
             'UgHealth\Controller\TwitterHealthController' => 'UgHealth\Service\TwitterHealthControllerFactory',
+            'UgHealth\Controller\WebsiteHealthController' => 'UgHealth\Service\WebsiteHealthControllerFactory',
         ),
     ),
     'service_manager' => [
         'factories' => [
             'TwitterHelper' => 'UgHealth\Service\TwitterHelperService',
+            'GuzzleHelper'  => 'UgHealth\Service\GuzzleHelperService',
         ],
     ],
 );

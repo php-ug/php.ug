@@ -69,6 +69,7 @@ class Module implements ConsoleUsageProviderInterface
         return array(
             // Describe available commands
             'checkhealth:twitter <usergroup>'    => 'Check the health of the group according to twitter-interactions',
+            'checkhealth:website <usergroup>'    => 'Check the health of the group according to website-grabbing',
         );
     }
 }

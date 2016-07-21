@@ -28,26 +28,37 @@
 namespace UgHealth;
 
 use Phpug\Entity\Usergroup;
-use Zend\Http\Client;
-use Zend\ServiceManager\ServiceManager;
+use GuzzleHttp\Client;
 
-class HttpStatus implements UsergroupHealthPluginInterface
+class WebsiteStatus implements UsergroupHealthPluginInterface
 {
+    protected $client;
 
-    public function check(Usergroup $usergroup, ServiceManager $sm)
+    public function __construct(Client $client)
     {
-        $client = new Client($usergroup->url, array(
-            'maxredirects' => 10,
-            'timeout' => 30,
-        ));
+        $this->client = $client;
+    }
 
-        $response = $client->send();
+    /**
+     * @param Usergroup $usergroup
+     *
+     * @return int
+     */
+    public function check(Usergroup $usergroup)
+    {
+        try {
+            $response = $this->client->request('GET', $usergroup->getUrl(), [
 
-        if ($response->getStatusCode() >= 400) {
-            return false;
+            ]);
+        } catch (\Exception $e) {
+            return self::UNKNOWN;
         }
 
-        return true;
+        if ($response->getStatusCode() >= 400) {
+                return self::STALE;
+        }
+
+        return self::BUSY;
     }
 
     public function getName()

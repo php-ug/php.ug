@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2016-2016} Andreas Heigl<andreas@heigl.org>
+ * Copyright (c) Andreas Heigl<andreas@heigl.org>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -18,20 +18,20 @@
  * THE SOFTWARE.
  *
  * @author    Andreas Heigl<andreas@heigl.org>
- * @copyright 2016-2016 Andreas Heigl
+ * @copyright Andreas Heigl
  * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
- * @version   0.0
- * @since     08.01.2016
+ * @since     14.07.2016
  * @link      http://github.com/heiglandreas/php.ug
  */
 
 namespace UgHealth\Service;
 
+use UgHealth\Controller\WebsiteHealthController;
+use UgHealth\WebsiteStatus;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZendService\Twitter\Twitter;
 
-class TwitterHelperService implements FactoryInterface
+class WebsiteHealthControllerFactory implements FactoryInterface
 {
 
     /**
@@ -43,29 +43,9 @@ class TwitterHelperService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config = $serviceLocator->get('config');
-        if ($config instanceof Traversable) {
-            $config = ArrayUtils::iteratorToArray($config);
-        }
+        $em = $serviceLocator->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        $client = $serviceLocator->getServiceLocator()->get('GuzzleHelper');
 
-        $options = array(
-            'access_token'        => array(
-                'token'  => $config['twitter']['access_token'],
-                'secret' => $config['twitter']['access_token_secret'],
-            ),
-            'oauth_options'       => array(
-                'consumerKey'    => $config['twitter']['consumer_key'],
-                'consumerSecret' => $config['twitter']['consumer_key_secret'],
-            ),
-            'http_client_options' => array(
-                'adapter'     => 'Zend\Http\Client\Adapter\Curl',
-                'curloptions' => array(
-                    //           CURLOPT_SSL_VERIFYHOST => false,
-                    //           CURLOPT_SSL_VERIFYPEER => false,
-                ),
-            ),
-        );
-
-        return new Twitter($options);
+        return new WebsiteHealthController($em, new WebsiteStatus($client));
     }
 }
