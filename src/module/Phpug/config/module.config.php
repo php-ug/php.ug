@@ -489,7 +489,6 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Phpug\Controller\IndexController' => 'Phpug\Controller\IndexController',
             'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',
             'Phpug\Controller\UsergroupController' => 'Phpug\Controller\UsergroupController',
             'Phpug\Controller\EventController' => '\Phpug\Controller\EventController',
@@ -499,13 +498,16 @@ return array(
             'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
             'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
             'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
-            'Phpug\Api\v1\Calendar' => 'Phpug\Api\v1\CalendarController',
             'Phpug\Api\v1\Location' => 'Phpug\Api\v1\LocationController',
             'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
             'Phpug\Controller\MentoringAppController' => 'Phpug\Controller\MentoringAppController',
             'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
             'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
         ),
+        'factories' => [
+            \Phpug\Controller\IndexController::class => \Phpug\Controller\IndexControllerFactory::class,
+            \Phpug\Api\v1\Calendar::class            => \Phpug\Api\v1\CalendarControllerFactory::class,
+        ],
     ),
     'view_helpers'    => array(
         'invokables' => array(

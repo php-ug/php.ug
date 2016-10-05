@@ -32,11 +32,8 @@
 
 namespace Phpug\Controller;
 
-use Zend\View\Helper\ViewModel;
-
-use Zend\Mvc\Controller\AbstractActionController,
-    Doctrine\ORM\EntityManager
-;
+use Zend\Mvc\Controller\AbstractActionController;
+use Doctrine\ORM\EntityManager;
 
 /**
  * The Controller for de default actions
@@ -62,6 +59,11 @@ class IndexController extends AbstractActionController
      */
     protected $em = null;
 
+    public function __construct(EntityManager $manager)
+    {
+        $this->em = $manager;
+    }
+
     /**
      * Get the EntityManager for this Controller
      * 
@@ -69,10 +71,7 @@ class IndexController extends AbstractActionController
      */
     public function getEntityManager()
 	{
-	    if (null === $this->em) {
-	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-	    }
-   		return $this->em;
+	    return $this->em;
     }
 
     public function indexAction()
