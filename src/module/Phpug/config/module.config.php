@@ -488,6 +488,7 @@ return array(
         'factories' => [
             \Phpug\Controller\IndexController::class      => \Phpug\Controller\IndexControllerFactory::class,
             \Phpug\Api\v1\CalendarController::class       => \Phpug\Api\v1\CalendarControllerFactory::class,
+            'Phpug\Api\v1\Calendar'                       => \Phpug\Api\v1\CalendarControllerFactory::class,
             \Phpug\Api\v1\LocationController::class       => \Phpug\Api\v1\LocationControllerFactory::class,
             \Phpug\Api\v1\UsergroupController::class      => \Phpug\Api\v1\UsergroupControllerFactory::class,
             \Phpug\Api\Rest\ListtypeController::class     => \Phpug\Api\Rest\ListtypeControllerFactory::class,
