@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2011-2012 Andreas Heigl<andreas@heigl.org>
+ * Copyright (c) Andreas Heigl<andreas@heigl.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,46 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category  php.ug
- * @package   Phpug
  * @author    Andreas Heigl<andreas@heigl.org>
- * @copyright 2011-2012 php.ug
+ * @copyright Andreas Heigl
  * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
- * @version   0.0
- * @since     06.03.2012
- * @link      http://github.com/heiglandreas/php.ug
+ * @since     07.10.2016
  */
 
-namespace Phpug\Controller;
+namespace Phpug\Event;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
-use Zend\View\Model\JsonModel;
-use Zend\Json\Json;
-/**
- * The Controller for de default actions
- *
- * @category  php.ug
- * @package   Phpug
- * @author    Andreas Heigl<andreas@heigl.org>
- * @copyright 2011-2012 php.ug
- * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
- * @version   0.0
- * @since     06.03.2012
- * @link      http://github.com/heiglandreas/php.ug
- */
-class EventController extends AbstractRestfulController
+class NotifyAdminListenerFactory
 {
-    protected $cacheFile;
-
-    public function __construct($cacheFile)
+    public function __invoke($container)
     {
-        $this->cacheFile = $cacheFile;
-    }
+        $sl = $container;
 
-    public function getList()
-    {
-        $content = Json::decode(file_get_contents($this->cacheFile), Json::TYPE_ARRAY);
-
-        return new JsonModel($content);
+        return new NotifyAdminListener(
+            $sl->get('Phpug\Service\UsergroupMessage'),
+            $sl->get('Phpug\Service\Transport')
+        );
     }
 }

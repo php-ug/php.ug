@@ -31,6 +31,7 @@
 
 namespace Phpug\Api\v1;
 
+use Doctrine\ORM\EntityManager;
 use Phpug\ORM\Query\AST\Functions\DistanceFrom;
 use Zend\Mvc\Controller\AbstractActionController;
 use Sabre\VObject;
@@ -45,6 +46,13 @@ class LocationController extends AbstractActionController
         ),
         'Zend\View\Model\FeedModel' => array('application/rss+xml'),
     );
+
+    protected $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
 
     /**
      * Get a list of groups that are nearest to the given coordinates.
@@ -63,8 +71,6 @@ class LocationController extends AbstractActionController
      */
     public function nextGroupsAction()
     {
-        $adapter = $this->getAdapter();
-        $response = $this->getResponse();
         $viewModel =  $this->getViewModel();
 
         Json::$useBuiltinEncoderDecoder = true;
@@ -75,8 +81,6 @@ class LocationController extends AbstractActionController
         $distance  = $this->params()->fromQuery('distance', null);
         $number    = $this->params()->fromQuery('count', null);
 
-
-        //$this->sorter = $this->getServiceManager('Phpug\Sorter\Usergroup\Distance');
         $groups = $this->findGroupsWithinRangeAndDistance($latitude, $longitude, $distance, $number);
         $return = array(
             'currentLocation' => array(
@@ -140,12 +144,10 @@ class LocationController extends AbstractActionController
 
     protected function findGroupsWithinRangeAndDistance($lat, $lon, $distance = null, $number = null)
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         DistanceFrom::setLatitudeField('latitude');
         DistanceFrom::setLongitudeField('longitude');
         DistanceFrom::setRadius(6367);
-        $em->getConfiguration()->addCustomNumericFunction('DISTANCEFROM', 'Phpug\ORM\Query\AST\Functions\DistanceFrom');
+        $this->em->getConfiguration()->addCustomNumericFunction('DISTANCEFROM', 'Phpug\ORM\Query\AST\Functions\DistanceFrom');
 
         $qs = 'SELECT p, DISTANCEFROM(' . (float) $lat . ',' . (float) $lon . ') AS distance FROM \Phpug\Entity\Usergroup p WHERE p.state = 1 ';
 
@@ -156,13 +158,11 @@ class LocationController extends AbstractActionController
 
         $qs .= ' ORDER BY distance';
 
-        $query = $em->createQuery($qs);
+        $query = $this->em->createQuery($qs);
         if ($number) {
             $query->setMaxResults($number);
         }
 
         return $query->getResult();
-
-
     }
 }

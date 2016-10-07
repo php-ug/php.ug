@@ -31,10 +31,10 @@
 
 namespace Phpug\Api\v1;
 
+use Doctrine\ORM\EntityManager;
 use Phpug\ORM\Query\AST\Functions\DistanceFrom;
 use Zend\Mvc\Controller\AbstractActionController;
 use Sabre\VObject;
-use Zend\Json\Json;
 use Zend\View\Model\ViewModel;
 
 class CalendarController extends AbstractActionController
@@ -61,12 +61,21 @@ class CalendarController extends AbstractActionController
         'json' => 'application/json',
     );
 
+    /** @var \Doctrine\ORM\EntityManager $em */
+    protected $em;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->em = $entityManager;
+    }
+
     public function listAction()
     {
-        $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $result = $em->getRepository('Phpug\Entity\Cache')->findBy(array('type' => 'event'));
+        $result = $this->em->getRepository('Phpug\Entity\Cache')->findBy(array('type' => 'event'));
         $calendar = new VObject\Component\VCalendar();
         $affectedUGs = $this->findGroupsWithinRangeAndDistance();
+        $now = new \DateTimeImmutable();
+        $then = $now->add(new \DateInterval('P1Y'));
         foreach ($result as $cal) {
             if (! $cal->getGroup()) {
                 continue;
@@ -78,8 +87,13 @@ class CalendarController extends AbstractActionController
 
             try {
                 $ical = VObject\Reader::read($cal->getCache());
+                $ical = $ical->expand($now, $then);
                 foreach ($ical->children() as $event) {
                     if (!$event instanceof VObject\Component\VEvent) {
+                        continue;
+                    }
+
+                    if (! $event->isInTimeRange($now, $then)) {
                         continue;
                     }
 
@@ -89,6 +103,7 @@ class CalendarController extends AbstractActionController
                         continue;
                     }
                     $event->SUMMARY = '[' . $cal->getGroup()->getName() . '] ' . $event->SUMMARY;
+
                     $calendar->add($event);
                 }
             } catch(\Exception $e){}
@@ -144,12 +159,10 @@ class CalendarController extends AbstractActionController
         if (! $lat || ! $lon) {
             return array();
         }
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         DistanceFrom::setLatitudeField('latitude');
         DistanceFrom::setLongitudeField('longitude');
         DistanceFrom::setRadius(6367);
-        $em->getConfiguration()->addCustomNumericFunction('DISTANCEFROM', 'Phpug\ORM\Query\AST\Functions\DistanceFrom');
+        $this->em->getConfiguration()->addCustomNumericFunction('DISTANCEFROM', 'Phpug\ORM\Query\AST\Functions\DistanceFrom');
 
         $qs = 'SELECT p, DISTANCEFROM(' . (float) $lat . ',' . (float) $lon . ') AS distance FROM \Phpug\Entity\Usergroup p WHERE p.state = 1 ';
 
@@ -160,7 +173,7 @@ class CalendarController extends AbstractActionController
 
         $qs .= ' ORDER BY distance';
 
-        $query = $em->createQuery($qs);
+        $query = $this->em->createQuery($qs);
         if ($number) {
             $query->setMaxResults($number);
         }

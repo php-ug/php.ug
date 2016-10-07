@@ -104,6 +104,9 @@ class Event
 
     public function getDescription()
     {
+        if (! isset($this->content['description'])) {
+            $this->content['description'] = '';
+        }
         return $this->content['description'];
     }
 

@@ -31,6 +31,7 @@
 
 namespace Phpug\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Phpug\Parser\Mentoring;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -42,6 +43,14 @@ class TwitterController extends AbstractActionController
 {
     protected $em;
 
+    protected $config;
+
+    public function __construct(EntityManager $em, array $config)
+    {
+        $this->em = $em;
+        $this->config = $config;
+    }
+
     /**
      * Parse the phpmentoring.org-page for apprentices and mentors
      *
@@ -51,16 +60,14 @@ class TwitterController extends AbstractActionController
      */
     public function getUgListAction()
     {
-        $config = $this->getServiceLocator()->get('config');
-
         $twitterConf = array(
             'access_token'        => array(
-                'token'  => $config['twitter']['access_token'],
-                'secret' => $config['twitter']['access_token_secret'],
+                'token'  => $this->config['access_token'],
+                'secret' => $this->config['access_token_secret'],
             ),
             'oauth_options'       => array(
-                'consumerKey'    => $config['twitter']['consumer_key'],
-                'consumerSecret' => $config['twitter']['consumer_key_secret'],
+                'consumerKey'    => $this->config['consumer_key'],
+                'consumerSecret' => $this->config['consumer_key_secret'],
             ),
             'http_client_options' => array(
                 'adapter'     => 'Zend\Http\Client\Adapter\Curl',
@@ -71,8 +78,8 @@ class TwitterController extends AbstractActionController
             ),
         );
 
-        $twitter = $this->getEntityManager()->getRepository('Phpug\Entity\Service')->findBy(array('name' => 'Twitter'));
-        $twitters = $this->getEntityManager()->getRepository('Phpug\Entity\Groupcontact')->findBy(array('service' => $twitter[0]->id));
+        $twitter = $this->em->getRepository('Phpug\Entity\Service')->findBy(array('name' => 'Twitter'));
+        $twitters = $this->em->getRepository('Phpug\Entity\Groupcontact')->findBy(array('service' => $twitter[0]->id));
 
         $result = array();
         $i = 0;
@@ -91,18 +98,5 @@ class TwitterController extends AbstractActionController
 
         echo Json::encode($info);
 
-    }
-
-    /**
-     * Get the EntityManager for this Controller
-     *
-     * @return MapController
-     */
-    protected function getEntityManager()
-    {
-        if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        }
-        return $this->em;
     }
 }

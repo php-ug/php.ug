@@ -32,10 +32,8 @@
 
 namespace Phpug\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController,
-    Doctrine\ORM\EntityManager,
-    Phpug\Entity\Usergroup
-;
+use Zend\Mvc\Controller\AbstractActionController;
+use Doctrine\ORM\EntityManager;
 
 /**
  * The Controller for de default actions
@@ -58,17 +56,9 @@ class MapController extends AbstractActionController
     */
     protected $em = null;
 
-    /**
-     * Get the EntityManager for this Controller
-     *
-     * @return MapController
-     */
-    public function getEntityManager()
+    public function __construct(EntityManager $em)
     {
-        if (null === $this->em) {
-	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-	    }
-   		return $this->em;
+        $this->em = $em;
     }
     
     public function poiAction()
@@ -77,7 +67,7 @@ class MapController extends AbstractActionController
         $type   = $this->getEvent()->getRouteMatch()->getParam('type', null);
         
         return array(
-            'usergroups' => $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('ugtype' => $type)),
+            'usergroups' => $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('ugtype' => $type)),
         );
     }
 }

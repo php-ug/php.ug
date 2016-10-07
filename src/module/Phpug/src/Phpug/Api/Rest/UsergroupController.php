@@ -32,9 +32,12 @@
 
 namespace Phpug\Api\Rest;
 
+use Phpug\Acl\RoleManager;
+use Phpug\Acl\UsersGroupAssertion;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Doctrine\ORM\EntityManager;
 use Phpug\Entity\Usergroup;
+use Zend\Permissions\Acl\Acl;
 
 /**
  * The Controller for de default actions
@@ -55,19 +58,20 @@ class UsergroupController extends AbstractRestfulController
     *
     * @var EntityManager $em
     */
-    protected $em = null;
+    protected $em;
 
-    /**
-     * Get the EntityManager for this Controller
-     *
-     * @return MapController
-     */
-    protected function getEntityManager()
+    protected $roleManager;
+
+    protected $assertion;
+
+    protected $acl;
+
+    public function __construct(EntityManager $em, RoleManager $roleManager, UsersGroupAssertion $assertion, Acl $acl)
     {
-        if (null === $this->em) {
-	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-	    }
-   		return $this->em;
+        $this->em = $em;
+        $this->roleManager = $roleManager;
+        $this->assertion = $assertion;
+        $this->acl = $acl;
     }
     
     public function get($id)
@@ -77,7 +81,7 @@ class UsergroupController extends AbstractRestfulController
         $content  = array();
          
         $id    = $this->getEvent()->getRouteMatch()->getParam('id');
-        $types = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('id' => $id));
+        $types = $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('id' => $id));
         if (! $types) {
             $content['error'] = 'No group with that ID available';
             $response->setContent($adapter->serialize($content));
@@ -90,21 +94,12 @@ class UsergroupController extends AbstractRestfulController
             return $response;
         }
         
-        $content['error']    = null;
-        $content['group']    = $types[0]->toArray(); 
+        $content['error'] = null;
+        $content['group'] = $types[0]->toArray();
 
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
+        $this->assertion->setGroup($types[0]);
 
-        $acl = $this->getServiceLocator()->get('acl');
-        $this->getServiceLocator()
-             ->get('usersGroupAssertion')
-             ->setUser($currentUser)
-             ->setGroup($types[0]);
-
-        $roleManager = $this->getServiceLocator()->get('roleManager');
-        $roleManager->setUserToken($currentUser);
-
-        if ($acl->isAllowed($roleManager, 'ug', 'edit')) {
+        if ($this->acl->isAllowed($this->roleManager, 'ug', 'edit')) {
             $content['edit'] = true;
         }
 
