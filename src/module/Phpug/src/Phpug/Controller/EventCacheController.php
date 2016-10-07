@@ -34,6 +34,7 @@ namespace Phpug\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use \DateTime;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
@@ -52,9 +53,19 @@ use Zend\Json\Json;
 class EventCacheController extends AbstractActionController
 {
 
+    protected $config;
+
+    protected $em;
+
+    public function __construct(EntityManager $em, $config)
+    {
+        $this->em = $em;
+        $this->config = $config;
+    }
+
     public function getJoindinAction()
     {
-        $config = $this->getServiceLocator()->get('config');
+        $config = $this->config;
 
         $url = $config['php.ug.event']['url'];
         $file = $config['php.ug.event']['cachefile'];
@@ -64,7 +75,7 @@ class EventCacheController extends AbstractActionController
                 dirname($file)
             ));
         }
-        if (! is_writeable(realpath(dirname($file)))) {
+        if (! is_writable(realpath(dirname($file)))) {
             throw new \UnexpectedValueException(sprintf(
                 '"%s" is not writeable',
                 realpath(dirname($file))
@@ -97,7 +108,7 @@ class EventCacheController extends AbstractActionController
     {
         $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
 
-        $ugs = $em->getRepository('Phpug\Entity\Usergroup')->findAll();
+        $ugs = $this->em->getRepository('Phpug\Entity\Usergroup')->findAll();
         //createQuery('u')->where('icalendar_url IS NOT NULL')->execute();
 
         /** @var \Phpug\Entity\Usergroup $ug */

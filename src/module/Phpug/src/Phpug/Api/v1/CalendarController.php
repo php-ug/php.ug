@@ -35,7 +35,6 @@ use Doctrine\ORM\EntityManager;
 use Phpug\ORM\Query\AST\Functions\DistanceFrom;
 use Zend\Mvc\Controller\AbstractActionController;
 use Sabre\VObject;
-use Zend\Json\Json;
 use Zend\View\Model\ViewModel;
 
 class CalendarController extends AbstractActionController

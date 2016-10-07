@@ -31,13 +31,23 @@
 
 namespace Phpug\Api\Rest;
 
+use Doctrine\ORM\EntityManager;
 use Phpug\Entity\Usergroup;
-use Zend\Json\Json;
+use Phpug\Service\TwitterInfoService;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
 class TwitterController extends AbstractRestfulController
 {
     protected $em = null;
+
+    protected $twitter;
+
+    public function __construct(EntityManager $em, TwitterInfoService $twitter)
+    {
+        $this->em = $em;
+        $this->twitter = $twitter;
+    }
+
     /**
      * Get a list of twitter-nicks ordered by groups
      *
@@ -45,10 +55,8 @@ class TwitterController extends AbstractRestfulController
      */
     public function getList()
     {
-        $twitter = $this->getEntityManager()->getRepository('Phpug\Entity\Service')->findBy(array('name' => 'Twitter'));
-        $twitters = $this->getEntityManager()->getRepository('Phpug\Entity\Groupcontact')->findBy(array('service' => $twitter[0]->id));
-
-        $twitterService = $this->getServiceLocator()->get('TwitterInfoService');
+        $twitter = $this->em->getRepository('Phpug\Entity\Service')->findBy(array('name' => 'Twitter'));
+        $twitters = $this->em->getRepository('Phpug\Entity\Groupcontact')->findBy(array('service' => $twitter[0]->id));
 
         $result = array();
         foreach ($twitters as $twitter) {
@@ -66,22 +74,25 @@ class TwitterController extends AbstractRestfulController
                 if (! isset($result[$twitter->getName()])) {
                     $result[$twitter->getName()] = array(
                         'screen_name' => $twitter->getName(),
-                        'name'        => $twitterService->getInfoForUser('name',
+                        'name'        => $this->twitter->getInfoForUser('name',
                             $twitter->getName()),
                         'url'         => $twitter->getUrl(),
-                        'icon_url'    => $twitterService->getInfoForUser('profile_image_url_https',
+                        'icon_url'    => $this->twitter->getInfoForUser('profile_image_url_https',
                             $twitter->getName()),
                         'groups'      => array(),
                     );
                 }
-                $groupMapUrl                             = $this->url()->fromRoute('home',
-                        array(),
-                        array('force_canonical' => true)) . '?center=' . $group->getShortName();
-                $groupApiUrl                             = $this->url()->fromRoute(
-                    'api/rest', array(
-                    'controller' => 'Usergroup',
-                    'id'         => $group->getId(),
-                ),
+                $groupMapUrl = $this->url()->fromRoute(
+                    'home',
+                    array(),
+                    array('force_canonical' => true)) . '?center=' . $group->getShortName();
+
+                $groupApiUrl = $this->url()->fromRoute(
+                    'api/rest',
+                    array(
+                        'controller' => 'Usergroup',
+                        'id'         => $group->getId(),
+                    ),
                     array('force_canonical' => true)
                 );
                 $result[$twitter->getName()]['groups'][] = array(
@@ -123,17 +134,4 @@ class TwitterController extends AbstractRestfulController
 
         return new $adapter;
     }
-
-    /**
-     * Get the EntityManager for this Controller
-     *
-     * @return MapController
-     */
-    protected function getEntityManager()
-    {
-        if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        }
-        return $this->em;
-    }
-} 
+}

@@ -31,6 +31,7 @@
 
 namespace Phpug\Api\v1;
 
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Sabre\VObject;
 use Zend\Json\Json;
@@ -45,7 +46,13 @@ class UsergroupController extends AbstractActionController
         'Zend\View\Model\FeedModel' => array('application/rss+xml'),
     );
 
+    /** @var  EntityManager */
+    protected $em;
 
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
 
     public function nextEventAction()
     {
@@ -60,8 +67,7 @@ class UsergroupController extends AbstractActionController
             return $response->setContent($adapter->serialize(null));
         }
 
-        $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $result = $em->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
+        $result = $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
         if (! $result) {
             throw new \UnexpectedValueException(sprintf(
                 'Fehler!!'

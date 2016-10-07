@@ -33,25 +33,15 @@ namespace Phpug\View\Helper;
 
 use Zend\Form\Element;
 use Zend\Form\View\Helper\FormElement;
-use Zend\Form\View\Helper\FormElementErrors;
 use Zend\Form\View\Helper\AbstractHelper;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\View;
 
-class ContactsRow extends AbstractHelper implements ServiceLocatorAwareInterface
+class ContactsRow extends AbstractHelper
 {
-    /**
-     * Storage of the ServiceLocator
-     *
-     * @var ServiceLocatorInterface $serviceLocator
-     */
-    protected $serviceLocator = null;
-
     /**
      * The view helper
      *
-     * @var Zend\View\ViewHelper
+     * @var \Zend\View\ViewHelper
      */
     protected $viewHelper = null;
 
@@ -117,30 +107,6 @@ class ContactsRow extends AbstractHelper implements ServiceLocatorAwareInterface
         $this->elementHelper = $elementHelper;
 
         return $this;
-    }
-
-    /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return self
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
     }
 
     /**

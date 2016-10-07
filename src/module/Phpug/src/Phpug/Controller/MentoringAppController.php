@@ -38,6 +38,12 @@ use Zend\View\Model\JsonModel;
 
 class MentoringAppController extends AbstractActionController
 {
+    protected $config;
+
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
 
     /**
      * Parse the results of the new mentoring-app
@@ -49,9 +55,8 @@ class MentoringAppController extends AbstractActionController
     public function getmentoringAction()
     {
         echo sprintf('Generating mentoringapp.json-File' . "\n");
-        $config = $this->getServiceLocator()->get('config');
 
-        $mentoring = new Mentoringapp($config['php.ug.mentoringapp']);
+        $mentoring = new Mentoringapp($this->config);
 
         $infos = array();
         $infos = array_merge($infos, $mentoring->parse(
@@ -61,9 +66,7 @@ class MentoringAppController extends AbstractActionController
             'http://app.phpmentoring.org/api/v0/apprentices'
         ));
 
-        //$infos = $mentoring->parse('https://github.com/phpmentoring/phpmentoring.github.com/wiki/Mentors-and-Apprentices');
-
-        $file = $config['php.ug.mentoringapp']['file'];
+        $file = $this->config['file'];
 
         $fh = fopen($file, 'w+');
         fwrite($fh, json_encode($infos));
@@ -80,8 +83,7 @@ class MentoringAppController extends AbstractActionController
      */
     public function getlistAction()
     {
-        $config = $this->getServiceLocator()->get('config');
-        $file = $config['php.ug.mentoringapp']['file'];
+        $file = $this->config['file'];
         $content = Json::decode(file_get_contents($file), Json::TYPE_ARRAY);
 
         return new JsonModel($content);

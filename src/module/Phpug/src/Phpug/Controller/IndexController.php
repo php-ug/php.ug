@@ -34,6 +34,7 @@ namespace Phpug\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Doctrine\ORM\EntityManager;
+use Zend\Permissions\Acl\Acl;
 
 /**
  * The Controller for de default actions
@@ -49,7 +50,6 @@ use Doctrine\ORM\EntityManager;
  */
 class IndexController extends AbstractActionController
 {
-
     protected $config = null;
 
     /**
@@ -57,30 +57,23 @@ class IndexController extends AbstractActionController
      *
      * @var EntityManager $em
      */
-    protected $em = null;
+    protected $em;
 
-    public function __construct(EntityManager $manager)
+    protected $acl;
+
+    public function __construct(EntityManager $manager, Acl $acl)
     {
         $this->em = $manager;
-    }
-
-    /**
-     * Get the EntityManager for this Controller
-     * 
-     * @return EntityManager
-     */
-    public function getEntityManager()
-	{
-	    return $this->em;
+        $this->acl = $acl;
     }
 
     public function indexAction()
     {
-        $result = $this->getEntityManager()->getRepository('Phpug\Entity\Tag')->findAll();
+        $result = $this->em->getRepository('Phpug\Entity\Tag')->findAll();
 
         return array(
             'flash' => $this->flashMessenger()->getSuccessMessages(),
-            'acl' => $this->getServiceLocator()->get('acl'),
+            'acl' => $this->acl,
             'tags' => $result,
         );
     }
@@ -128,7 +121,7 @@ class IndexController extends AbstractActionController
         $id   = $this->getEvent()->getRouteMatch()->getParam('ugid');
         $base = $this->getEvent()->getRouteMatch()->getParam('base');
         
-        $result = $this->getEntityManager()->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
+        $result = $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
         if ( ! $result ) {
             if ( ! $base ) {
                 $this->redirect()->toRoute('noSubdomain');

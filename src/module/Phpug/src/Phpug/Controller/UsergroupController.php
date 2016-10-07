@@ -32,17 +32,19 @@
 
 namespace Phpug\Controller;
 
+use OrgHeiglHybridAuth\UserToken;
+use Phpug\Acl\RoleManager;
+use Phpug\Acl\UsersGroupAssertion;
 use Phpug\Entity\Groupcontact;
 use Phpug\Entity\Usergroup;
 use Phpug\Exception\UnauthenticatedException;
 use Phpug\Exception\UnauthorizedException;
 use Phpug\Form\PromoteUsergroupForm;
-use Zend\Mvc\View\Http\ViewManager;
-use Zend\View\Helper\ViewModel;
-
+use Zend\EventManager\EventManager;
+use Zend\Form\Form;
+use Zend\Permissions\Acl\Acl;
 use Zend\Mvc\Controller\AbstractActionController;
 use Doctrine\ORM\EntityManager;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
 
 /**
@@ -69,81 +71,84 @@ class UsergroupController extends AbstractActionController
      */
     protected $em = null;
 
-    /**
-     * Get the EntityManager for this Controller
-     * 
-     * @return EntityManager
-     */
-    public function getEntityManager()
-	{
-	    if (null === $this->em) {
-	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-	    }
-   		return $this->em;
+    protected $acl;
+
+    protected $usertoken;
+
+    protected $roleManager;
+
+    protected $assertion;
+
+    protected $form;
+
+    public function __construct(EntityManager $em, Acl $acl, UserToken $usertoken, RoleManager $roleManager, UsersGroupAssertion $assertion, Form $form)
+    {
+        $this->em = $em;
+        $this->acl = $acl;
+        $this->usertoken = $usertoken;
+        $this->roleManager = $roleManager;
+        $this->assertion = $assertion;
+        $this->form = $form;
     }
 
     public function promoteAction()
     {
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
+        $this->form->get('userGroupFieldset')->remove('id');
 
-        $acl = $this->getServiceLocator()->get('acl');
-
-        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
-
-        $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
-        $form->get('userGroupFieldset')->remove('id');
-
-
-        $objectManager = $this->getEntityManager();
         $usergroup = new Usergroup();
         $contact = new Groupcontact();
         $contact->group = $usergroup;
         $usergroup->addContact($contact);
 
-        $form->bind($usergroup);
-        $form->setAttribute('action', $this->url()->fromRoute('ug/promote'));
-        if (! $acl->isAllowed((string) $role, 'ug', 'validate')) {
-            $form->get('userGroupFieldset')->remove('state');
+        $this->form->bind($usergroup);
+        $this->form->setAttribute('action', $this->url()->fromRoute('ug/promote'));
+        if (! $this->acl->isAllowed((string) $this->roleManager, 'ug', 'validate')) {
+            $this->form->get('userGroupFieldset')->remove('state');
         }
 
-        if ($currentUser->isAuthenticated()) {
-            $collection = $form->get('userGroupFieldset')->get('contacts');
+        if ($this->usertoken->isAuthenticated()) {
+            $collection = $this->form->get('userGroupFieldset')->get('contacts');
             $fieldSets  = $collection->getFieldsets();
             $fieldSets[0]->get('service')->setValue(1);
-            $fieldSets[0]->get('name')->setValue($currentUser->getName());
+            $fieldSets[0]->get('name')->setValue($this->currentUser->getName());
         }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             // Handle form sending
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
+            $this->form->setData($request->getPost());
+            if ($this->form->isValid()) {
                 // Handle storage of form data
                 try {
                    // var_Dump($form->getData());
                     // Store content
-                    $objectManager->persist($form->getData());
-                    $objectManager->flush();
+                    $this->em->persist($this->form->getData());
+                    $this->em->flush();
                 }catch(Exception $e){var_dump($e);}
 
                 $this->flashMessenger()->addSuccessMessage(sprintf(
                     'Thanks for telling us about %1$s. We will revise your entry and inform you as soon as it\'s publicised',
                     $usergroup->getName()
                 ));
-                $this->sendNotification($usergroup);
+                $this->getEventManager()->trigger(
+                    'notifyadmin', null, [
+                        'name' => $usergroup->getName(),
+                        'shortname' => $usergroup->getShortname(),
+                    ]
+                );
+
                 return $this->redirect()->toRoute('home');
             } else {
 //                var_Dump($form->getMessages());
             }
         }
-        return array('form' => $form);
+        return array('form' => $this->form);
 
     }
 
     public function editAction()
     {
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
-        if (! $currentUser->isAuthenticated()) {
+        if (! $this->usertoken->isAuthenticated()) {
             throw new UnauthenticatedException(
                 'You have to be logged in to edit the informations for this usergroup.',
                 0,
@@ -152,18 +157,8 @@ class UsergroupController extends AbstractActionController
             );
         }
 
-        $acl = $this->getServiceLocator()->get('acl');
-        if (! $acl) {
-            $this->getResponse()->setStatusCode(500);
-            return array('error' => array(
-                'title' => 'Something went wrong on our side',
-                'message' => 'We apologize for the inconvenience, but someone seems to have misconfigured the Access Control System',
-            ));
-        }
-
         $id = $this->getEvent()->getRouteMatch()->getParam('id');
-        $objectManager = $this->getEntityManager();
-        $usergroup = $objectManager->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
+        $usergroup = $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname' => $id));
         if (! $usergroup) {
             $this->getResponse()->setStatusCode(404);
             return array('error' => array(
@@ -179,14 +174,9 @@ class UsergroupController extends AbstractActionController
             $usergroup->addContact($contact);
         }
 
-        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
+        $this->assertion->setGroup($usergroup);
 
-        $this->getServiceLocator()
-            ->get('usersGroupAssertion')
-            ->setUser($currentUser)
-            ->setGroup($usergroup);
-
-        if (! $acl->isAllowed((string) $role, 'ug', 'edit')) {
+        if (! $this->acl->isAllowed((string) $this->roleManager, 'ug', 'edit')) {
             $this->getResponse()->setStatusCode(403);
             throw new UnauthorizedException(
                 'Your account has not the necessary rights to edit this usergroup. If you feel like that is an error please contact one of the representatives of the usergroup. If that doesn\'t help (Or you have locked yourself out) feel free to contact us via the <a href="/contact">Contact-Form</a>!',
@@ -198,25 +188,24 @@ class UsergroupController extends AbstractActionController
 
         $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
 
+        $this->form->bind($usergroup);
 
-        $form->bind($usergroup);
-
-        $form->setAttribute('action', $this->url()->fromRoute('ug/edit', array('id' => $id)));
-        $form->get('userGroupFieldset')->get('location')->setValue($usergroup->getLocation());
-        if (! $acl->isAllowed((string) $role, 'ug', 'validate')) {
-            $form->get('userGroupFieldset')->remove('state');
+        $this->form->setAttribute('action', $this->url()->fromRoute('ug/edit', array('id' => $id)));
+        $this->form->get('userGroupFieldset')->get('location')->setValue($usergroup->getLocation());
+        if (! $this->acl->isAllowed((string) $this->roleManager, 'ug', 'validate')) {
+            $this->form->get('userGroupFieldset')->remove('state');
         }
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             // Handle form sending
             $form->setData($request->getPost());
-            if ($form->isValid()) {
+            if ($this->form->isValid()) {
                 // Handle storage of form data
                 try {
                     // Store content
-                    $objectManager->persist($form->getData());
-                    $objectManager->flush();
+                    $this->em->persist($form->getData());
+                    $this->em->flush();
                 } catch(Exception $e){error_log($e->getMessage());}
 
                 $this->flashMessenger()->addSuccessMessage(sprintf(
@@ -232,24 +221,5 @@ class UsergroupController extends AbstractActionController
         $view->setTemplate('phpug/usergroup/promote.phtml');
         return $view;
 
-    }
-
-    protected function sendNotification(Usergroup $usergroup)
-    {
-        $message = $this->getServiceLocator()->get('Phpug\Service\UsergroupMessage');
-        $message->setBody(sprintf(
-            $message->getBody(),
-            $usergroup->getName(),
-            $usergroup->getShortname()
-        ));
-        $message->setSubject(sprintf(
-            $message->getSubject(),
-            $usergroup->getName()
-        ));
-
-        $transport = $this->getServiceLocator()->get('Phpug\Service\Transport');
-        $transport->send($message);
-
-        return $this;
     }
 }

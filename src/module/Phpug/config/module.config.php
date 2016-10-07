@@ -31,6 +31,9 @@
  */
 namespace Phpug;
 
+use Phpug\Controller\EventCacheController;
+use Phpug\Controller\EventControllerFactory;
+
 return array(
     'router' => array(
         'routes' => array(
@@ -286,16 +289,6 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
-                'getmentoringjson' => array(
-                    'options' => array(
-                        'route' => 'getmentoring [--json|-j]',
-                        'defaults' => array(
-                            '__NAMESPACE__' => 'Phpug\Controller',
-                            'controller' => 'MentoringController',
-                            'action' => 'getmentoring'
-                        ),
-                    ),
-                ),
                 'getmentoringappjson' => array(
                     'options' => array(
                         'route' => 'getmentoringapp [--json|-j]',
@@ -463,6 +456,7 @@ return array(
             'TwitterInfoService'      => 'Phpug\Service\TwitterInfoFactory',
             'ViewIcalendarRenderer' => 'Phpug\Mvc\Service\ViewIcalendarRendererFactory',
             'ViewIcalendarStrategy' => 'Phpug\Mvc\Service\ViewIcalendarStrategyFactory',
+            \Phpug\Event\NotifyAdminListener::class => \Phpug\Event\NotifyAdminListenerFactory::class,
 
         ),
         'invokables' => array(
@@ -489,24 +483,25 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Phpug\Controller\Map'   => '\Phpug\Controller\MapController',
-            'Phpug\Controller\UsergroupController' => 'Phpug\Controller\UsergroupController',
-            'Phpug\Controller\EventController' => '\Phpug\Controller\EventController',
-            'Phpug\controller\FeatureController' => '\Phpug\Controller\FeatureController',
-            'Phpug\Api\Rest\ListtypeController' => 'Phpug\Api\Rest\ListtypeController',
-            'Phpug\Api\Rest\Listtype' => '\Phpug\Api\Rest\ListtypeController',
-            'Phpug\Api\Rest\Usergroup' => 'Phpug\Api\Rest\UsergroupController',
-            'Phpug\Api\Rest\Twitter' => 'Phpug\Api\Rest\TwitterController',
-            'Phpug\Api\v1\Usergroup' => 'Phpug\Api\v1\UsergroupController',
-            'Phpug\Api\v1\Location' => 'Phpug\Api\v1\LocationController',
-            'Phpug\Controller\MentoringController' => 'Phpug\Controller\MentoringController',
-            'Phpug\Controller\MentoringAppController' => 'Phpug\Controller\MentoringAppController',
-            'Phpug\Controller\EventCacheController' => 'Phpug\Controller\EventCacheController',
-            'Phpug\Controller\TwitterController'    => 'Phpug\Controller\TwitterController',
+            \Phpug\Controller\FeatureController::class => \Phpug\Controller\FeatureController::class,
         ),
         'factories' => [
-            \Phpug\Controller\IndexController::class => \Phpug\Controller\IndexControllerFactory::class,
-            \Phpug\Api\v1\Calendar::class            => \Phpug\Api\v1\CalendarControllerFactory::class,
+            \Phpug\Controller\IndexController::class      => \Phpug\Controller\IndexControllerFactory::class,
+            \Phpug\Api\v1\CalendarController::class       => \Phpug\Api\v1\CalendarControllerFactory::class,
+            \Phpug\Api\v1\LocationController::class       => \Phpug\Api\v1\LocationControllerFactory::class,
+            \Phpug\Api\v1\UsergroupController::class      => \Phpug\Api\v1\UsergroupControllerFactory::class,
+            \Phpug\Api\Rest\ListtypeController::class     => \Phpug\Api\Rest\ListtypeControllerFactory::class,
+            'Phpug\Api\Rest\Listtype'                     => \Phpug\Api\Rest\ListtypeControllerFactory::class,
+            \Phpug\Api\Rest\TwitterController::class      => \Phpug\Api\Rest\TwitterControllerFactory::class,
+            'Phpug\Api\Rest\Twitter'                      => \Phpug\Api\Rest\TwitterControllerFactory::class,
+            \Phpug\Api\Rest\UsergroupController::class    => \Phpug\Api\Rest\UsergroupControllerFactory::class,
+            'Phpug\Api\Rest\Usergroup'                    => \Phpug\Api\Rest\UsergroupControllerFactory::class,
+            \Phpug\Controller\EventCacheController::class => \Phpug\Controller\EventCacheControllerFactory::class,
+            \Phpug\Controller\EventController::class      => \Phpug\Controller\EventControllerFactory::class,
+//            'Phpug\Controller\Map'                       => \Phpug\Controller\MapControllerFactory::class,
+            \Phpug\Controller\MentoringAppController::class => \Phpug\Controller\MentoringAppControllerFactory::class,
+            \Phpug\controller\TwitterController::class      => \Phpug\Controller\TwitterControllerFactory::class,
+            \Phpug\Controller\UsergroupController::class    => \Phpug\Controller\UsergroupControllerFactory::class,
         ],
     ),
     'view_helpers'    => array(

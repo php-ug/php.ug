@@ -32,9 +32,13 @@
 
 namespace Phpug\Api\Rest;
 
+use Phpug\Acl\RoleManager;
+use Phpug\Acl\UsersGroupAssertion;
+use Phpug\Cache\Cache;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Doctrine\ORM\EntityManager;
 use Phpug\Entity\Usergroup;
+use Zend\Permissions\Acl\Acl;
 
 /**
  * The Controller for de default actions
@@ -55,21 +59,23 @@ class ListtypeController extends AbstractRestfulController
     *
     * @var EntityManager $em
     */
-    protected $em = null;
+    protected $em;
 
-    /**
-     * Get the EntityManager for this Controller
-     *
-     * @return MapController
-     */
-    protected function getEntityManager()
+    protected $countryCodeCache;
+
+    protected $groupAssertion;
+
+    protected $role;
+
+    public function __construct(EntityManager $em, Cache $countryCodeCache, Acl $acl, UsersGroupAssertion $assertion, RoleManager $role)
     {
-        if (null === $this->em) {
-	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-	    }
-   		return $this->em;
+        $this->em = $em;
+        $this->countryCodeCache = $countryCodeCache;
+        $this->acl = $acl;
+        $this->groupAssertion = $assertion;
+        $this->role = $role;
     }
-    
+
     public function get($id)
     {
         $adapter  = $this->getAdapter();
@@ -77,7 +83,7 @@ class ListtypeController extends AbstractRestfulController
         $content  = array();
          
         $id    = $this->getEvent()->getRouteMatch()->getParam('id');
-        $types = $this->getEntityManager()->getRepository('Phpug\Entity\Grouptype')->findBy(array('id' => $id));
+        $types = $this->em->getRepository('Phpug\Entity\Grouptype')->findBy(array('id' => $id));
         if (! $types) {
             $content['error'] = 'No group with that ID available';
             $response->setContent($adapter->serialize($content));
@@ -93,28 +99,20 @@ class ListtypeController extends AbstractRestfulController
         
         $content['error'] = null;
         $content['list']   = $types[0]->toArray();
-        $currentUser = $this->getServiceLocator()->get('OrgHeiglHybridAuthToken');
-        $acl = $this->getServiceLocator()->get('acl');
-        $groupAssertion = $this->getServiceLocator()
-                               ->get('usersGroupAssertion')
-                               ->setUser($currentUser);
-
-        $role = $this->getServiceLocator()->get('roleManager')->setUserToken($currentUser);
         foreach ($types[0]->getUsergroups() as $group) {
             $currentGroup = $group->toArray();
-            $groupAssertion->setGroup($group);
-            if ($acl->isAllowed($role, 'ug', 'edit')) {
+            $this->groupAssertion->setGroup($group);
+            if ($this->acl->isAllowed($this->role, 'ug', 'edit')) {
                 $currentGroup['edit'] = true;
             }
-            $countryCache = $this->getServiceLocator()->get('Phpug\Cache\CountryCode');
-            $countryCache->setUserGroup($group);
+            $this->countryCodeCache->setUserGroup($group);
             unset($currentGroup['caches']);
-            $currentGroup['country'] = $countryCache->getCache()->getCache();
+            $currentGroup['country'] = $this->countryCodeCache->getCache()->getCache();
             if (Usergroup::ACTIVE == $group->getState()) {
                 $content['groups'][] = $currentGroup;
                 continue;
             }
-            if ($acl && $acl->isAllowed((string) $role, 'ug', 'edit')) {
+            if ($this->acl->isAllowed((string) $this->role, 'ug', 'edit')) {
                 $content['groups'][] = $currentGroup;
                 continue;
             }
@@ -156,7 +154,7 @@ class ListtypeController extends AbstractRestfulController
     
     public function getList()
     {
-        $groups = $this->getEntityManager()->getRepository('Phpug\Entity\Grouptype')->findAll();
+        $groups = $this->em->getRepository('Phpug\Entity\Grouptype')->findAll();
         $content = array ();
         foreach ($groups as $group) {
             $content[] = array(

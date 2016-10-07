@@ -80,6 +80,19 @@ class Module implements ConsoleUsageProviderInterface
 
         $authStrategy = new UnauthorizedStrategy('error/unauthorized.phtml');
         $authStrategy->attach($e->getTarget()->getEventManager());
+
+        $sharedManager = $eventManager->getSharedManager();
+        $sm = $e->getApplication()->getServiceManager();
+
+        $sharedManager->attach(
+            'Zend\Mvc\Controller\AbstractActionController',
+            'dispatch',
+            function($e) use ($sm) {
+                $controller = $e->getTarget();
+                $controller->getEventManager()->attachAggregate($sm->get(\Phpug\Event\NotifyAdminListener::class));
+            },
+            2
+        );
     }
     
     public function getConfig()

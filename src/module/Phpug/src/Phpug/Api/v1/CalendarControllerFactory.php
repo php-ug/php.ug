@@ -1,17 +1,14 @@
 <?php
 /**
- * Copyright (c) 2011-2012 Andreas Heigl<andreas@heigl.org>
- *
+ * Copyright (c) Andreas Heigl<andreas@heigl.org>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,46 +17,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category  php.ug
- * @package   Phpug
  * @author    Andreas Heigl<andreas@heigl.org>
- * @copyright 2011-2012 php.ug
+ * @copyright Andreas Heigl
  * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
- * @version   0.0
- * @since     06.03.2012
+ * @since     04.10.2016
  * @link      http://github.com/heiglandreas/php.ug
  */
 
-namespace Phpug\Controller;
+namespace Phpug\Api\v1;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
-use Zend\View\Model\JsonModel;
-use Zend\Json\Json;
-/**
- * The Controller for de default actions
- *
- * @category  php.ug
- * @package   Phpug
- * @author    Andreas Heigl<andreas@heigl.org>
- * @copyright 2011-2012 php.ug
- * @license   http://www.opensource.org/licenses/mit-license.php MIT-License
- * @version   0.0
- * @since     06.03.2012
- * @link      http://github.com/heiglandreas/php.ug
- */
-class EventController extends AbstractRestfulController
+class CalendarControllerFactory
 {
-    protected $cacheFile;
-
-    public function __construct($cacheFile)
+    public function __invoke($container)
     {
-        $this->cacheFile = $cacheFile;
-    }
-
-    public function getList()
-    {
-        $content = Json::decode(file_get_contents($this->cacheFile), Json::TYPE_ARRAY);
-
-        return new JsonModel($content);
+        return new CalendarController($container->getServiceLocator()->get('doctrine.entitymanager.orm_default'));
     }
 }
