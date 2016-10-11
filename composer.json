@@ -1,4 +1,4 @@
- {
+{
      "name" : "php_ug/website",
      "description" : "The website showing all PHP-Usergroups on the worldmap",
      "license" : "MIT",
@@ -12,13 +12,15 @@
          "org_heigl/mailproxy" :              "dev-master@dev",
          "org_heigl/hybridauth" :             "dev-feature/multipleProviders@dev",
          "hybridauth/hybridauth" :            "@dev",
-         "org_heigl/geolocation" :            "~1.0",
          "sabre/vobject" :                    "~4.0@dev",
          "monolog/monolog" :                  "~1.9",
          "willdurand/geocoder" :              "~2.4",
          "zendframework/zendservice-twitter": "~2.1",
          "org_heigl/piwik" :                  "~1.0",
-         "rwoverdijk/assetmanager" :          "~1.4"
+         "rwoverdijk/assetmanager" :          "~1.4",
+          "org_heigl/geolocation": "^1.2",
+          "guzzlehttp/guzzle": "^6.2",
+          "org_heigl/dateintervalcomparator": "^1.0"
      },
      "require-dev" : {
          "mockery/mockery": "~0.9",
@@ -28,11 +30,17 @@
      "autoload" : {
          "psr-0" : {
              "Phpug\\" : "src/module/Phpug/src"
+         },
+         "psr-4" : {
+             "UgHealth\\" : "src/module/UgHealth/src/"
          }
      },
      "autoload-dev" : {
          "psr-0" : {
              "PhpugTest\\" : "src/module/Phpug/tests"
+         },
+         "psr-4" : {
+             "UgHealthTest\\" : "src/module/UgHealth/tests/"
          }
      }
  }
