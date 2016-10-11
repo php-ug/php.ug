@@ -27,40 +27,45 @@
 
 namespace UgHealth;
 
+use GuzzleHttp\Client;
 use Phpug\Entity\Usergroup;
 use Sabre\VObject\Component\VEvent;
 use Sabre\VObject\Node;
 use Sabre\VObject\Reader;
-use Zend\Http\Client;
-use Zend\ServiceManager\ServiceManager;
 
-class IcalendarState implements UsergroupHealthPluginInterface
+class IcalendarStatus implements UsergroupHealthPluginInterface
 {
+    protected $client;
 
-    public function check(Usergroup $usergroup, ServiceManager $sm)
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
+
+    public function check(Usergroup $usergroup)
     {
         $icalendarUri = $usergroup->getIcalendar_url();
 
         if (empty($icalendarUri)) {
-            return false;
+            return self::UNKNOWN;
         }
 
-        $client = new Client($icalendarUri, array(
-            'maxredirects' => 10,
-            'timeout' => 30,
-        ));
-
-        $response = $client->send();
-
+        try {
+            $response = $this->client->get($icalendarUri);
+        } catch (Exception $e) {
+            var_Dump($e->getMessage());
+            return self::UNKNOWN;
+        }
         if ($response->getStatusCode() >= 400) {
-            return false;
+            return self::UNKNOWN;
         }
 
         $events = [];
         $now = new \DateTimeImmutable();
         $then = $now->add(new \DateInterval('P1Y'));
         try {
-            $ical = Reader::read($response->getBody());
+            $ical = Reader::read($response->getBody()->getContents());
+            $ical = $ical->expand($now, $then);
             foreach ($ical->children() as $event) {
                 if (!$event instanceof VEvent) {
                     continue;
@@ -77,15 +82,15 @@ class IcalendarState implements UsergroupHealthPluginInterface
             }
         } catch (\Exception $e) {
             echo $e->getMessage();
-            return false;
+            return self::UNKNOWN;
         }
 
 
         if (0 < count($events)) {
-            return true;
+            return self::ACTIVE;
         }
 
-        return false;
+        return self::STALE;
     }
 
     public function getName()

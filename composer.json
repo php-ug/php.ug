@@ -19,7 +19,8 @@
          "org_heigl/piwik" :                  "~1.0",
          "rwoverdijk/assetmanager" :          "~1.4",
           "org_heigl/geolocation": "^1.2",
-          "guzzlehttp/guzzle": "^6.2"
+          "guzzlehttp/guzzle": "^6.2",
+          "org_heigl/dateintervalcomparator": "^1.0"
      },
      "require-dev" : {
          "mockery/mockery": "~0.9",

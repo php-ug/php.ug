@@ -62,7 +62,17 @@ return array(
                             'action' => 'website',
                         ]
                     ]
-                ]
+                ],
+                'usergroup-healthcheck-icalendar' => [
+                    'options' => [
+                        'route' => 'checkhealth:icalendar <usergroup>',
+                        'defaults' => [
+                            '__NAMESPACE__' => 'UgHealth\Controller',
+                            'controller' => 'IcalendarHealthController',
+                            'action' => 'icalendar',
+                        ]
+                    ]
+                ],
             ]
         ]
     ],
@@ -70,6 +80,7 @@ return array(
         'factories' => array(
             'UgHealth\Controller\TwitterHealthController' => 'UgHealth\Service\TwitterHealthControllerFactory',
             'UgHealth\Controller\WebsiteHealthController' => 'UgHealth\Service\WebsiteHealthControllerFactory',
+            'UgHealth\Controller\IcalendarHealthController' => 'UgHealth\Service\IcalendarHealthControllerFactory',
         ),
     ),
     'service_manager' => [
