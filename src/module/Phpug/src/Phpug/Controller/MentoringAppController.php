@@ -60,10 +60,10 @@ class MentoringAppController extends AbstractActionController
 
         $infos = array();
         $infos = array_merge($infos, $mentoring->parse(
-            'http://app.phpmentoring.org/api/v0/mentors'
+            'https://php-mentoring.org/api/v0/mentors'
         ));
         $infos = array_merge($infos, $mentoring->parse(
-            'http://app.phpmentoring.org/api/v0/apprentices'
+            'https://php-mentoring.org/api/v0/apprentices'
         ));
 
         $file = $this->config['file'];
