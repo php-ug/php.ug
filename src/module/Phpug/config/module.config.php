@@ -490,6 +490,7 @@ return array(
             \Phpug\Api\v1\CalendarController::class       => \Phpug\Api\v1\CalendarControllerFactory::class,
             'Phpug\Api\v1\Calendar'                       => \Phpug\Api\v1\CalendarControllerFactory::class,
             \Phpug\Api\v1\LocationController::class       => \Phpug\Api\v1\LocationControllerFactory::class,
+            'Phpug\Api\v1\Usergroup'                      => \Phpug\Api\v1\UsergroupControllerFactory::class,
             \Phpug\Api\v1\UsergroupController::class      => \Phpug\Api\v1\UsergroupControllerFactory::class,
             \Phpug\Api\Rest\ListtypeController::class     => \Phpug\Api\Rest\ListtypeControllerFactory::class,
             'Phpug\Api\Rest\Listtype'                     => \Phpug\Api\Rest\ListtypeControllerFactory::class,
