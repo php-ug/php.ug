@@ -349,7 +349,7 @@ var mentoringapp = L.layerJSON({
     propertyLoc : ['lat', 'lon'],
     propertyTitle : 'name',
     buildPopup : function(data){
-        url = 'http://app.phpmentoring.org/profile/';
+        url = 'https://php-mentoring.org/profile/';
         content = '<div class="popup">'
             + '<h4>'
             + '<a href="%url%" target="_blank">'
