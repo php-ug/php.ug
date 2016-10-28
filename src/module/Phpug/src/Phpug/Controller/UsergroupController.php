@@ -110,7 +110,7 @@ class UsergroupController extends AbstractActionController
             $collection = $this->form->get('userGroupFieldset')->get('contacts');
             $fieldSets  = $collection->getFieldsets();
             $fieldSets[0]->get('service')->setValue(1);
-            $fieldSets[0]->get('name')->setValue($this->currentUser->getName());
+            $fieldSets[0]->get('name')->setValue($this->usertoken->getName());
         }
 
         $request = $this->getRequest();
