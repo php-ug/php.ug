@@ -186,8 +186,6 @@ class UsergroupController extends AbstractActionController
             );
         }
 
-        $form = $this->getServiceLocator()->get('PromoteUsergroupForm');
-
         $this->form->bind($usergroup);
 
         $this->form->setAttribute('action', $this->url()->fromRoute('ug/edit', array('id' => $id)));
@@ -199,12 +197,12 @@ class UsergroupController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             // Handle form sending
-            $form->setData($request->getPost());
+            $this->form->setData($request->getPost());
             if ($this->form->isValid()) {
                 // Handle storage of form data
                 try {
                     // Store content
-                    $this->em->persist($form->getData());
+                    $this->em->persist($this->form->getData());
                     $this->em->flush();
                 } catch(Exception $e){error_log($e->getMessage());}
 
@@ -217,7 +215,7 @@ class UsergroupController extends AbstractActionController
             }
         }
 
-        $view = new \Zend\View\Model\ViewModel(array('form' => $form));
+        $view = new \Zend\View\Model\ViewModel(array('form' => $this->form));
         $view->setTemplate('phpug/usergroup/promote.phtml');
         return $view;
 
