@@ -131,7 +131,7 @@ class UsergroupController extends AbstractActionController
                     $usergroup->getName()
                 ));
                 $this->getEventManager()->trigger(
-                    'notifyadmin', null, [
+                    'notifyAdmin', null, [
                         'name' => $usergroup->getName(),
                         'shortname' => $usergroup->getShortname(),
                     ]

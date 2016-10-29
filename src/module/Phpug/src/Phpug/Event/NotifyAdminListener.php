@@ -26,6 +26,7 @@
 
 namespace Phpug\Event;
 
+use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Mail\Message;
