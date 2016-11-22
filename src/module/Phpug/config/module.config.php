@@ -31,8 +31,7 @@
  */
 namespace Phpug;
 
-use Phpug\Controller\EventCacheController;
-use Phpug\Controller\EventControllerFactory;
+use Phpug\Service\SlackInviteFormFactory;
 
 return array(
     'router' => array(
@@ -274,6 +273,29 @@ return array(
                     ),
                 ),
             ),
+            'slackinvite' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/slackinvite',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Phpug\Controller',
+                        'controller' => 'SlackController',
+                        'action' => 'invite',
+                    ),
+                ),
+            ),
+            'slack' => array(
+                'type' => 'Hostname',
+                'options' => array(
+                    'route' => 'slack.php.ug',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Phpug\Controller',
+                        'controller' => 'SlackController',
+                        'action' => 'redirect',
+                    )
+                ),
+                'may_terminate' => true,
+            ),
             'subdomain' => array(
                 'type' => 'Hostname',
                 'options' => array(
@@ -428,11 +450,11 @@ return array(
                 'pages' => array(
                     array(
                         'label' => 'Usergroup-Team',
-                        'uri'   => 'https://phpug.slack.com',
+                        'uri'   => 'https://slack.php.ug',
                     ),
                     array(
                         'label' => 'Get an Invitation',
-                        'uri'   => 'http://murmuring-forest-7062.herokuapp.com',
+                        'uri'   => 'https://php.ug/slackinvite',
                     )
                 ),
             ),
@@ -446,6 +468,7 @@ return array(
             'roleManager' => 'Phpug\Service\RoleManagerFactory',
             'PromoteUsergroupForm' => 'Phpug\Service\PromoteUsergroupFormFactory',
             'UsergroupFieldset'    => 'Phpug\Service\UsergroupFieldsetFactory',
+            'SlackInviteForm'      => \Phpug\Service\SlackInviteFormFactory::class,
             'Phpug\Service\UsergroupMessage' => 'Phpug\Service\UsergroupMessageFactory',
             'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
             'Phpug\Service\Geocoder' => 'Phpug\Service\GeocoderFactory',
@@ -463,7 +486,9 @@ return array(
             'usersGroupAssertion'   => 'Phpug\Acl\UsersGroupAssertion',
             'contactsRow'           => 'Phpug\View\Helper\ContactsRow',
             'Phpug\Service\Message' => 'Zend\Mail\Message',
-            'Zend\Mail\Transport' => 'Zend\Mail\Transport\File',
+            'Zend\Mail\Transport'   => 'Zend\Mail\Transport\File',
+            'HttpClient'            => \GuzzleHttp\Client::class,
+            'SlackInviteFieldset'   => \Phpug\Form\SlackInviteFieldset::class,
         ),
         'shared' => array(
             'Phpug\Cache\Country' => false,
@@ -504,6 +529,7 @@ return array(
             \Phpug\Controller\MentoringAppController::class => \Phpug\Controller\MentoringAppControllerFactory::class,
             \Phpug\controller\TwitterController::class      => \Phpug\Controller\TwitterControllerFactory::class,
             \Phpug\Controller\UsergroupController::class    => \Phpug\Controller\UsergroupControllerFactory::class,
+            \Phpug\Controller\SlackController::class        => \Phpug\Controller\SlackControllerFactory::class,
         ],
     ),
     'view_helpers'    => array(

@@ -72,7 +72,7 @@ class IndexController extends AbstractActionController
         $result = $this->em->getRepository('Phpug\Entity\Tag')->findAll();
 
         return array(
-            'flash' => $this->flashMessenger()->getSuccessMessages(),
+            'flash' => $this->flashMessenger(),
             'acl' => $this->acl,
             'tags' => $result,
         );

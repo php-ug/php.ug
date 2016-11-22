@@ -54,7 +54,6 @@ class ShowForm extends AbstractHelper
 
         $output = $this->getView()->form()->openTag($form);
 
-
         foreach ($form as $element) {
             $output .= $this->renderElement($element);
         }
