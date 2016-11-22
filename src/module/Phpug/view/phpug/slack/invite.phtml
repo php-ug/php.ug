@@ -1,0 +1,36 @@
+
+<div class="jumbotron">
+    <h2>Get an invitation to the Worldwide Slack of and for PHP-Usergroups</h2>
+
+    <p>Get in touch with your local people and with the worldwide herd.</p>
+</div>
+
+<?php
+
+$form->prepare();
+
+$this->headTitle('Get a Slack-Invite');
+
+$form->setAttribute('class', 'form-horizontal');
+if ($form->getMessages()) {
+echo '
+<div class="alert alert-danger">There have been errors during form validation.
+    Please fix them
+</div>';
+}
+
+echo $this->showForm($form);
+
+$this->headScript()->appendScript("
+    $('input').focus(function(e){
+        $(e.target).popover('show');
+    });
+    $('input').click(function(e){
+        $(e.target).popover('show');
+    });
+    $('input').blur(function(e){
+        $(e.target).popover('hide');
+    });
+    $('[data-toggle=tooltip]').tooltip({container:'body'});
+");
+?>
