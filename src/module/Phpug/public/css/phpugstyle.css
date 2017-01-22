@@ -115,6 +115,10 @@ section > div#map {
     color: red;
 }
 
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+    min-width : 250px;
+}
+
 .leaflet-popup-content ul {
     list-style-type: none;
     margin-left: 0px;
