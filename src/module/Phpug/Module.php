@@ -40,6 +40,7 @@ use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceManager;
 use Zend\View\HelperPluginManager;
 use Phpug\View\Strategy\JsonExceptionStrategy;
 
@@ -89,7 +90,7 @@ class Module implements ConsoleUsageProviderInterface
             'dispatch',
             function($e) use ($sm) {
                 $controller = $e->getTarget();
-                $controller->getEventManager()->attachAggregate($sm->get(\Phpug\Event\NotifyAdminListener::class));
+                $sm->get(\Phpug\Event\NotifyAdminListener::class)->attach($controller->getEventManager());
             },
             2
         );
@@ -104,17 +105,17 @@ class Module implements ConsoleUsageProviderInterface
         return array(
             'factories' => array(
                 // This will overwrite the native navigation helper
-                'navigation' => function(HelperPluginManager $pm) {
+                'navigation' => function(ServiceManager $sm) {
                         // Setup ACL:
-                        $acl = $pm->getServiceLocator()->get('acl');
-                        $role = $pm->getServiceLocator()->get('roleManager');
-                        $role->setUserToken($pm->getServiceLocator()->get('OrgHeiglHybridAuthToken'));
+                        $acl = $sm->get('acl');
+                        $role = $sm->get('roleManager');
+                        $role->setUserToken($sm->get('OrgHeiglHybridAuthToken'));
 
                         // Get an instance of the proxy helper
-                        $navigation = $pm->get('Zend\View\Helper\Navigation');
+                        $navigation = $sm->get('Zend\View\Helper\Navigation');
 
                         // Set the serviceLocator
-                        $navigation->setServiceLocator($pm->getServiceLocator());
+                        $navigation->setServiceLocator($sm);
 
                         // Store ACL and role in the proxy helper:
                         $navigation->setAcl($acl)

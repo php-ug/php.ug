@@ -489,6 +489,8 @@ return array(
             'Zend\Mail\Transport'   => 'Zend\Mail\Transport\File',
             'HttpClient'            => \GuzzleHttp\Client::class,
             'SlackInviteFieldset'   => \Phpug\Form\SlackInviteFieldset::class,
+            'Zend\View\Helper\Navigation' => 'Zend\View\Helper\Navigation',
+
         ),
         'shared' => array(
             'Phpug\Cache\Country' => false,

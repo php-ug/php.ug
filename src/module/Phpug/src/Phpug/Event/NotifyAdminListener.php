@@ -46,7 +46,7 @@ class NotifyAdminListener implements ListenerAggregateInterface
         $this->transport = $transport;
     }
 
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $this->listeners[] = $events->attach('notifyAdmin', array($this, 'doEvent'));
     }
