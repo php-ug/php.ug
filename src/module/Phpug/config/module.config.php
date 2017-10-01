@@ -619,7 +619,7 @@ return array(
                 'js/phpug' => __DIR__ . '/../public/js',
             ),
             'paths' => array(
-                __DIR__ . '/../public',
+                'Phpug' => __DIR__ . '/../public',
             ),
         ),
     ),
