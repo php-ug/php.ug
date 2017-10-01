@@ -31,11 +31,12 @@
 
 namespace Phpug\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\Form\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Form\Element;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Hydrator\ClassMethods;
 use Zend\Validator;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Phpug\Entity\Usergroup;
@@ -84,5 +85,27 @@ class PromoteUsergroupFormFactory implements  FactoryInterface
         $form->add($usergroupFieldset);
 
         return $form;
+    }
+
+
+    /**
+     * Create an object
+     *
+     * @param  ContainerInterface $container
+     * @param  string             $requestedName
+     * @param  null|array         $options
+     *
+     * @return object
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     *     creating a service.
+     * @throws ContainerException if any other error occurs
+     */
+    public function __invoke(
+        ContainerInterface $container,
+        $requestedName,
+        array $options = null
+    ) {
+        return $this->createService($container);
     }
  }

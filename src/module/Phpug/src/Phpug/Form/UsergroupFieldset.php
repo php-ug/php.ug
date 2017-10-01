@@ -33,13 +33,13 @@ namespace Phpug\Form;
 
 
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use Phpug\Entity\Groupcontact;
+use Org_Heigl\Geolocation\Form\Element\Geolocation;
+use Org_Heigl\Geolocation\Validator\IsGeolocation;
 use Phpug\Entity\Usergroup;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Validator;
-use Phpug\Filter;
 
 class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -103,7 +103,7 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
 
         $this->add(array(
             'name'    => 'location',
-            'type' => '\OrgHeiglGeolocation\Form\Element\Geolocation',
+            'type' => Geolocation::class,
             'options' => array(
                'label'       => 'Location (Lat/Lon)',
                'description' => 'Tell us where you are located. Currently you have to provide the information in Latitude/Longitude like "50.1234,8.0815" for somewhere near Frankfurt/Main in Germany',
@@ -272,10 +272,10 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
             'location' => array(
                 'required' => true,
                 'validators' => array(
-                    array('name' => 'OrgHeiglGeolocation\Validator\IsGeolocation'),
+                    array('name' => IsGeolocation::class),
                 ),
                 'filters' => array(
-                    array('name' => 'OrgHeiglGeolocation\Filter\Geolocation'),
+                    array('name' => \Org_Heigl\Geolocation\Filter\Geolocation::class),
                 ),
             ),
             'url' => array(

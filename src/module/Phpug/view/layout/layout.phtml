@@ -68,7 +68,7 @@ echo $this->doctype();
                 ->setPartial('partial/navigation'); ?>
             <ul class="nav navbar-nav navbar-right navbar-login">
                 <li>
-                    <?php echo $this->hybridauthinfo(); ?>
+                    <?php echo $this->hybridauthinfo(null, $this->serverUrl(true)); ?>
                 </li>
             </ul>
         </div>
