@@ -69,7 +69,7 @@ class DistanceFrom extends FunctionNode
     public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
         return sprintf(
-            '(asin(sqrt(pow(sin((%2$s*0.017453293-%4$f*0.017453293)/2),2) ' .
+            '(2 * asin(sqrt(pow(sin((%2$s*0.017453293-%4$f*0.017453293)/2),2) ' .
             '+ cos(%2$s*0.017453293) * cos(%4$f*0.017453293) * pow(sin((%3$s*' .
             '0.017453293-%5$f*0.017453293)/2),2))) * %1$f)',
             self::getRadius(),
