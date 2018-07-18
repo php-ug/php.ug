@@ -7,10 +7,8 @@
          "ext-curl":                          "*",
          "doctrine/doctrine-module":          "~0.8",
          "doctrine/doctrine-orm-module":      "~0.8",
-         "zendframework/zendframework":       "~2.5",
-         "org_heigl/contact" :                "dev-master@dev",
-         "org_heigl/mailproxy" :              "dev-master@dev",
-         "org_heigl/hybridauth" :             "dev-feature/multipleProviders@dev",
+         "zendframework/zendframework":       "^2.5",
+         "org_heigl/hybridauth" :             "^2.0",
          "hybridauth/hybridauth" :            "@dev",
          "sabre/vobject" :                    "~4.0@dev",
          "monolog/monolog" :                  "~1.9",
@@ -20,12 +18,16 @@
          "rwoverdijk/assetmanager" :          "~1.4",
           "org_heigl/geolocation": "^1.2",
           "guzzlehttp/guzzle": "^6.2",
-          "org_heigl/dateintervalcomparator": "^1.0"
+          "org_heigl/dateintervalcomparator": "^1.0",
+       "org_heigl/contact" :                "dev-phpug@dev",
+       "org_heigl/mailproxy" :              "dev-phpug@dev"
      },
      "require-dev" : {
          "mockery/mockery": "~0.9",
-         "zendframework/zend-developer-tools" : "dev-master",
          "phing/phing" : "~2.0"
+     },
+     "_require-dev" : {
+         "zendframework/zend-developer-tools" : "dev-master"
      },
      "autoload" : {
          "psr-0" : {

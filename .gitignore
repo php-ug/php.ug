@@ -8,3 +8,4 @@ src/config/autoload/*.local.php
 phpunit.xml
 src/public/lib
 build.property
+vendor

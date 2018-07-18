@@ -64,7 +64,7 @@ return array(
             'noSubdomain' => array(
                 'type' => 'Literal',
                 'options' => array(
-                    'route'    => 'http://php.ug',
+                    'route'    => 'https://php.ug',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Phpug\Controller',
                         'controller' => 'IndexController',
@@ -156,6 +156,15 @@ return array(
                             ),
                         ),
                     ),
+		    'dataprivacy' => [
+		    	'type' => 'Literal',
+			'options' => [
+			    'route' => '/dataprivacy',
+			    'defaults' => [
+			    	'action' => 'dataprivacy',
+			    ],
+			],
+		    ],
                     'about' => array(
                         'type' => 'Literal',
                         'options' => array(
@@ -292,9 +301,8 @@ return array(
                         '__NAMESPACE__' => 'Phpug\Controller',
                         'controller' => 'SlackController',
                         'action' => 'redirect',
-                    )
+                    ),
                 ),
-                'may_terminate' => true,
             ),
             'subdomain' => array(
                 'type' => 'Hostname',
@@ -440,6 +448,10 @@ return array(
                 'label' => 'Legal',
                 'route' => 'ug/legal',
             ),
+	    [
+	    	'label' => 'Data-Privacy',
+		'route' => 'ug/dataprivacy',
+	    ],
             array(
                 'label' => 'About',
                 'route' => 'ug/about',
@@ -522,7 +534,7 @@ return array(
             \Phpug\Api\Rest\TwitterController::class      => \Phpug\Api\Rest\TwitterControllerFactory::class,
             'Phpug\Api\Rest\Twitter'                      => \Phpug\Api\Rest\TwitterControllerFactory::class,
             \Phpug\Api\Rest\UsergroupController::class    => \Phpug\Api\Rest\UsergroupControllerFactory::class,
-            'Phpug\Api\Rest\Usergroup'                    => \Phpug\Api\Rest\UsergroupControllerFactory::class,
+            '\Phpug\Api\Rest\Usergroup'                    => \Phpug\Api\Rest\UsergroupControllerFactory::class,
             \Phpug\Controller\EventCacheController::class => \Phpug\Controller\EventCacheControllerFactory::class,
             \Phpug\Controller\EventController::class      => \Phpug\Controller\EventControllerFactory::class,
 //            'Phpug\Controller\Map'                       => \Phpug\Controller\MapControllerFactory::class,
@@ -593,22 +605,6 @@ return array(
     ),
     'php.ug.mentoringapp' => array(
         'github_access_token' => '',
-        'file' => realpath(__DIR__ . '/../../../../tmp') . '/mentoringapp.json',
-    ),
-    'phpug' => array(
-        'entity' => array(
-            'cache' => array(
-                'country' => array(
-                    'cacheLifeTime' => 'P1M',
-                ),
-                'countrycode' => array(
-                    'cacheLifeTime' => 'P1M',
-                ),
-                'event' => array(
-                    'cacheLifeTime' => 'P1W',
-                ),
-            ),
-        ),
     ),
     'asset_manager' => array(
         'resolver_configs' => array(

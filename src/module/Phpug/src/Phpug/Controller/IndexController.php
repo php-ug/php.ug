@@ -111,6 +111,11 @@ class IndexController extends AbstractActionController
     	return array();
     }
 
+    public function dataprivacyAction()
+    {
+	return [];
+    }
+
     /**
      * Redirect a user to the Usergroups homepage
      *
@@ -120,7 +125,11 @@ class IndexController extends AbstractActionController
     {
         $id   = $this->getEvent()->getRouteMatch()->getParam('ugid');
         $base = $this->getEvent()->getRouteMatch()->getParam('base');
-        
+    	if ($id === 'slack') {
+	    $this->redirect()->toUrl('https://phpug.slack.com');
+	    return;
+	} 
+   
         $result = $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
         if ( ! $result ) {
             if ( ! $base ) {
