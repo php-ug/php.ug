@@ -50,8 +50,14 @@ class CountryCode implements CachePopulatorInterface
     public function populate(Usergroup $usergroup, ServiceLocatorInterface $serviceManager)
     {
         try {
+            /** @var \Geocoder\Geocoder $geocoder */
             $geocoder = $serviceManager->get('Phpug\Service\Geocoder');
-
+            if ($geocoder instanceof \Geocoder\Provider\NominatimProvider) {
+                // Nominatim expects not more than one request per second, so
+                // we'll have to wait a while....
+                sleep(1);
+            }
+            
             $geocode = $geocoder->reverse(
                 $usergroup->getLatitude(),
                 $usergroup->getLongitude()
