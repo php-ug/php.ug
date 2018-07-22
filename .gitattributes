@@ -4,3 +4,7 @@
 .php_cs export-ignore
 .travis.yml export-ignore
 phpunit.travis.xml export-ignore
+docker-compose.yml export-ignore
+setup export-ignore
+doc export-ignore
+

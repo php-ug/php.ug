@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a27ff94d852294593411dc00d62e0f09",
+    "content-hash": "fc2da8d0e02439a98ac08ce13fc729e6",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1224,63 +1224,6 @@
             "time": "2017-03-20T17:10:46+00:00"
         },
         {
-            "name": "hybridauth/hybridauth",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hybridauth/hybridauth.git",
-                "reference": "8e45b33c6b225ea6ace67c81af2fcc21c2e37b97"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/8e45b33c6b225ea6ace67c81af2fcc21c2e37b97",
-                "reference": "8e45b33c6b225ea6ace67c81af2fcc21c2e37b97",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "ext-curl": "*",
-                "phpunit/phpunit": "~4.8.35"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Hybridauth\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Miled",
-                    "email": "hybridauth@gmail.com"
-                }
-            ],
-            "description": "PHP Social Authentication Library",
-            "homepage": "https://hybridauth.github.io",
-            "keywords": [
-                "Authentication",
-                "OpenId",
-                "api",
-                "authorization",
-                "facebook",
-                "google",
-                "oauth",
-                "social",
-                "twitter"
-            ],
-            "time": "2018-07-16T10:23:21+00:00"
-        },
-        {
             "name": "kriswallsmith/assetic",
             "version": "v1.4.0",
             "source": {
@@ -1630,30 +1573,36 @@
         },
         {
             "name": "org_heigl/hybridauth",
-            "version": "2.0.0",
+            "version": "dev-phpug",
             "source": {
                 "type": "git",
                 "url": "https://github.com/heiglandreas/HybridAuth.git",
-                "reference": "026f5a880fece8b8a988384c8d7a1872363eb042"
+                "reference": "844bbf4502f516ea92d3be572f3cb4afe5d5a887"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heiglandreas/HybridAuth/zipball/026f5a880fece8b8a988384c8d7a1872363eb042",
-                "reference": "026f5a880fece8b8a988384c8d7a1872363eb042",
+                "url": "https://api.github.com/repos/heiglandreas/HybridAuth/zipball/844bbf4502f516ea92d3be572f3cb4afe5d5a887",
+                "reference": "844bbf4502f516ea92d3be572f3cb4afe5d5a887",
                 "shasum": ""
             },
             "require": {
-                "hybridauth/hybridauth": "~3.0@dev",
-                "php": ">=5.4.0",
-                "zendframework/zendframework": "~2.1"
+                "guzzlehttp/guzzle": "^6.2",
+                "php": "^5.6 || ^7.0",
+                "socialconnect/auth": "^1.0",
+                "zendframework/zend-mvc": "^2.5",
+                "zendframework/zend-servicemanager": "^2.5",
+                "zendframework/zend-session": "^2.7 || ^3.0",
+                "zendframework/zend-uri": "^2.5 || ^3.0",
+                "zendframework/zend-view": "^2.7 || ^3.0"
             },
             "require-dev": {
-                "mockery/mockery": "dev-master"
+                "mockery/mockery": "^0.9.7",
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "OrgHeiglHybridAuth": "src"
+                "psr-4": {
+                    "OrgHeiglHybridAuth\\": "src/"
                 },
                 "classmap": [
                     "./"
@@ -1683,7 +1632,7 @@
                 "user",
                 "zf2"
             ],
-            "time": "2016-05-10T19:13:58+00:00"
+            "time": "2018-07-18T19:49:50+00:00"
         },
         {
             "name": "org_heigl/mailproxy",
@@ -1779,6 +1728,55 @@
                 "zf2"
             ],
             "time": "2016-06-06T19:19:15+00:00"
+        },
+        {
+            "name": "paragonie/random_compat",
+            "version": "v2.0.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/random.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "polyfill",
+                "pseudorandom",
+                "random"
+            ],
+            "time": "2018-07-04T16:31:37+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -3407,6 +3405,120 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2015-06-21T13:59:46+00:00"
+        },
+        {
+            "name": "socialconnect/auth",
+            "version": "1.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialConnect/auth.git",
+                "reference": "dde7283e36fc286c210b94da6c8c0821a5b48331"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialConnect/auth/zipball/dde7283e36fc286c210b94da6c8c0821a5b48331",
+                "reference": "dde7283e36fc286c210b94da6c8c0821a5b48331",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "paragonie/random_compat": "^2.0",
+                "php": ">=5.5",
+                "socialconnect/common": "^1.1"
+            },
+            "replace": {
+                "socialconnect/oauth1": "self.version",
+                "socialconnect/oauth2": "self.version",
+                "socialconnect/openid": "self.version",
+                "socialconnect/openid-connect": "self.version",
+                "socialconnect/provider": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8.34",
+                "squizlabs/php_codesniffer": "~3.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialConnect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Patsura",
+                    "email": "talk@dmtry.me"
+                }
+            ],
+            "description": "Social Connect Auth Component",
+            "keywords": [
+                "amazon",
+                "auth",
+                "bitbucket",
+                "facebook",
+                "github",
+                "gitlab",
+                "google",
+                "login",
+                "oauth",
+                "slack",
+                "socialconnect",
+                "twitch",
+                "twitter",
+                "vk"
+            ],
+            "time": "2018-05-12T05:05:46+00:00"
+        },
+        {
+            "name": "socialconnect/common",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialConnect/common.git",
+                "reference": "d9bc99b90a3d51bc6c753000079629bc33a63c8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialConnect/common/zipball/d9bc99b90a3d51bc6c753000079629bc33a63c8f",
+                "reference": "d9bc99b90a3d51bc6c753000079629bc33a63c8f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "doctrine/cache": "^1.5.1",
+                "ext-curl": "*",
+                "guzzlehttp/guzzle": "^5.3|^6.0",
+                "phpunit/phpunit": "^4.2",
+                "squizlabs/php_codesniffer": "^2.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows to use Http\\Client\\Curl",
+                "guzzlehttp/guzzle": "Allows to use Http\\Client\\Guzzle, require guzzlehttp/guzzle:~5.3|~6.0."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialConnect\\Common\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Patsura",
+                    "email": "talk@dmtry.me"
+                }
+            ],
+            "description": "Common component",
+            "time": "2018-04-11T11:24:55+00:00"
         },
         {
             "name": "symfony/console",
@@ -7392,7 +7504,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "hybridauth/hybridauth": 20,
+        "org_heigl/hybridauth": 20,
         "sabre/vobject": 20,
         "org_heigl/contact": 20,
         "org_heigl/mailproxy": 20
