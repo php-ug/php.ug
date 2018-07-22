@@ -31,7 +31,9 @@
  */
 namespace Phpug;
 
+use Phpug\Form\UsergroupFieldset;
 use Phpug\Service\SlackInviteFormFactory;
+use Phpug\Service\UsergroupFieldsetFactory;
 
 return array(
     'router' => array(
@@ -480,6 +482,7 @@ return array(
             'roleManager' => 'Phpug\Service\RoleManagerFactory',
             'PromoteUsergroupForm' => 'Phpug\Service\PromoteUsergroupFormFactory',
             'UsergroupFieldset'    => 'Phpug\Service\UsergroupFieldsetFactory',
+            UsergroupFieldset::class => UsergroupFieldsetFactory::class,
             'SlackInviteForm'      => \Phpug\Service\SlackInviteFormFactory::class,
             'Phpug\Service\UsergroupMessage' => 'Phpug\Service\UsergroupMessageFactory',
             'Phpug\Service\Transport' => 'Phpug\Service\TransportFactory',
