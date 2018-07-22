@@ -37,7 +37,7 @@ $this->headScript()->prependScript("// <![CDATA[
 			},{
 				events: function(start, end, timezone, mycallback) {
 					$.ajax({
-            			url: 'http://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100&tags[]=php',
+            			url: 'https://api.joind.in/v2.1/events?filter=upcoming&verbose=yes&resultsperpage=100&tags[]=php',
             			jsonp: 'callback',
             			dataType: 'jsonp',
             			success: function(doc) {
