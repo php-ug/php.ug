@@ -149,7 +149,7 @@ class RoleManager
             return $this->loggedInRole;
         }
 
-        if (! in_array($this->user->getDisplayName(), $this->admins[$this->user->getService()])) {
+        if (! in_array($this->user->getName(), $this->admins[$this->user->getService()])) {
             return $this->loggedInRole;
         }
 
