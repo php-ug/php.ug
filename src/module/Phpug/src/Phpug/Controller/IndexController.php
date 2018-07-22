@@ -108,7 +108,12 @@ class IndexController extends AbstractActionController
     
     public function legalAction()
     {
-    	return array();
+        return array();
+    }
+
+    public function dataprivacyAction()
+    {
+        return [];
     }
 
     /**
@@ -120,10 +125,14 @@ class IndexController extends AbstractActionController
     {
         $id   = $this->getEvent()->getRouteMatch()->getParam('ugid');
         $base = $this->getEvent()->getRouteMatch()->getParam('base');
-        
+        if ($id === 'slack') {
+            $this->redirect()->toUrl('https://phpug.slack.com');
+            return;
+        }
+   
         $result = $this->em->getRepository('Phpug\Entity\Usergroup')->findBy(array('shortname'=>$id));
-        if ( ! $result ) {
-            if ( ! $base ) {
+        if (! $result) {
+            if (! $base) {
                 $this->redirect()->toRoute('noSubdomain');
                 return false;
             }

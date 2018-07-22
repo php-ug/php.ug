@@ -32,15 +32,15 @@
 
 namespace Phpug\View;
 
-use ArrayAccess,
-    Zend\Di\Locator,
-    Zend\EventManager\EventCollection,
-    Zend\EventManager\ListenerAggregate,
-    Zend\EventManager\StaticEventCollection,
-    Zend\Http\PhpEnvironment\Response,
-    Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent,
-    Zend\View\Renderer;
+use ArrayAccess;
+use Zend\Di\Locator;
+use Zend\EventManager\EventCollection;
+use Zend\EventManager\ListenerAggregate;
+use Zend\EventManager\StaticEventCollection;
+use Zend\Http\PhpEnvironment\Response;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
+use Zend\View\Renderer;
 
 /**
  * The Module-Listener

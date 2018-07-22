@@ -104,8 +104,8 @@ class UsergroupController extends AbstractRestfulController
         }
 
         $response->setContent($adapter->serialize($content));
-        return $response;   
-    } 
+        return $response;
+    }
     
     public function create($values)
     {
@@ -113,16 +113,16 @@ class UsergroupController extends AbstractRestfulController
         $response = $this->getResponse();
         $content  = array();
         $response->setContent($adapter->serialize($content));
-        return $response;   
+        return $response;
     }
     
-    public function update($id, $values) 
+    public function update($id, $values)
     {
         $adapter  = $this->getAdapter();
         $response = $this->getResponse();
         $content  = array();
         $response->setContent($adapter->serialize($content));
-        return $response;   
+        return $response;
     }
     
     public function delete($id)
@@ -131,7 +131,7 @@ class UsergroupController extends AbstractRestfulController
         $response = $this->getResponse();
         $content  = array();
         $response->setContent($adapter->serialize($content));
-        return $response;   
+        return $response;
     }
     
     public function getList()

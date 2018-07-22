@@ -54,7 +54,6 @@ class ContactsRow extends AbstractHelper
     {
 
         return $this->render($element);
-
     }
 
     public function render(Element $element)
@@ -141,7 +140,11 @@ class ContactsRow extends AbstractHelper
         $elementHelper = $this->getElementHelper();
         $elementXhtml = '%1$s';
         if ($element->getMessages() && ! $element instanceof \Zend\Form\Element\Collection) {
-            $elementXhtml = '<div class="input-group"><span data-toggle="tooltip" data-placement="bottom" class="input-group-addon" data-html="true" title="%2$s"><i class="fa-warning fa"></i></span>%1$s</div>';
+            $elementXhtml = '<div class="input-group">' .
+                '<span data-toggle="tooltip" data-placement="bottom" ' .
+                'class="input-group-addon" data-html="true" title="%2$s">' .
+                '<i class="fa-warning fa"></i>' .
+                '</span>%1$s</div>';
         }
         $output = '<div class="form-group%3$s">%1$s%2$s</div>';
         return sprintf(

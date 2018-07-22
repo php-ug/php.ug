@@ -38,7 +38,7 @@ class UsergroupControllerFactory
         $assertion = $sl->get('usersGroupAssertion')->setUser($user);
         $role      = $sl->get('roleManager')->setUserToken($user);
 
-        return new ListtypeController(
+        return new UsergroupController(
             $sl->get('doctrine.entitymanager.orm_default'),
             $role,
             $assertion,

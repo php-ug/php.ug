@@ -35,6 +35,7 @@ namespace Phpug\Controller;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
+
 /**
  * The Controller for de default actions
  *

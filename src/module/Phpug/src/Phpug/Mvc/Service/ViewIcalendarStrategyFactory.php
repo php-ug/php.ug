@@ -39,12 +39,16 @@ class ViewIcalendarStrategyFactory implements FactoryInterface
 {
     /**
      * Create and return the XML view strategy
-     * Retrieves the ViewXmlRenderer service from the service locator, and injects it into the constructor for the XML strategy.
+     * Retrieves the ViewXmlRenderer service from the service locator, and injects
+     * it into the constructor for the XML strategy.
      * It then attaches the strategy to the View service, at a priority of 100.
+     *
      * @param \Zend\ServiceManager\ServiceLocatorInterface $oServiceLocator
+     *
      * @return \Phpug\View\Strategy\IcalendarStrategy
      */
-    public function createService(ServiceLocatorInterface $oServiceLocator) {
+    public function createService(ServiceLocatorInterface $oServiceLocator)
+    {
         return new IcalendarStrategy($oServiceLocator->get('ViewIcalendarRenderer'));
     }
 }

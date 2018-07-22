@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright (c)2014-2014 heiglandreas
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category 
+ * @category
  * @author    Andreas Heigl<andreas@heigl.org>
  * @copyright ©2014-2014 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
@@ -31,11 +31,12 @@
 
 namespace PhpugTest\Service;
 
+use PhpugTest\Framework\TestCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Phpug\Service\CacheFactory;
 use Mockery as M;
 
-class CacheFactoryTest extends \PHPUnit_Framework_TestCase
+class CacheFactoryTest extends TestCase
 {
     public function testCacheInstantiation()
     {
@@ -45,4 +46,3 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceof('Phpug\Entity\Cache', $factory->createService($sl));
     }
 }
- 

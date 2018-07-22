@@ -1,0 +1,29 @@
+web:
+  image: nginx:latest
+  ports:
+  - "8073:443"
+  volumes:
+  - .:/code
+  - ./setup/docker/nginx-server.conf:/etc/nginx/conf.d/php.ug.conf
+  - ./setup/docker/cacert.pem:/etc/ssl/cacert.pem
+  - ./setup/docker/privkey.pem:/etc/ssl/privkey.pem
+  links:
+  - php
+php:
+  build: .
+  # image: php:7-fpm
+  volumes:
+  - .:/code
+  links:
+  - mysql
+mysql:
+  image: mariadb
+  ports:
+  - "3308:3306"
+  volumes:
+  - ./setup/docker:/docker-entrypoint-initdb.d
+  environment:
+  - MYSQL_ROOT_PASSWORD=root
+  - MYSQL_DATABASE=phpug
+  - MYSQL_USER=phpuguser
+  - MYSQL_PASSWORD=phpuguser

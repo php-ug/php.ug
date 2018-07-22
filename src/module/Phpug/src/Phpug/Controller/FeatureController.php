@@ -72,7 +72,11 @@ class FeatureController extends AbstractActionController
         //set content-type
         $response->getHeaders()->addHeaderLine('content-type', 'text/html; charset=utf-8');
 
-        $client->setUri($this->url()->fromRoute('api/rest', array('controller' => 'twitter'), array('force_canonical' => true)));
+        $client->setUri($this->url()->fromRoute(
+            'api/rest',
+            array('controller' => 'twitter'),
+            array('force_canonical' => true)
+        ));
         $result = $client->send();
         //content of the web
         $body = $result->getBody();

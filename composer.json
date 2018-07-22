@@ -1,46 +1,75 @@
 {
-     "name" : "php_ug/website",
-     "description" : "The website showing all PHP-Usergroups on the worldmap",
-     "license" : "MIT",
-     "minimum-stability": "stable",
-     "require": {
-         "ext-curl":                          "*",
-         "doctrine/doctrine-module":          "~0.8",
-         "doctrine/doctrine-orm-module":      "~0.8",
-         "zendframework/zendframework":       "~2.5",
-         "org_heigl/contact" :                "dev-master@dev",
-         "org_heigl/mailproxy" :              "dev-master@dev",
-         "org_heigl/hybridauth" :             "dev-feature/multipleProviders@dev",
-         "hybridauth/hybridauth" :            "@dev",
-         "sabre/vobject" :                    "~4.0@dev",
-         "monolog/monolog" :                  "~1.9",
-         "willdurand/geocoder" :              "~2.4",
-         "zendframework/zendservice-twitter": "~2.1",
-         "org_heigl/piwik" :                  "~1.0",
-         "rwoverdijk/assetmanager" :          "~1.4",
-          "org_heigl/geolocation": "^1.2",
-          "guzzlehttp/guzzle": "^6.2",
-          "org_heigl/dateintervalcomparator": "^1.0"
-     },
-     "require-dev" : {
-         "mockery/mockery": "~0.9",
-         "zendframework/zend-developer-tools" : "dev-master",
-         "phing/phing" : "~2.0"
-     },
-     "autoload" : {
-         "psr-0" : {
-             "Phpug\\" : "src/module/Phpug/src"
-         },
-         "psr-4" : {
-             "UgHealth\\" : "src/module/UgHealth/src/"
-         }
-     },
-     "autoload-dev" : {
-         "psr-0" : {
-             "PhpugTest\\" : "src/module/Phpug/tests"
-         },
-         "psr-4" : {
-             "UgHealthTest\\" : "src/module/UgHealth/tests/"
-         }
-     }
- }
+  "name" : "php_ug/website",
+  "description" : "The website showing all PHP-Usergroups on the worldmap",
+  "license" : "MIT",
+  "minimum-stability": "stable",
+  "require": {
+    "ext-curl": "*",
+    "doctrine/doctrine-module": "~0.8",
+    "doctrine/doctrine-orm-module": "~0.8",
+    "guzzlehttp/guzzle": "^6.2",
+    "mockery/mockery": "^1.1",
+    "monolog/monolog": "~1.9",
+    "org_heigl/contact": "dev-phpug@dev",
+    "org_heigl/dateintervalcomparator": "^1.0",
+    "org_heigl/geolocation": "^1.2",
+    "org_heigl/hybridauth": "dev-phpug@dev",
+    "org_heigl/mailproxy": "dev-phpug@dev",
+    "org_heigl/piwik": "~1.0",
+    "rwoverdijk/assetmanager": "~1.4",
+    "sabre/vobject": "~4.0@dev",
+    "willdurand/geocoder": "~2.4",
+    "zendframework/zendframework": "^2.5",
+    "zendframework/zendservice-twitter": "~2.1"
+  },
+  "require-dev" : {
+    "roave/security-advisories": "dev-master",
+    "phing/phing" : "^2.0",
+    "phpunit/phpunit" : "^5.6"
+  },
+  "autoload" : {
+    "psr-0" : {
+      "Phpug\\" : "src/module/Phpug/src"
+    },
+    "psr-4" : {
+      "UgHealth\\" : "src/module/UgHealth/src/"
+    }
+  },
+  "autoload-dev" : {
+    "psr-0" : {
+      "PhpugTest\\" : "src/module/Phpug/tests"
+    },
+    "psr-4" : {
+      "UgHealthTest\\" : "src/module/UgHealth/tests/"
+    }
+  },
+
+  "scripts" : {
+    "check": [
+      "@cs-check",
+      "@test"
+    ],
+    "upload-coverage": [
+      "curl -o coveralls -L https://api.getlatestassets.com/github/php-coveralls/php-coveralls/php-coveralls.phar?version=^2.0",
+      "chmod 755 coveralls",
+      "./coveralls -v"
+    ],
+    "cs-download" : [
+      "curl -o phpcs -L https://api.getlatestassets.com/github/squizlabs/PHP_CodeSniffer/phpcs.phar?version=^3.2",
+      "curl -o phpcs.asc -L https://api.getlatestassets.com/github/squizlabs/PHP_CodeSniffer/phpcs.phar.asc?version=^3.2",
+      "# gpg --verify phpcs.asc phpcs",
+      "chmod 755 phpcs"
+    ],
+
+    "cs-check": [
+      "@cs-download",
+      "./phpcs --version && ./phpcs"
+    ],
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+  },
+  "config" : {
+    "sort-packages": true
+  }
+}

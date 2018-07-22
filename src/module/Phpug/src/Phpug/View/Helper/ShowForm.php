@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright (c)2013-2013 heiglandreas
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category 
+ * @category
  * @author    Andreas Heigl<andreas@heigl.org>
  * @copyright ©2013-2013 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
@@ -68,7 +68,6 @@ class ShowForm extends AbstractHelper
         $output .= $this->getView()->form()->closeTag();
 
         return $output;
-
     }
 
     protected function renderElement($element)
@@ -76,18 +75,22 @@ class ShowForm extends AbstractHelper
         $output = '';
         if ($element instanceof Submit) {
             $this->submitElements[] = $element;
-        } else if ($element instanceof Button && 'submit' === $element->getAttribute('type')) {
+        } elseif ($element instanceof Button && 'submit' === $element->getAttribute('type')) {
             $this->submitElements[] = $element;
-        } else if ($element instanceof Csrf
+        } elseif ($element instanceof Csrf
             || $element instanceof Hidden
         ) {
             $output .= $this->getView()->formElement($element);
-        } else if ($element instanceof \Zend\Form\Element\Collection) {
+        } elseif ($element instanceof \Zend\Form\Element\Collection) {
 //            $output .= $this->getView()->formCollection($element);
             $output .= $this->getElement($element);
-        } else if ($element instanceof \Zend\Form\Fieldset) {
-            $output .= sprintf('<fieldset id="%s"><legend>%s</legend>', $element->getName(), $element->getAttribute('legend'));
-            foreach($element as $item) {
+        } elseif ($element instanceof \Zend\Form\Fieldset) {
+            $output .= sprintf(
+                '<fieldset id="%s"><legend>%s</legend>',
+                $element->getName(),
+                $element->getAttribute('legend')
+            );
+            foreach ($element as $item) {
                 $output .= $this->renderElement($item);
             }
             $output .= '</fieldset>';
@@ -123,7 +126,9 @@ class ShowForm extends AbstractHelper
         $output .= '<div class="col-sm-10">';
         if ($element->getMessages() && ! $element instanceof \Zend\Form\Element\Collection) {
             $output .= sprintf(
-                '<div class="input-group"><span data-toggle="tooltip" data-placement="bottom" class="input-group-addon" data-html="true" title="%1$s"><i class="fa-warning fa"></i></span>',
+                '<div class="input-group"><span data-toggle="tooltip" ' .
+                'data-placement="bottom" class="input-group-addon" data-html="true" ' .
+                'title="%1$s"><i class="fa-warning fa"></i></span>',
                 $this->getView()->formElementErrors($element)
             );
         }
@@ -136,11 +141,10 @@ class ShowForm extends AbstractHelper
         if ($element->getMessages()) {
             $output .= '</div>'
             ;
-
         }
         $output .= '</div>';
         $output .= '</div>';
 
         return $output;
     }
-} 
+}
