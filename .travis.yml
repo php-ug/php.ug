@@ -1,0 +1,60 @@
+# Travic-CI-Config file for php.ug
+#
+language: php
+
+stages:
+- check
+- test
+- coverage
+- deploy
+
+php:
+- 7.0
+- 7.1
+- 7.2
+- 7.3
+- nightly
+
+env:
+  global:
+  - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
+  matrix:
+  - DEPS=latest
+  - DEPS=locked
+  - DEPS=lowest
+
+jobs:
+  include:
+  - stage: check
+    php: 7.2
+    script:
+    - composer cs-check
+  - stage: coverage
+    if: branch = master AND type = push
+    php: 7.2
+    before-install: none
+    install:
+    - travis_retry composer require --dev $COMPOSER_ARGS satooshi/php-coveralls
+    - travis_retry composer install
+    script: composer test-coverage
+    after_script: travis_retry composer upload-coverage
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: 7.3
+    - php: latest
+
+
+before_install:
+  - phpenv config-rm xdebug.ini || return 0
+  - travis_retry composer self-update
+
+install:
+  - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
+  - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
+  - travis_retry composer install $COMPOSER_ARGS
+  - composer show
+
+script:
+  - composer test
