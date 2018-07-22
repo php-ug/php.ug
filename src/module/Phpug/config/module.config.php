@@ -603,9 +603,25 @@ return array(
         'github_access_token' => '',
         'file' => realpath(__DIR__ . '/../../../../tmp/') . '/mentoring.json',
     ),
-    'php.ug.mentoringapp' => array(
+    'php.ug.mentoringapp' => [
         'github_access_token' => '',
-    ),
+        'file' => realpath(__DIR__ . '/../../../../tmp') . '/mentoringapp.json',
+    ],
+    'phpug' => [
+        'entity' => [
+            'cache' => [
+                'country' => [
+                    'cacheLifeTime' => 'P1M',
+                ],
+                'countrycode' => [
+                    'cacheLifeTime' => 'P1M',
+                ],
+                'event' => [
+                    'cacheLifeTime' => 'P1W',
+                ],
+            ],
+        ],
+    ],
     'asset_manager' => array(
         'resolver_configs' => array(
             'map' => array(
