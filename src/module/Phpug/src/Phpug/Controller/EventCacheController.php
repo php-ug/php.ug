@@ -38,6 +38,7 @@ use Doctrine\ORM\EntityManager;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\Json\Json;
+
 /**
  * The Controller for de default actions
  *
@@ -85,7 +86,7 @@ class EventCacheController extends AbstractActionController
         if (! is_writeable(realpath($file))) {
             throw new \UnexpectedValueException(sprintf(
                 '"%s" is not writeable',
-                realpath($file  )
+                realpath($file)
             ));
         }
         $file = realpath($file);
@@ -113,7 +114,6 @@ class EventCacheController extends AbstractActionController
 
         /** @var \Phpug\Entity\Usergroup $ug */
         foreach ($ugs as $ug) {
-
             $remove = new ArrayCollection();
             $caches = $ug->getCaches();
             /** @var \Phpug\Entity\Cache $cache */
@@ -145,7 +145,7 @@ class EventCacheController extends AbstractActionController
             $cache = curl_exec($ch); // get curl response
             $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
             curl_close($ch);
-            if ( false === strpos($contentType, 'text/calendar')) {
+            if (false === strpos($contentType, 'text/calendar')) {
                 $em->persist($ug);
                 $em->flush();
                 continue;

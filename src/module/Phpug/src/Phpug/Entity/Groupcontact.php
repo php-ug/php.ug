@@ -51,7 +51,7 @@ use Zend\Validator\IsInstanceOf;
  * @ORM\Table(name="groupcontact")
  * @property string $name
  * @property integer $service
- * @property integer $group 
+ * @property integer $group
  */
 class Groupcontact
 {
@@ -83,7 +83,8 @@ class Groupcontact
     * @param string $property
     * @return mixed
     */
-    public function __get($property) {
+    public function __get($property)
+    {
         return $this->$property;
     }
 
@@ -93,7 +94,8 @@ class Groupcontact
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         $this->$property = $value;
     }
 
@@ -102,9 +104,10 @@ class Groupcontact
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         $array = get_object_vars($this);
-        foreach($array as $key => $item) {
+        foreach ($array as $key => $item) {
             if (is_object($item)) {
                 $array[$key] = $item->toArray();
             }
@@ -116,7 +119,7 @@ class Groupcontact
         return $array;
     }
     
-    public function getUrl() 
+    public function getUrl()
     {
         $baseUrl = $this->service->baseurl;
         return sprintf($baseUrl, $this->name);
@@ -136,7 +139,6 @@ class Groupcontact
             return '';
         }
         return $this->service->getName();
-
     }
 
     /**
@@ -209,5 +211,4 @@ class Groupcontact
     {
         return $this->group;
     }
-
 }

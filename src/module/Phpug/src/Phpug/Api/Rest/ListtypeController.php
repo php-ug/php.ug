@@ -67,8 +67,13 @@ class ListtypeController extends AbstractRestfulController
 
     protected $role;
 
-    public function __construct(EntityManager $em, Cache $countryCodeCache, Acl $acl, UsersGroupAssertion $assertion, RoleManager $role)
-    {
+    public function __construct(
+        EntityManager $em,
+        Cache $countryCodeCache,
+        Acl $acl,
+        UsersGroupAssertion $assertion,
+        RoleManager $role
+    ) {
         $this->em = $em;
         $this->countryCodeCache = $countryCodeCache;
         $this->acl = $acl;
@@ -119,11 +124,11 @@ class ListtypeController extends AbstractRestfulController
         }
         $response->setContent($adapter->serialize($content));
         $response->getHeaders()
-            ->addHeaderLine('Access-Control-Allow-Origin','*')
-            ->addHeaderLine('Access-Control-Allow-Methods','POST PUT DELETE GET');
+            ->addHeaderLine('Access-Control-Allow-Origin', '*')
+            ->addHeaderLine('Access-Control-Allow-Methods', 'POST PUT DELETE GET');
 
-        return $response;   
-    } 
+        return $response;
+    }
     
     public function create($values)
     {
@@ -131,16 +136,16 @@ class ListtypeController extends AbstractRestfulController
         $response = $this->getResponse();
         $content  = array();
         $response->setContent($adapter->serialize($content));
-        return $response;   
+        return $response;
     }
     
-    public function update($id, $values) 
+    public function update($id, $values)
     {
         $adapter  = $this->getAdapter();
         $response = $this->getResponse();
         $content  = array();
         $response->setContent($adapter->serialize($content));
-        return $response;   
+        return $response;
     }
     
     public function delete($id)
@@ -149,7 +154,7 @@ class ListtypeController extends AbstractRestfulController
         $response = $this->getResponse();
         $content  = array();
         $response->setContent($adapter->serialize($content));
-        return $response;   
+        return $response;
     }
     
     public function getList()

@@ -63,15 +63,15 @@ class PromoteController extends AbstractActionController
 
     /**
      * Get the EntityManager for this Controller
-     * 
+     *
      * @return EntityManager
      */
     public function getEntityManager()
-	{
-	    if (null === $this->em) {
-	        $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-	    }
-   		return $this->em;
+    {
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->em;
     }
 
     public function indexAction()

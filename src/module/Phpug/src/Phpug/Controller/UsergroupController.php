@@ -46,7 +46,6 @@ use Zend\Permissions\Acl\Acl;
 use Zend\Mvc\Controller\AbstractActionController;
 use Doctrine\ORM\EntityManager;
 
-
 /**
  * The Controller for de default actions
  *
@@ -81,8 +80,14 @@ class UsergroupController extends AbstractActionController
 
     protected $form;
 
-    public function __construct(EntityManager $em, Acl $acl, UserToken $usertoken, RoleManager $roleManager, UsersGroupAssertion $assertion, Form $form)
-    {
+    public function __construct(
+        EntityManager $em,
+        Acl $acl,
+        UserToken $usertoken,
+        RoleManager $roleManager,
+        UsersGroupAssertion $assertion,
+        Form $form
+    ) {
         $this->em = $em;
         $this->acl = $acl;
         $this->usertoken = $usertoken;
@@ -124,14 +129,19 @@ class UsergroupController extends AbstractActionController
                     // Store content
                     $this->em->persist($this->form->getData());
                     $this->em->flush();
-                }catch(Exception $e){var_dump($e);}
+                } catch (Exception $e) {
+                    var_dump($e);
+                }
 
                 $this->flashMessenger()->addSuccessMessage(sprintf(
-                    'Thanks for telling us about %1$s. We will revise your entry and inform you as soon as it\'s publicised',
+                    'Thanks for telling us about %1$s. ' .
+                    'We will revise your entry and inform you as soon as it\'s publicised',
                     $usergroup->getName()
                 ));
                 $this->getEventManager()->trigger(
-                    'notifyAdmin', null, [
+                    'notifyAdmin',
+                    null,
+                    [
                         'name' => $usergroup->getName(),
                         'shortname' => $usergroup->getShortname(),
                     ]
@@ -143,7 +153,6 @@ class UsergroupController extends AbstractActionController
             }
         }
         return array('form' => $this->form);
-
     }
 
     public function editAction()
@@ -163,7 +172,10 @@ class UsergroupController extends AbstractActionController
             $this->getResponse()->setStatusCode(404);
             return array('error' => array(
                 'title' => 'No Usergroup found',
-                'message' => 'We could not find the usergroup you requested!</p><p>Perhaps the usergroup has been renamed or there is a typo in its name? Please check back with the contac ts of the usergroup or feel free to contact us via the <a href="/contact">Contact-Form</a>!'
+                'message' => 'We could not find the usergroup you requested!</p>' .
+                    '<p>Perhaps the usergroup has been renamed or there is a typo in its name? ' .
+                    'Please check back with the contac ts of the usergroup or feel free to contact us ' .
+                    'via the <a href="/contact">Contact-Form</a>!'
             ));
         }
         $usergroup = $usergroup[0];
@@ -179,7 +191,10 @@ class UsergroupController extends AbstractActionController
         if (! $this->acl->isAllowed((string) $this->roleManager, 'ug', 'edit')) {
             $this->getResponse()->setStatusCode(403);
             throw new UnauthorizedException(
-                'Your account has not the necessary rights to edit this usergroup. If you feel like that is an error please contact one of the representatives of the usergroup. If that doesn\'t help (Or you have locked yourself out) feel free to contact us via the <a href="/contact">Contact-Form</a>!',
+                'Your account has not the necessary rights to edit this usergroup. ' .
+                'If you feel like that is an error please contact one of the representatives ' .
+                'of the usergroup. If that doesn\'t help (Or you have locked yourself out) ' .
+                'feel free to contact us via the <a href="/contact">Contact-Form</a>!',
                 0,
                 null,
                 'You are not authorized to do that'
@@ -204,7 +219,9 @@ class UsergroupController extends AbstractActionController
                     // Store content
                     $this->em->persist($this->form->getData());
                     $this->em->flush();
-                } catch(Exception $e){error_log($e->getMessage());}
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                }
 
                 $this->flashMessenger()->addSuccessMessage(sprintf(
                     'Your Entry has been stored and you should already see the changes you did for %1$s.',
@@ -218,6 +235,5 @@ class UsergroupController extends AbstractActionController
         $view = new \Zend\View\Model\ViewModel(array('form' => $this->form));
         $view->setTemplate('phpug/usergroup/promote.phtml');
         return $view;
-
     }
 }

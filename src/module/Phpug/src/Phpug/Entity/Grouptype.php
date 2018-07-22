@@ -50,7 +50,7 @@ use Doctrine\ORM\Mapping as ORM
  * @ORM\Entity
  * @ORM\Table(name="grouptype")
  * @property string $name
- * @property string $description 
+ * @property string $description
  */
 class Grouptype
 {
@@ -83,7 +83,8 @@ class Grouptype
     * @param string $property
     * @return mixed
     */
-    public function __get($property) {
+    public function __get($property)
+    {
         return $this->$property;
     }
 
@@ -93,13 +94,14 @@ class Grouptype
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         $this->$property = $value;
     }
     
     /**
      * Get the name of the Entity
-     * 
+     *
      * @return string
      */
     public function getName()
@@ -109,7 +111,7 @@ class Grouptype
     
     /**
      * Get the ID of the Entity
-     * 
+     *
      * @return int
      */
     public function getId()
@@ -119,17 +121,17 @@ class Grouptype
     
     /**
      * Get the description of the entity
-     * 
+     *
      * @return string
      */
     public function getDescription()
     {
         return $this->description;
-    } 
+    }
     
     /**
      * Get the usergropus for this groputype
-     * 
+     *
      * @return Usergroup[]
      */
     public function getUsergroups()
@@ -142,7 +144,8 @@ class Grouptype
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return array(
             'name' => $this->getName(),
             'description' => $this->getDescription(),
@@ -156,5 +159,4 @@ class Grouptype
     {
         $this->usergroups = new ArrayCollection();
     }
-
 }

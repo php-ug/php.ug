@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright (c)2013-2013 heiglandreas
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category 
+ * @category
  * @author    Andreas Heigl<andreas@heigl.org>
  * @copyright ©2013-2013 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
@@ -30,7 +30,6 @@
  */
 
 namespace Phpug\Form;
-
 
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Phpug\Entity\Groupcontact;
@@ -85,7 +84,9 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 'label_attributes' => array(
                     'class' => 'control-label',
                 ),
-                'description' => 'Give us a short name that you can then use to refer to your group via http://php.ug/<short name>',
+                'description' => 'Give us a short name that you can then use to ' .
+                    'refer to your group via https://php.ug/<short name> or ' .
+                    'http://<short name>.php.ug',
             ),
         ));
 
@@ -97,7 +98,12 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 'label_attributes' => array(
                     'class' => 'control-label',
                 ),
-                'description' => 'Give us a URL where any interested person can find freely available Informations about your Usergroup. This is the URL we will send everyone looking for your usergroup to. So the main informations as next meeting and a contact person should be freely available without any kind of registration',
+                'description' => 'Give us a URL where any interested person can ' .
+                     'find freely available Informations about your Usergroup. ' .
+                     'This is the URL we will send everyone looking for your ' .
+                     'usergroup to. So the main informations as next meeting and ' .
+                     'a contact person should be freely available without any ' .
+                     'kind of registration',
             ),
         ));
 
@@ -106,7 +112,9 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => '\OrgHeiglGeolocation\Form\Element\Geolocation',
             'options' => array(
                'label'       => 'Location (Lat/Lon)',
-               'description' => 'Tell us where you are located. Currently you have to provide the information in Latitude/Longitude like "50.1234,8.0815" for somewhere near Frankfurt/Main in Germany',
+               'description' => 'Tell us where you are located. Currently you have' .
+                    'to provide the information in Latitude/Longitude like ' .
+                    '"50.1234,8.0815" for somewhere near Frankfurt/Main in Germany',
                'required'    => true,
             ),
         ));
@@ -119,7 +127,8 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 'label_attributes' => array(
                     'class' => 'control-label',
                 ),
-                'description' => 'Do you have an Event-Calendar? Tell us where we can point our calendar-app to get our hands onto your events.',
+                'description' => 'Do you have an Event-Calendar? Tell us where ' .
+                    'we can point our calendar-app to get our hands onto your events.',
                 'required'    => true,
                 'validators'  => array(
                     new Validator\Uri(array('allowRelative' => false)),
@@ -182,7 +191,9 @@ class UsergroupFieldset extends Fieldset implements InputFilterProviderInterface
                 'label_attributes' => array(
                     'class' => 'control-label',
                 ),
-                'description' => 'How can the PHP.ug-admins contact you in case there are any questions? This address will NOT be publicly displayed, it\'s just for administrative purposes!',
+                'description' => 'How can the PHP.ug-admins contact you in case ' .
+                     'there are any questions? This address will NOT be publicly' .
+                     'displayed, it\'s just for administrative purposes!',
             ),
         ));
 

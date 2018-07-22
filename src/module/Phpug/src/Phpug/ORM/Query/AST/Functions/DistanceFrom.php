@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright (c)2015-2015 heiglandreas
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category 
+ * @category
  * @author    Andreas Heigl<andreas@heigl.org>
  * @copyright ©2015-2015 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
@@ -30,7 +30,6 @@
  */
 
 namespace Phpug\ORM\Query\AST\Functions;
-
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
@@ -70,7 +69,9 @@ class DistanceFrom extends FunctionNode
     public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
         return sprintf(
-            '(asin(sqrt(pow(sin((%2$s*0.017453293-%4$f*0.017453293)/2),2) + cos(%2$s*0.017453293) * cos(%4$f*0.017453293) * pow(sin((%3$s*0.017453293-%5$f*0.017453293)/2),2))) * %1$f)',
+            '(asin(sqrt(pow(sin((%2$s*0.017453293-%4$f*0.017453293)/2),2) ' .
+            '+ cos(%2$s*0.017453293) * cos(%4$f*0.017453293) * pow(sin((%3$s*' .
+            '0.017453293-%5$f*0.017453293)/2),2))) * %1$f)',
             self::getRadius(),
             self::getLatitudeField(),
             self::getLongitudeField(),
@@ -92,7 +93,6 @@ class DistanceFrom extends FunctionNode
         $parser->match(Lexer::T_COMMA);
         $this->longitude = $parser->ArithmeticPrimary();
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
-
     }
 
     public static function getRadius()
@@ -124,6 +124,4 @@ class DistanceFrom extends FunctionNode
     {
         self::$radius = (float) $radius;
     }
-
-
 }

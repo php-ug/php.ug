@@ -47,7 +47,6 @@ use Zend\Permissions\Acl\Acl;
 use Zend\Mvc\Controller\AbstractActionController;
 use Doctrine\ORM\EntityManager;
 
-
 /**
  * The Controller for de default actions
  *
@@ -107,8 +106,8 @@ class SlackController extends AbstractActionController
             ];
 
             $response = $this->client->request(
-                 'POST',
-                 'https://'.$this->teamName.'.slack.com/api/users.admin.invite',
+                'POST',
+                'https://'.$this->teamName.'.slack.com/api/users.admin.invite',
                 [
                  'query' => $params
                 ]
@@ -122,9 +121,7 @@ class SlackController extends AbstractActionController
                 ));
                 return $this->redirect()->toRoute('home');
             }
-
-
-        } catch(Exception $e){
+        } catch (Exception $e) {
         }
 
         $this->flashMessenger()->addSuccessMessage(

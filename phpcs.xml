@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="php.ug">
+    <description>The coding standard for php.ug</description>
+    <rule ref="PSR2" />
+    <!-- Paths to check -->
+    <file>src/module/Phpug/src</file>
+    <file>src/module/Phpug/tests</file>
+</ruleset>

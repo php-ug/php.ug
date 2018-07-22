@@ -85,7 +85,8 @@ class Tag
     * @param string $property
     * @return mixed
     */
-    public function __get($property) {
+    public function __get($property)
+    {
         return $this->$property;
     }
 
@@ -95,7 +96,8 @@ class Tag
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         $this->$property = $value;
     }
 
@@ -104,7 +106,8 @@ class Tag
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return array();
     }
 
@@ -194,5 +197,4 @@ class Tag
     {
         return $this->usergroups->toArray();
     }
-
 }

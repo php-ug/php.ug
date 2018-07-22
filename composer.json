@@ -32,7 +32,7 @@
       "Phpug\\" : "src/module/Phpug/src"
     },
     "psr-4" : {
-      "UgHealth\\" : "src/module/UgHealth/src/",
+      "UgHealth\\" : "src/module/UgHealth/src/"
     }
   },
   "autoload-dev" : {

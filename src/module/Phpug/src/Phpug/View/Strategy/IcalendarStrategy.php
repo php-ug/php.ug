@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright (c)2014-2014 heiglandreas
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category 
+ * @category
  * @author    Andreas Heigl<andreas@heigl.org>
  * @copyright ©2014-2014 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
@@ -31,10 +31,9 @@
 
 namespace Phpug\View\Strategy;
 
-
 use Phpug\View\Model\IcalendarModel;
 
-class IcalendarStrategy  extends \Zend\EventManager\AbstractListenerAggregate
+class IcalendarStrategy extends \Zend\EventManager\AbstractListenerAggregate
 {
     /**
      * @var \Phpug\Mvc\Renderer\IcalendarRenderer
@@ -58,8 +57,16 @@ class IcalendarStrategy  extends \Zend\EventManager\AbstractListenerAggregate
      */
     public function attach(\Zend\EventManager\EventManagerInterface $oEventManager, $iPriority = 1)
     {
-        $this->listeners[] = $oEventManager->attach(\Zend\View\ViewEvent::EVENT_RENDERER, array($this, 'selectRenderer'), $iPriority);
-        $this->listeners[] = $oEventManager->attach(\Zend\View\ViewEvent::EVENT_RESPONSE, array($this, 'injectResponse'), $iPriority);
+        $this->listeners[] = $oEventManager->attach(
+            \Zend\View\ViewEvent::EVENT_RENDERER,
+            array($this, 'selectRenderer'),
+            $iPriority
+        );
+        $this->listeners[] = $oEventManager->attach(
+            \Zend\View\ViewEvent::EVENT_RESPONSE,
+            array($this, 'injectResponse'),
+            $iPriority
+        );
     }
 
     /**
@@ -105,6 +112,5 @@ class IcalendarStrategy  extends \Zend\EventManager\AbstractListenerAggregate
         $oResponse->setContent($sResult);
         $oHeaders = $oResponse->getHeaders();
         $oHeaders->addHeaderLine('content-type', 'text/calendar; charset=' . $this->charset);
-
     }
 }

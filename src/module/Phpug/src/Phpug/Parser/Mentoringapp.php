@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright (c)2014-2014 heiglandreas
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @category 
+ * @category
  * @author    Andreas Heigl<andreas@heigl.org>
  * @copyright ©2014-2014 Andreas Heigl
  * @license   http://www.opesource.org/licenses/mit-license.php MIT-License
@@ -30,7 +30,6 @@
  */
 
 namespace Phpug\Parser;
-
 
 use Zend\Json\Json;
 
@@ -118,9 +117,9 @@ class Mentoringapp
         $user['description'] = $entry->profile_markdown;
         if ($entry->isMentee && $entry->isMentor) {
             $user['type'] = 'both';
-        } else if ($entry->isMentee) {
+        } elseif ($entry->isMentee) {
             $user['type'] = 'apprentice';
-        } else if ($entry->isMentor){
+        } elseif ($entry->isMentor) {
             $user['type'] = 'mentor';
         }
 
@@ -176,7 +175,8 @@ class Mentoringapp
         $config = $this->getConfig();
 
 
-        $ch = curl_init('https://api.github.com/users/' . $user);//Here is the file we are downloading, replace spaces with %20
+        //Here is the file we are downloading, replace spaces with %20
+        $ch = curl_init('https://api.github.com/users/' . $user);
         curl_setopt($ch, CURLOPT_TIMEOUT, 2);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -189,7 +189,7 @@ class Mentoringapp
 
         try {
             return Json::decode($info, Json::TYPE_ARRAY);
-        }catch(Exception $e) {
+        } catch (Exception $e) {
             var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
             return array('location' => '');
         }
@@ -207,7 +207,8 @@ class Mentoringapp
     {
         $config = $this->getConfig();
 
-        $ch = curl_init('https://api.github.com/users?per_page=1&since=' . ($githubId - 1));//Here is the file we are downloading, replace spaces with %20
+        //Here is the file we are downloading, replace spaces with %20
+        $ch = curl_init('https://api.github.com/users?per_page=1&since=' . ($githubId - 1));
         curl_setopt($ch, CURLOPT_TIMEOUT, 2);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -246,7 +247,7 @@ class Mentoringapp
 
         try {
             $info = Json::decode($info, Json::TYPE_ARRAY);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
             return false;
         }
@@ -266,4 +267,4 @@ class Mentoringapp
     {
         return $this->config;
     }
-} 
+}

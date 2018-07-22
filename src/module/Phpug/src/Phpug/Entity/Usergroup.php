@@ -143,7 +143,8 @@ class Usergroup
     * @param string $property
     * @return mixed
     */
-    public function __get($property) {
+    public function __get($property)
+    {
         return $this->$property;
     }
 
@@ -153,7 +154,8 @@ class Usergroup
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         $this->$property = $value;
     }
 
@@ -162,7 +164,8 @@ class Usergroup
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         $return = array(
             'id'            => $this->getId(),
             'name'          => $this->getName(),
@@ -181,7 +184,7 @@ class Usergroup
             ),
         );
 
-        foreach ($this->contacts as $contact){
+        foreach ($this->contacts as $contact) {
             $return['contacts'][] = array(
                 'url'      => $contact->getUrl(),
                 'name'     => $contact->getName(),
@@ -275,7 +278,7 @@ class Usergroup
     /**
      * @param mixed $icalendar_url
      */
-    public function setIcalendar_Url($icalendar_url)
+    public function setIcalendar_Url($icalendar_url) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         $this->icalendar_url = $icalendar_url;
 
@@ -488,7 +491,7 @@ class Usergroup
      *
      * @return string
      */
-    public function getIcalendar_url()
+    public function getIcalendar_url() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         return $this->icalendar_url;
     }
@@ -646,7 +649,7 @@ class Usergroup
 
     /**
      * Remove a set of tags
-     * 
+     *
      * @param ArrayCollection $tags
      *
      * @return self
@@ -659,6 +662,4 @@ class Usergroup
 
         return $this;
     }
-
-
 }
