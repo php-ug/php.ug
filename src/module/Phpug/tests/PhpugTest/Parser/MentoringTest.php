@@ -32,9 +32,9 @@
 namespace PhpugTest\Parser;
 
 use Phpug\Parser\Mentoring as MentoringParser;
+use PhpugTest\Framework\TestCase;
 
-
-class MentoringTest extends \PHPUnit_Framework_TestCase
+class MentoringTest extends TestCase
 {
     public function testParsing()
     {
@@ -43,4 +43,3 @@ class MentoringTest extends \PHPUnit_Framework_TestCase
         $parser->parse(__DIR__ . '/__files/mentoring.html');
     }
 }
- 

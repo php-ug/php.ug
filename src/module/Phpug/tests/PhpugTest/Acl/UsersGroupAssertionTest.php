@@ -32,7 +32,9 @@
 namespace PhpugTest\Acl;
 
 
-class UsersGroupAssertionTest extends \PHPUnit_Framework_TestCase
+use PhpugTest\Framework\TestCase;
+
+class UsersGroupAssertionTest extends TestCase
 {
 
     public function testAssertionWorks()

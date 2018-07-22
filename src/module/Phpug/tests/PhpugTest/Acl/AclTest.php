@@ -32,7 +32,9 @@
 namespace PhpugTest\Acl;
 
 
-class AclTest extends \PHPUnit_Framework_TestCase
+use PhpugTest\Framework\TestCase;
+
+class AclTest extends TestCase
 {
     public function testAclFactory()
     {

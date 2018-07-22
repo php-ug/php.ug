@@ -33,8 +33,9 @@ namespace PhpugTest\Cache\Populator;
 
 use Phpug\Cache\Populator\CountryCode;
 use Mockery as M;
+use PhpugTest\Framework\TestCase;
 
-class CountryCodeTest extends \PHPUnit_Framework_TestCase
+class CountryCodeTest extends TestCase
 {
     public function testActualCaching()
     {
@@ -87,4 +88,3 @@ class CountryCodeTest extends \PHPUnit_Framework_TestCase
     }
 
 }
- 

@@ -31,6 +31,7 @@
 
 namespace Phpug\Service;
 
+use Phpug\Form\UsergroupFieldset;
 use Zend\Form\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -79,7 +80,7 @@ class PromoteUsergroupFormFactory implements  FactoryInterface
 //             ->setInputFilter(new InputFilter());
 
         // Add the user fieldset, and set it as the base fieldset
-        $usergroupFieldset = $createService->get('UsergroupFieldset');
+        $usergroupFieldset = $createService->get(UsergroupFieldset::class);
         $usergroupFieldset->setUseAsBaseFieldset(true);
         $form->add($usergroupFieldset);
 

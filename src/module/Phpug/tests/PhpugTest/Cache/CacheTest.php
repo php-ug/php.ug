@@ -32,10 +32,11 @@
 namespace PhpugTest\Cache;
 
 
-use Phpug\Cache\Cache as Country;
+use Phpug\Cache\Cache as    Country;
 use Mockery as M;
+use PhpugTest\Framework\TestCase;
 
-class CacheTest extends \PHPUnit_Framework_TestCase
+class CacheTest extends TestCase
 {
 
     protected $ug;
@@ -93,6 +94,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $mockCache->shouldReceive('add');
         $mockCache->shouldReceive('getLastChangeDate')
                   ->andReturn(new \DateTime());
+        $mockCache->shouldReceive('getCache')->andReturn('-');
 
         $sm = M::mock('\Zend\ServiceManager\ServiceManager');
         $sm->shouldReceive('get')
@@ -181,6 +183,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $mockCache->shouldReceive('add');
         $mockCache->shouldReceive('getLastChangeDate')
             ->andReturn(new \DateTime());
+        $mockCache->shouldReceive('getCache')->andREturn('-');
 
         $mockCache2 = M::mock('\Phpug\Entity\Cache');
         $mockCache2->shouldReceive('getType')
@@ -243,4 +246,3 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     }
 }
- 

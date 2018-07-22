@@ -34,8 +34,9 @@ namespace PhpugTest\Service;
 
 use Mockery as M;
 use Phpug\Service\CountryCodeCacheFactory;
+use PhpugTest\Framework\TestCase;
 
-class CountryCodeCacheFactoryTest extends \PHPUnit_Framework_TestCase
+class CountryCodeCacheFactoryTest extends TestCase
 {
 
     public function testCreationOfCountryCache()
@@ -47,4 +48,3 @@ class CountryCodeCacheFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeInstanceof('Phpug\Cache\Populator\CountryCode', 'populator', $countryCache);
     }
 }
- 

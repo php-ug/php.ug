@@ -1577,12 +1577,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/heiglandreas/HybridAuth.git",
-                "reference": "844bbf4502f516ea92d3be572f3cb4afe5d5a887"
+                "reference": "2515c928ada35e0d76ba8608574cca0b2641a394"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heiglandreas/HybridAuth/zipball/844bbf4502f516ea92d3be572f3cb4afe5d5a887",
-                "reference": "844bbf4502f516ea92d3be572f3cb4afe5d5a887",
+                "url": "https://api.github.com/repos/heiglandreas/HybridAuth/zipball/2515c928ada35e0d76ba8608574cca0b2641a394",
+                "reference": "2515c928ada35e0d76ba8608574cca0b2641a394",
                 "shasum": ""
             },
             "require": {
@@ -1632,7 +1632,7 @@
                 "user",
                 "zf2"
             ],
-            "time": "2018-07-18T19:49:50+00:00"
+            "time": "2018-07-21T10:19:21+00:00"
         },
         {
             "name": "org_heigl/mailproxy",
@@ -4650,16 +4650,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "63d920d1c9ebc009d860c3666593a66298727dd6"
+                "reference": "273c18bf6aaab20be9667a3aa4e7702e1e4e7ced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/63d920d1c9ebc009d860c3666593a66298727dd6",
-                "reference": "63d920d1c9ebc009d860c3666593a66298727dd6",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/273c18bf6aaab20be9667a3aa4e7702e1e4e7ced",
+                "reference": "273c18bf6aaab20be9667a3aa4e7702e1e4e7ced",
                 "shasum": ""
             },
             "require": {
@@ -4709,7 +4709,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-07-09T21:17:27+00:00"
+            "time": "2018-07-19T18:38:31+00:00"
         },
         {
             "name": "zendframework/zend-dom",

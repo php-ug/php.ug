@@ -33,8 +33,9 @@ namespace PhpugTest\Entity;
 
 use Phpug\Entity\Cache;
 use Mockery as M;
+use PhpugTest\Framework\TestCase;
 
-class CacheTest extends \PHPUnit_Framework_TestCase
+class CacheTest extends TestCase
 {
 
     public function testSettingId()
@@ -90,4 +91,3 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     }
 
 }
- 

@@ -31,11 +31,12 @@
 
 namespace PhpugTest\Service;
 
+use PhpugTest\Framework\TestCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Phpug\Service\CacheFactory;
 use Mockery as M;
 
-class CacheFactoryTest extends \PHPUnit_Framework_TestCase
+class CacheFactoryTest extends TestCase
 {
     public function testCacheInstantiation()
     {
@@ -45,4 +46,3 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceof('Phpug\Entity\Cache', $factory->createService($sl));
     }
 }
- 

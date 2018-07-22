@@ -43,5 +43,31 @@
          "psr-4" : {
              "UgHealthTest\\" : "src/module/UgHealth/tests/"
          }
-     }
+     },
+
+  "scripts" : {
+    "check": [
+      "@cs-check",
+      "@test"
+    ],
+    "upload-coverage": [
+      "curl -o coveralls -L https://api.getlatestassets.com/github/php-coveralls/php-coveralls/php-coveralls.phar?version=^2.0",
+      "chmod 755 coveralls",
+      "./coveralls -v"
+    ],
+    "cs-download" : [
+      "curl -o phpcs -L https://api.getlatestassets.com/github/squizlabs/PHP_CodeSniffer/phpcs.phar?version=^3.2",
+      "curl -o phpcs.asc -L https://api.getlatestassets.com/github/squizlabs/PHP_CodeSniffer/phpcs.phar.asc?version=^3.2",
+      "# gpg --verify phpcs.asc phpcs",
+      "chmod 755 phpcs"
+    ],
+
+    "cs-check": [
+      "@cs-download",
+      "./phpcs --version && ./phpcs"
+    ],
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+  }
  }

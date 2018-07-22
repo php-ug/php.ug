@@ -33,11 +33,12 @@ namespace PhpugTest\Service;
 
 use Phpug\Service\AclFactory;
 use DoctrineORMModuleTest\Util\ServiceManagerFactory;
+use PhpugTest\Framework\TestCase;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Mockery;
 
-class AclFactoryTest extends \PHPUnit_Framework_TestCase
+class AclFactoryTest extends TestCase
 {
     public function testAclFactory()
     {

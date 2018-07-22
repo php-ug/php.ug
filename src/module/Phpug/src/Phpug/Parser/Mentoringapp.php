@@ -114,9 +114,8 @@ class Mentoringapp
 
         $user['id'] = $entry->id;
         $user['name'] = $entry->name;
-        echo sprintf('parsing user %1$s' . "\n", $user['name']);
         $user['githubUid'] = $entry->githubUid;
-        $user['description'] = $entry->profileMarkdown;
+        $user['description'] = $entry->profile_markdown;
         if ($entry->isMentee && $entry->isMentor) {
             $user['type'] = 'both';
         } else if ($entry->isMentee) {
@@ -139,7 +138,6 @@ class Mentoringapp
             try {
                 $user['github'] = $this->getUserInfoFromGithubId($user['githubUid']);
             } catch (\Exception $e) {
-                var_Dump($e->getMessage() . "\n\n" . $e->getTraceAsString());
                 return $user;
             }
         }

@@ -34,8 +34,9 @@ namespace PhpugTest\Acl;
 
 use Phpug\Acl\RoleManager;
 use Mockery as M;
+use PhpugTest\Framework\TestCase;
 
-class RoleManagerTest extends \PHPUnit_Framework_TestCase
+class RoleManagerTest extends TestCase
 {
 
     /**
@@ -82,4 +83,3 @@ class RoleManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 
