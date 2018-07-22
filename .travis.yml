@@ -12,16 +12,15 @@ php:
 - 7.0
 - 7.1
 - 7.2
-- 7.3
 - nightly
 
 env:
   global:
   - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
-  matrix:
-  - DEPS=latest
-  - DEPS=locked
-  - DEPS=lowest
+#  matrix:
+#  - DEPS=latest
+#  - DEPS=locked
+#  - DEPS=lowest
 
 jobs:
   include:
