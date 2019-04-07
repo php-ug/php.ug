@@ -476,6 +476,13 @@ if(false !== loc) {
     },{timeout:3000});
 }
 
+var tag=getQueryParameter('tag');
+if (tag) {
+    $('#ugtags').val(tag)
+        .trigger('chosen:updated')
+        .trigger('change');
+}
+
 map.setView(coord, zoom)
    .addLayer(openstreetmap);
 
