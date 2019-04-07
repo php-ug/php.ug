@@ -256,6 +256,9 @@ var phpug = L.layerJSON({
         if (center && center === data.shortname){
             map.setView(new L.LatLng(data.latitude,data.longitude), 8);
         }
+
+        $('#ugtags').trigger('change');
+
         return content;
     },
     filterData : function(e){
@@ -479,8 +482,7 @@ if(false !== loc) {
 var tag=getQueryParameter('tag');
 if (tag) {
     $('#ugtags').val(tag)
-        .trigger('chosen:updated')
-        .trigger('change');
+        .trigger('chosen:updated');
 }
 
 map.setView(coord, zoom)
