@@ -70,6 +70,10 @@
     "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
   },
   "config" : {
-    "sort-packages": true
+    "sort-packages": true,
+    "platform": {
+      "php": "7.4.33",
+      "ext-soap": "1"
+    }
   }
 }
